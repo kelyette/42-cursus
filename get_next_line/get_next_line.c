@@ -6,99 +6,63 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:22:33 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/01 19:43:17 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/02 14:33:17 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdlib.h>
 #include "get_next_line.h"
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 64
 #endif
 
-#include <stdio.h>
-
-void	*ft_memchr(const void *s, int c, size_t size)
+char	*apply_buffer(t_pbuf *pbuf, char *end_ptr)
 {
-	char	*cs = (char *)s;
-	size_t	i;
+	size_t	size;
+	char	*line;
 
-	i = -1;
-	while (++i < size)
-		if (cs[i] == c)
-			return ((void *)&s[i]);
-	return (NULL);
+	size = end_ptr - (pbuf->buf + pbuf->start) + 1;
+	if (size < 1)
+		return (NULL);
+	line = malloc(size + 1);
+	ft_memcpy(line, pbuf->buf + pbuf->start, size);
+	line[size] = 0;
+	pbuf->start += size;
+	return (line);
 }
 
-void	*ft_memcpy(void *dst, const void *src, size_t size)
+t_pbuf	*apply_new_data(t_pbuf *pbuf, const char *data, size_t size)
 {
-	char	*cdst;
-	char	*csrc;
-	size_t		si;
-
-	cdst = (char *)dst;
-	csrc = (char *)src;
-	si = -1;
-	while (++si < size)
-		cdst[si] = csrc[si];
-	return (dst);
-}
-
-void	*ft_realloc(void *s, size_t bsize, size_t nsize)
-{
-	char		*res;
-
-	res = malloc(nsize);
-	ft_memcpy(res, s, bsize);
-	if (s)
-		free(s);
-	return (res);
+	pbuf->buf = ft_realloc(pbuf->buf, pbuf->end, pbuf->end + size);
+	ft_memcpy(pbuf->buf + pbuf->end, data, size);
+	pbuf->end += size;
+	return (pbuf);
 }
 
 char	*get_next_line(int fd)
 {
-	static char		*prevbuf;
-	static size_t	pbstart;
-	static size_t	pbend;
+	static t_pbuf	pbuf;
 	char			buf[BUFFER_SIZE];
 	char			*line;
 	char			*nl_ptr;
 	size_t			read_size;
-	size_t			line_size;
 
 	while (1)
 	{
-		nl_ptr = ft_memchr(prevbuf + pbstart, '\n', pbend - pbstart);
+		nl_ptr = ft_memchr(pbuf.buf + pbuf.start, '\n', pbuf.end - pbuf.start);
 		if (nl_ptr)
-		{
-			// copy prevbuf into line buffer and return
-			line_size = nl_ptr - (prevbuf + pbstart) + 1;
-			line = malloc(line_size + 1);
-			ft_memcpy(line, prevbuf + pbstart, line_size);
-			line[line_size] = 0;
-			pbstart += line_size;
-			return (line);
-		}
-
+			return (apply_buffer(&pbuf, nl_ptr));
 		read_size = read(fd, buf, BUFFER_SIZE);
-		if (read_size <= 0)
+		if (read_size == 0)
 		{
-			line_size = pbstart + read_size;
-			line = malloc(line_size + 1);
-			ft_memcpy(line, prevbuf + pbstart, line_size);
-			line[line_size] = 0;
-			pbstart = 0;
-			pbend = 0;
-			if (prevbuf)
-				free(prevbuf);
-			// eof, same as last if statement except free and reset static vars
+			line = apply_buffer(&pbuf, pbuf.buf + pbuf.end - 1);
+			if (pbuf.buf)
+			{
+				free(pbuf.buf);
+				pbuf.buf = NULL;
+			}
 			return (NULL);
 		}
-
-		// make room for prevbuf and copy new data
-		prevbuf = ft_realloc(prevbuf, pbend, pbend + read_size);
-		ft_memcpy(prevbuf + pbend, buf, read_size);
-		pbend += read_size;
+		apply_new_data(&pbuf, buf, read_size);
 	}
 }
