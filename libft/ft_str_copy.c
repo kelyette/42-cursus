@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 19:21:24 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/22 19:23:15 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/02 16:11:49 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
 
-	if (!dstsize)
-		return (0);
 	i = -1;
-	while (src[++i] && i < dstsize - 1)
+	while (dstsize && src[++i] && i < dstsize - 1)
 		dst[i] = src[i];
-	dst[i] = 0;
-	return (i);
+	if (dstsize)
+		dst[i] = 0;
+	return (ft_strlen(src));
 }
 
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
@@ -32,10 +31,11 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	i = 0;
 	while (dst[i] && i < dstsize - 1)
 		i++;
-	while (*src && i < dstsize - 1)
+	while (dstsize && *src && i < dstsize - 1)
 		dst[i++] = *src++;
-	dst[i] = 0;
-	return (i);
+	if (dstsize)
+		dst[i] = 0;
+	return (dstsize + ft_strlen(src));
 }
 
 char	*ft_strdup(const char *s1)

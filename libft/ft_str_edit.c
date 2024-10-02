@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 19:23:50 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/22 19:24:44 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/02 14:44:09 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,16 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 		res[i] = (*f)(i, s[i]);
 	res[i] = 0;
 	return (res);
+}
+
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
+{
+	unsigned int	i;
+
+	if (!s)
+		return ;
+	i = -1;
+	while (s[++i])
+		(*f)(i, &s[i]);
+	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 19:25:07 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/22 19:27:57 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/02 15:57:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,13 @@ char	*ft_strchr(const char *s, int c)
 	if (!s)
 		return (NULL);
 	while (*s)
-		if (*s++ == c)
+		if (*s++ == (char)c)
 			return ((char *)--s);
-	if (c == 0)
+	if ((char)c == 0)
 		return ((char *)s);
 	return (NULL);
 }
 
-// TODO test needed
 char	*ft_strrchr(const char *s, int c)
 {
 	char	*p;
@@ -80,11 +79,11 @@ char	*ft_strrchr(const char *s, int c)
 	p = NULL;
 	while (*s)
 	{
-		if (*s == c)
+		if (*s == (char)c)
 			p = (char *)s;
 		s++;
 	}
-	if (c == 0)
+	if ((char)c == 0)
 		return ((char *)s);
 	return (p);
 }

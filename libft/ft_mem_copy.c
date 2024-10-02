@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 19:31:13 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/22 19:31:51 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/02 15:05:17 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,10 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	size_t	i;
 
 	cdst = (char *)dst;
-	cpy = ft_strdup(src);
-	if (!cpy)
-		return (NULL);
+	cpy = malloc(len);
+	ft_memcpy(cpy, src, len);
 	i = -1;
-	while (++i < len && cpy[i])
+	while (++i < len)
 		cdst[i] = cpy[i];
 	free(cpy);
 	return (dst);
