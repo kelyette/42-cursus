@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 19:23:50 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/02 14:44:09 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/08 14:09:29 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,23 @@
 char	*ft_strtrim(const char *s1, const char *set)
 {
 	char	*res;
-	size_t	size;
-	size_t	i;
+	size_t	len;
+	size_t	start;
 
-	i = -1;
-	size = 0;
-	while (s1[++i])
-		if (!ft_strchr(set, s1[i]))
-			size++;
-	res = malloc(size + 1);
-	i = 0;
-	while (*s1)
-	{
-		if (!ft_strchr(set, *s1))
-			res[i++] = *s1;
-		s1++;
-	}
-	res[i] = 0;
+	if (!s1)
+		return (NULL);
+	if (!set)
+		return (ft_strdup(s1));
+	start = 0;
+	len = ft_strlen(s1) - 1;
+	while (ft_strchr(set, s1[start]))
+		start++;
+	while (ft_strchr(set, s1[len]))
+		len--;
+	len -= start;
+	res = ft_substr(s1, start, len + 1);
+	if (!res)
+		return (NULL);
 	return (res);
 }
 
@@ -40,8 +40,12 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	char	*res;
 	size_t	size;
 
+	if (!s1 || !s2)
+		return (NULL);
 	size = ft_strlen(s1) + ft_strlen(s2) + 1;
 	res = malloc(size);
+	if (!res)
+		return (NULL);
 	ft_strlcpy(res, s1, size);
 	ft_strlcat(res, s2, size);
 	return (res);
@@ -49,12 +53,13 @@ char	*ft_strjoin(const char *s1, const char *s2)
 
 char	**ft_split(const char *s, char c)
 {
-	char	**res;
-	char	*cs;
-	int		scount;
-	size_t	slen;
+	char const	*cs = (char *)s;
+	char		**res;
+	int			scount;
+	size_t		slen;
 
-	cs = (char *)s;
+	if (!s)
+		return (NULL);
 	scount = 0;
 	while (*s)
 		if (*s++ != c && (!*s || *s == c))
@@ -80,6 +85,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	char			*res;
 	unsigned int	i;
 
+	if (!s || !f)
+		return (NULL);
 	res = malloc(ft_strlen(s) + 1);
 	if (!res)
 		return (NULL);
@@ -94,7 +101,7 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
 	unsigned int	i;
 
-	if (!s)
+	if (!s || !f)
 		return ;
 	i = -1;
 	while (s[++i])

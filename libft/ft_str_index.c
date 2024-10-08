@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 19:25:07 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/02 15:57:34 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/07 16:23:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	size_t	ih;
 	size_t	in;
 
+	if (!*needle)
+		return ((char *)haystack);
 	ih = -1;
-	while (haystack[++ih] && ih < len)
+	while (++ih < len && haystack[ih])
 	{
 		in = 0;
-		while (haystack[ih + in] == needle[in])
+		while (haystack[ih + in] == needle[in] && ih + in < len)
 		{
 			in++;
 			if (!needle[in])
@@ -47,6 +49,12 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	char	*res;
 	size_t	i;
 
+	if (!s)
+		return (NULL);
+	if (start >= ft_strlen(s))
+		return (ft_calloc(1, 1));
+	if (ft_strlen(s) < len)
+		len = ft_strlen(s);
 	res = malloc(len + 1);
 	if (!res)
 		return (NULL);
@@ -60,8 +68,6 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 
 char	*ft_strchr(const char *s, int c)
 {
-	if (!s)
-		return (NULL);
 	while (*s)
 		if (*s++ == (char)c)
 			return ((char *)--s);
@@ -74,8 +80,6 @@ char	*ft_strrchr(const char *s, int c)
 {
 	char	*p;
 
-	if (!s)
-		return (NULL);
 	p = NULL;
 	while (*s)
 	{

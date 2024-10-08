@@ -6,19 +6,12 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 15:31:54 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/20 16:16:44 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/07 16:34:14 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <limits.h>
-
-int	ft_abs(int n)
-{
-	if (n < 0)
-		return (-n);
-	return (n);
-}
 
 int	ft_atoi(const char *str)
 {
@@ -50,6 +43,8 @@ char	*ft_itoa(int n)
 	while (n && slen++)
 		n /= 10;
 	res = malloc(slen);
+	if (!res)
+		return (NULL);
 	res[--slen] = 0;
 	if (cn < 0)
 		*res = '-';

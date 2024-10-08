@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 16:39:15 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/20 17:10:31 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/04 16:13:10 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,18 @@ void	ft_putchar_fd(char c, int fd)
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	write(fd, s, ft_strlen(s));
+	if (s)
+		write(fd, s, ft_strlen(s));
+	else
+		write(fd, "(null)", 6);
 }
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	write(fd, s, ft_strlen(s));
+	if (s)
+		write(fd, s, ft_strlen(s));
+	else
+		write(fd, "(null)", 6);
 	write(fd, "\n", 1);
 }
 
