@@ -16,8 +16,9 @@ INCLDIR = include
 
 LIB = libftprintf.a
 
-TESTSRC = test.c
-TESTEXEC = test
+TESTDIR = test
+TESTSRC = $(TESTDIR)/test.c
+TESTEXEC = $(TESTDIR)/test
 DEVFLAGS = -g -O0 -fsanitize=address
 
 all: $(LIB)
@@ -29,7 +30,7 @@ $(TESTEXEC): $(SRC) $(TESTSRC)
 	$(CC) $(CCFLAGS) $(DEVFLAGS) -L$(LBDIR) -I$(LBDIR) -lft -I$(INCLDIR) -o $(TESTEXEC) $(TESTSRC) $(SRC)
 
 $(LIB): $(OBJ)
-	$(AR) $(ARFLAGS) $<
+	$(AR) $(ARFLAGS) $(LIB) $(OBJ)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(OBJDIR)

@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:42:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/29 16:58:42 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/05 13:16:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,29 @@ size_t	ft_fputliteral(va_list *arg, const t_format_spec *spec)
 	return (1);
 }
 
-static const char	*strornull(va_list *arg)
-{
-	const char	*v = va_arg(*arg, char*);
-
-	if (!v)
-		return (ft_strdup("(null)"));
-	return (v);
-}
-
 size_t	ft_fputstr(va_list *arg, const t_format_spec *spec)
 {
-	const char		*v = strornull(arg);
-	const size_t	len = ft_strlen(v);
-	const size_t	plen = min(spec->precision, len);
+	char	*v;
+	size_t	len;
+	size_t	plen;
+	char	*rstr;
+	char	*strnull;
 
+	strnull = NULL;
+	v = va_arg(*arg, char *);
+	if (!v)
+	{
+		strnull = ft_strdup("(null)");
+		v = strnull;
+	}
+	len = ft_strlen(v);
+	plen = min(spec->precision, len);
+	rstr = ft_substr(v, 0, plen);
 	justify(spec, len);
-	ft_putstr_fd(ft_substr(v, 0, plen), 1);
+	ft_putstr_fd(rstr, 1);
 	justify(spec, len);
+	if (strnull)
+		free(strnull);
+	free(rstr);
 	return (1);
 }

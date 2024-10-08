@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 03:12:25 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/29 17:59:52 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/05 12:20:19 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,10 @@ static const int	g_spec_max = sizeof(g_spec_str_table) / sizeof(char);
 
 static int	expect_flags(const char **fmtstr, t_format_spec *spec)
 {
-	char		*ftable;
+	const char	ftable[] = "\\-0";
 	int			flagbit;
 	int			flags;
 
-	ftable = ft_strdup("\\-0");
 	flags = 0;
 	while (ft_strchr(ftable, **fmtstr))
 	{
