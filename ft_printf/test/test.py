@@ -58,56 +58,47 @@ def runjob(jobpath):
 	print(f"{CYAN}{res.decode("utf-8")}{RESET}")
 
 tests = {
-	"specs": {
-		"c": {
-			"f": ["", "-", "0"],
-			"w": ["", "4", "0", "-3", "*"],
-			"p": ["", ".4", ".0", ".*"],
-			"v": ["a"]
-		},
-		"s": {
-			"f": ["", "-", "0"],
-			"w": ["", "4", "0", "-3", "*"],
-			"p": ["", ".4", ".0", ".*"],
-			"v": ["(char *)0", "\\\"alessia\\\""]
-		},
-		"p": {
-			"f": ["", "-", "0"],
-			"w": ["", "4", "0", "-3", "*"],
-			"p": ["", ".4", ".0", ".*"],
-			"v": ["(void *)0", "(void *)0xe04f053f450"]
-		},
-		"d": {
-			"f": ["", "-", "0"],
-			"w": ["", "4", "0", "-3", "*"],
-			"p": ["", ".4", ".0", ".*"],
-			"v": ["INT_MIN", "0", "INT_MAX"]
-		},
-		"u": {
-			"f": ["", "-", "0"],
-			"w": ["", "4", "0", "-3", "*"],
-			"p": ["", ".4", ".0", ".*"],
-			"v": ["0", "UINT_MAX"]
-		},
-		"x": {
-			"f": ["", "-", "0"],
-			"w": ["", "4", "0", "-3", "*"],
-			"p": ["", ".4", ".0", ".*"],
-			"v": ["0", "UINT_MAX"]
-		},
-		"%": {
-			"f": ["", "-", "0"],
-			"w": ["", "4", "0", "-3", "*"],
-			"p": ["", ".4", ".0", ".*"],
-			"v": []
-		}
+	"c": {
+		"f": ["", "-", "0"],
+		"w": ["", "4", "0", "-3", "*"],
+		"p": ["", ".4", ".0", ".*"],
+		"v": ["a"]
 	},
-	"vals": {
-		"c": "'\\'k\\''", "s": "\\\"le haut\\\"", "p": "(void *)0xe04f053f450", "d": "4200", "u": "39441675", "x": "727774", "%": ""
+	"s": {
+		"f": ["", "-", "0"],
+		"w": ["", "4", "0", "-3", "*"],
+		"p": ["", ".4", ".0", ".*"],
+		"v": ["(char *)0", "\\\"alessia\\\""]
 	},
-	"varvals": {
-		"width": [0, "10", "-10"],
-		"precision": [0, "6", "0"],
+	"p": {
+		"f": ["", "-", "0"],
+		"w": ["", "4", "0", "-3", "*"],
+		"p": ["", ".4", ".0", ".*"],
+		"v": ["(void *)0", "(void *)0xe04f053f450"]
+	},
+	"d": {
+		"f": ["", "-", "0"],
+		"w": ["", "4", "0", "-3", "*"],
+		"p": ["", ".4", ".0", ".*"],
+		"v": ["INT_MIN", "0", "INT_MAX"]
+	},
+	"u": {
+		"f": ["", "-", "0"],
+		"w": ["", "4", "0", "-3", "*"],
+		"p": ["", ".4", ".0", ".*"],
+		"v": ["0", "UINT_MAX"]
+	},
+	"x": {
+		"f": ["", "-", "0"],
+		"w": ["", "4", "0", "-3", "*"],
+		"p": ["", ".4", ".0", ".*"],
+		"v": ["0", "UINT_MAX"],
+	},
+	"%": {
+		"f": ["", "-", "0"],
+		"w": ["", "10", "0", ],
+		"p": ["", ".4", ".0", ".*"],
+		"v": []
 	}
 }
 
@@ -120,19 +111,20 @@ tmp_fmt = []
 tmp_vars = []
 tmp_idx = 0
 specs_per = 2
-for p in itertools.product(*tests["specs"].values()):
-	tmp_fmt.append(''.join(p))
-	if "*" in p[1]:
-		tmp_vars.append(tests["varvals"]["width"][1 + tests["varvals"]["width"][0]])
-		tests["varvals"]["width"][0] ^= 1
-	if "*" in p[2]:
-		tmp_vars.append(tests["varvals"]["precision"][1 + tests["varvals"]["precision"][0]])
-		tests["varvals"]["precision"][0] ^= 1
-	if tests["vals"][p[3]]:
-		tmp_vars.append(tests["vals"][p[3]])
-	tmp_idx += 1
-	if tmp_idx % specs_per == 0:
-		runwithvars('\\n'.join(['%' + c for c in tmp_fmt]), ', '.join(tmp_vars))
-		tmp_idx = 0
-		tmp_fmt.clear()
-		tmp_vars.clear()
+for spec, t in tests.items():
+	for p in itertools.product(*t.values()):
+		tmp_fmt.append(''.join(p[:3]))
+		if "*" in p[1]:
+			tmp_vars.append([1 + tests["varvals"]["width"][0]])
+			tests["varvals"]["width"][0] ^= 1
+		if "*" in p[2]:
+			tmp_vars.append(tests["varvals"]["precision"][1 + tests["varvals"]["precision"][0]])
+			tests["varvals"]["precision"][0] ^= 1
+		if tests["vals"][p[3]]:
+			tmp_vars.append(tests["vals"][p[3]])
+		tmp_idx += 1
+		if tmp_idx % specs_per == 0:
+			runwithvars('\\n'.join(['%' + c for c in tmp_fmt]), ', '.join(tmp_vars))
+			tmp_idx = 0
+			tmp_fmt.clear()
+			tmp_vars.clear()
