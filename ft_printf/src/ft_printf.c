@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printf.c                                                 ) . . (      */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 02:29:40 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/29 17:59:05 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/08 18:58:42 by kcsajka                     /| | | |\    */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 int	put_format(va_list *value, const char **format)
 {
 	t_format_spec	spec;
-	size_t			tmp;
 
 	ft_bzero(&spec, sizeof(spec));
-	tmp = spec_expect_all(value, format, &spec);
-	if (!tmp || !(*spec.func)(value, &spec))
+	spec.width = -1;
+	spec.precision = -1;
+	if (!spec_expect_all(value, format, &spec) || !(*spec.func)(value, &spec))
 		return (0);
 	return (1);
 }
