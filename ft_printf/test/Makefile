@@ -2,7 +2,7 @@ CC = cc
 
 PRJTDIR = ..
 TRGTDIR = target
-LIBFTDIR = /Users/kely/libs
+LIBFTDIR = /home/kcsajka/libs
 
 LIB = $(PRJTDIR)/libftprintf.a
 
@@ -21,6 +21,17 @@ USRRES = $(EXEC)_usr.txt
 
 LOGFILE = result.txt
 
+OS := $(shell uname -s)
+ifeq ($(OS),Darwin)
+	MACROERRFLAG =	 -fmacro-backtrace-limit=0
+	BUILDCMD = $(CC) -Werror -o $(EXEC) $(LIBFTFLAGS) $(LIBFLAGS) $(SRC)
+else ifeq ($(OS),Linux)
+	CC = clang
+	BUILDCMD = $(CC) -Werror -o $(EXEC) $(SRC) $(LIBFLAGS) $(LIBFTFLAGS)
+else
+	BUILDCMD = $(CC) -Werror -o $(EXEC) $(LIBFTFLAGS) $(LIBFLAGS) $(SRC)
+endif
+
 all: checkoutput
 
 checkoutput: runexec
@@ -36,7 +47,7 @@ build: $(LIB) $(TESTOBJ)
 	$(MAKE) -C $(PRJTDIR)
 	@mkdir -p $(TRGTDIR)
 	@echo 
-	$(CC) -fmacro-backtrace-limit=0 -Werror -o $(EXEC) $(LIBFTFLAGS) $(LIBFLAGS) $(SRC) -D'FORMAT="$(VFORMAT)"' -D'VARS=$(VVARS)'
+	$(BUILDCMD) -D'FORMAT="$(VFORMAT)"' -D'VARS=$(VVARS)'
 
 clean:
 	rm -rf $(TRGTDIR)

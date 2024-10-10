@@ -17,7 +17,7 @@ WHITE='\033[0;37m'		  # White
 
 specifiers = "cspdux%"
 projectdir = ".."
-libdir = "/Users/kely/libs"
+libdir = "/home/kcsajka/libs"
 jobidx = 0;
 jobname = "test{:03}"
 buildlibcmd = f"cd {projectdir} && make"
@@ -41,7 +41,7 @@ def runwithvars(vformat: str, vvars: str):
 	try:
 		print(f"$ {cmd}\n");
 		res = subprocess.check_output(cmd, shell=True, executable="/bin/zsh")
-		print(f"{CYAN}{res.decode("utf-8")}");
+		print(f"{CYAN}{res.decode('utf-8')}");
 		
 		jobidx += 1
 		return jobname
@@ -50,55 +50,55 @@ def runwithvars(vformat: str, vvars: str):
 		if "[-Wformat]".encode("utf-8") in cperr.output:
 			print(f"{RESET}{YELLOW}format error, passing{RESET}")
 			return
-		print(f"{RESET}{RED}make error {cperr.returncode}{RESET}");
+		print(f"{RESET}{RED}make error {cperr.returncode}{RESET}\nformat: \"{vformat}\"\nvars: \"{vvars}\"");
 		exit(1)
 
 def runjob(jobpath):
 	res = subprocess.check_output(cmd);
-	print(f"{CYAN}{res.decode("utf-8")}{RESET}")
+	print(f"{CYAN}{res.decode('utf-8')}{RESET}")
 
 tests = {
 	"c": {
-		"f": ["", "-", "0"],
-		"w": ["", "4", "0", "-3", "*"],
-		"p": ["", ".4", ".0", ".*"],
-		"v": ["a"]
+		"f": ["", "-"],
+		"w": ["", "4", ["*", "-10"], ["*", "0"]],
+		"p": [""],
+		"v": ["'\\'k\\''", "(char)0"]
 	},
 	"s": {
-		"f": ["", "-", "0"],
-		"w": ["", "4", "0", "-3", "*"],
-		"p": ["", ".4", ".0", ".*"],
+		"f": ["", "-"],
+		"w": ["", "4", "3", ["*", "-10"]],
+		"p": ["", ".4", ".0", [".*", "10"]],
 		"v": ["(char *)0", "\\\"alessia\\\""]
 	},
 	"p": {
 		"f": ["", "-", "0"],
-		"w": ["", "4", "0", "-3", "*"],
-		"p": ["", ".4", ".0", ".*"],
+		"w": ["", "4", "0", "-3", ["*", "-10"]],
+		"p": ["", ".4", ".0", [".*", "10"]],
 		"v": ["(void *)0", "(void *)0xe04f053f450"]
 	},
 	"d": {
 		"f": ["", "-", "0"],
-		"w": ["", "4", "0", "-3", "*"],
-		"p": ["", ".4", ".0", ".*"],
+		"w": ["", "4", "0", "-3", ["*", "-10"]],
+		"p": ["", ".4", ".0", [".*", "10"]],
 		"v": ["INT_MIN", "0", "INT_MAX"]
 	},
 	"u": {
 		"f": ["", "-", "0"],
-		"w": ["", "4", "0", "-3", "*"],
-		"p": ["", ".4", ".0", ".*"],
+		"w": ["", "4", "0", "-3", ["*", "-10"]],
+		"p": ["", ".4", ".0", [".*", "10"]],
 		"v": ["0", "UINT_MAX"]
 	},
 	"x": {
 		"f": ["", "-", "0"],
-		"w": ["", "4", "0", "-3", "*"],
-		"p": ["", ".4", ".0", ".*"],
+		"w": ["", "4", "0", "-3", ["*", "-10"]],
+		"p": ["", ".4", ".0", [".*", "10"]],
 		"v": ["0", "UINT_MAX"],
 	},
 	"%": {
 		"f": ["", "-", "0"],
-		"w": ["", "10", "0", ],
-		"p": ["", ".4", ".0", ".*"],
-		"v": []
+		"w": ["", "10", "0", ["*", "-10"]],
+		"p": ["", ".4", ".0", [".*", "10"]],
+		"v": [""]
 	}
 }
 
@@ -111,18 +111,25 @@ tmp_fmt = []
 tmp_vars = []
 tmp_idx = 0
 specs_per = 2
+isvaldebug = False
 for spec, t in tests.items():
+	isvaldebug = False
 	for p in itertools.product(*t.values()):
-		tmp_fmt.append(''.join(p[:3]))
-		if "*" in p[1]:
-			tmp_vars.append([1 + tests["varvals"]["width"][0]])
-			tests["varvals"]["width"][0] ^= 1
-		if "*" in p[2]:
-			tmp_vars.append(tests["varvals"]["precision"][1 + tests["varvals"]["precision"][0]])
-			tests["varvals"]["precision"][0] ^= 1
-		if tests["vals"][p[3]]:
-			tmp_vars.append(tests["vals"][p[3]])
+		flag, width, precision, val = p;
+		if isinstance(width, list):
+			isvaldebug = True
+			tmp_vars.append(width[1])
+			width = width[0]
+		if isinstance(precision, list):
+			isvaldebug = True
+			tmp_vars.append(precision[1])
+			precision = precision[0]
+
+		tmp_vars.append(val)
+		tmp_fmt.append(''.join([flag, width, precision, spec]))
 		tmp_idx += 1
+		if isvaldebug:
+			print(tmp_fmt[-1], tmp_vars[-1])
 		if tmp_idx % specs_per == 0:
 			runwithvars('\\n'.join(['%' + c for c in tmp_fmt]), ', '.join(tmp_vars))
 			tmp_idx = 0
