@@ -13,9 +13,6 @@ SRC = test.c $(LIB)
 
 EXEC ?= $(TRGTDIR)/test
 
-VFORMAT ?= %s
-VVARS ?= "VVARS not specified"
-
 SYSRES = $(EXEC)_sys.txt
 USRRES = $(EXEC)_usr.txt
 
@@ -32,6 +29,10 @@ else
 	BUILDCMD = $(CC) -Werror -o $(EXEC) $(LIBFTFLAGS) $(LIBFLAGS) $(SRC)
 endif
 
+ifdef VVARS
+	VVARSPARAM = -D'VARS=$(VVARS)'
+endif
+
 all: checkoutput
 
 checkoutput: runexec
@@ -40,14 +41,15 @@ checkoutput: runexec
 
 runexec: build
 	@echo "--- Running test job..."
-	./$(EXEC) | awk 'BEGIN {t = 0} /---/ {t++; next} {if (t) {print $0 > "$(SYSRES)"} else {print $0 > "$(USRRES)"}}'
+	@echo '$(VFORMAT)\n$(VVARS)' | tee $(SYSRES) | tee $(USRRES)
+	./$(EXEC) | awk 'BEGIN {t = 0} /---/ {t++; next} {if (t) {print $0 >> "$(SYSRES)"} else {print $0 >> "$(USRRES)"}}'
 
 build: $(LIB) $(TESTOBJ)
 	@echo "--- Building libftprintf..."
 	$(MAKE) -C $(PRJTDIR)
 	@mkdir -p $(TRGTDIR)
 	@echo 
-	$(BUILDCMD) -D'FORMAT="$(VFORMAT)"' -D'VARS=$(VVARS)'
+	$(BUILDCMD) -D'FORMAT="$(VFORMAT)"' $(VVARSPARAM)
 
 clean:
 	rm -rf $(TRGTDIR)

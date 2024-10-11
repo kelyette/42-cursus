@@ -1,19 +1,22 @@
 CC = cc
 AR = ar
 
-CCFLAGS = -Wall -Wextra -Werror
+CCWFLAGS = -Wall -Wextra -Werror
 ARFLAGS = rcs
 
 INCL = libft.h
-SRC := chrop integer io ischr mem_copy mem_set mem_simple str_copy str_edit str_index str_simple
+SRC := chrop integer io ischr mem_copy mem_set mem_simple str_copy str_edit str_index str_simple str_comb
 SRC := $(foreach src,$(SRC),ft_$(src).c)
-BONUSSRC := lst_iter lst_manage lst_simple bonus
+BONUSSRC := lst_iter lst_manage lst_simple
 BONUSSRC := $(foreach src,$(BONUSSRC),ft_$(src).c)
-OBJDIR = target
-OBJ = $(patsubst %.c,$(OBJDIR)/%.o,$(SRC))
-BONUSOBJ = $(patsubst %.c,$(OBJDIR)/%.o,$(BONUSSRC))
+STATICDIR = target_static
+SHAREDDIR = target_shared
+OBJDIR := $(STATICDIR)
+OBJSTATIC := $(addprefix $(STATICDIR)/,$(SRC:.c=.o))
+OBJSHARED = $(addprefix $(SHAREDDIR)/,$(SRC:.c=.o) $(BONUSSRC:.c=.o))
+BONUSOBJ = $(addprefix $(OBJDIR)_static/,$(BONUSSRC:.c=.o))
 
-LIB = libft.a
+LIB = libft
 
 INSTALLDIR = ~/libs
 
@@ -21,23 +24,35 @@ TESTSRC = test.c
 TESTEXE = test
 DEVFLAGS = -g -O0 -fsanitize=address
 
-all: $(LIB)
+UNAME := $(shell uname)
 
-$(LIB): $(OBJ)
-	$(AR) $(ARFLAGS) $(LIB) $(OBJ)
+ifeq ($(UNAME),Linux)
+	CC = clang
+endif
 
-$(OBJDIR)/%.o: %.c $(INCL)
+all: $(LIB).a
+so: $(LIB).so
+
+$(LIB).a: $(OBJSTATIC)
+	$(AR) $(ARFLAGS) $@ $^
+
+$(LIB).so: OBJCCFLAGS = -fPIC
+$(LIB).so: OBJDIR := $(SHAREDDIR)
+$(LIB).so: $(OBJSHARED)
+	$(CC) $(CCWFLAGS) -shared -o $(LIB).so $^
+
+$(STATICDIR)/%.o $(SHAREDDIR)/%.o: %.c
 	@mkdir -p $(OBJDIR)
-	$(CC) $(CCFLAGS) -c $< -o $@
+	$(CC) $(CCWFLAGS) $(OBJCCFLAGS) -c $< -o $@
 
-bonus: $(BONUSOBJ) $(OBJ)
-	$(AR) $(ARFLAGS) $(LIB) $(OBJ) $(BONUSOBJ)
+bonus: $(LIB).a
+	$(AR) $(ARFLAGS) $(LIB).a $(OBJ)
 
 clean:
-	rm -rf $(OBJDIR)
+	rm -rf $(STATICDIR) $(SHAREDDIR)
 
 fclean: clean
-	rm -f $(LIB)
+	rm -f $(LIB).a $(LIB).so
 
 re: fclean all
 
@@ -50,4 +65,4 @@ install: $(LIB)
 	cp $< $(INSTALLDIR)/$<
 	cp $(INCL) $(INSTALLDIR)/$(INCL)
 
-.PHONY: all bonus test clean fclean re
+.PHONY: all a so bonus test clean fclean re

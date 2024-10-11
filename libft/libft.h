@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:39:56 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/10 16:07:00 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/11 12:29:31 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ int		ft_toupper(int c);
 int		ft_tolower(int c);
 
 // bonus
-int		ft_abs(int n);
+/*int		ft_abs(int n);
 size_t	ft_max_sizet(size_t a, size_t b);
-char	*ft_strndup(const char *s, size_t n);
+char	*ft_strndup(const char *s, size_t n);*/
 
 #endif

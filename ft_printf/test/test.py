@@ -37,7 +37,8 @@ def runbash(cmd):
 def runwithvars(vformat: str, vvars: str):
 	global jobidx
 	jobname = f"target/test{jobidx:03}";
-	cmd = f"make all EXEC={jobname} VVARS=\"{vvars}\" VFORMAT=\"{vformat}\" ; exit $?"
+	vvarsarg = f"VVARS=\"{vvars}\"" if vvars else ""
+	cmd = f"make all EXEC={jobname} {vvarsarg} VFORMAT=\"{vformat}\" ; exit $?"
 	try:
 		print(f"$ {cmd}\n");
 		res = subprocess.check_output(cmd, shell=True, executable="/bin/zsh")
@@ -60,43 +61,43 @@ def runjob(jobpath):
 tests = {
 	"c": {
 		"f": ["", "-"],
-		"w": ["", "4", ["*", "-10"], ["*", "0"]],
+		"w": ["", "4", ["*", "-10"], ["*", "0"], ["*", "0"]],
 		"p": [""],
 		"v": ["'\\'k\\''", "(char)0"]
 	},
 	"s": {
 		"f": ["", "-"],
-		"w": ["", "4", "3", ["*", "-10"]],
+		"w": ["", "4", "3", ["*", "-10"], ["*", "0"]],
 		"p": ["", ".4", ".0", [".*", "10"]],
 		"v": ["(char *)0", "\\\"alessia\\\""]
 	},
 	"p": {
-		"f": ["", "-", "0"],
-		"w": ["", "4", "0", "-3", ["*", "-10"]],
-		"p": ["", ".4", ".0", [".*", "10"]],
+		"f": ["", "-"],
+		"w": ["", "4", "-3", ["*", "-10"], ["*", "0"]],
+		"p": [""],
 		"v": ["(void *)0", "(void *)0xe04f053f450"]
 	},
 	"d": {
 		"f": ["", "-", "0"],
-		"w": ["", "4", "0", "-3", ["*", "-10"]],
+		"w": ["", "4", ["*", "-10"], ["*", "0"]],
 		"p": ["", ".4", ".0", [".*", "10"]],
 		"v": ["INT_MIN", "0", "INT_MAX"]
 	},
 	"u": {
 		"f": ["", "-", "0"],
-		"w": ["", "4", "0", "-3", ["*", "-10"]],
+		"w": ["", "4", ["*", "-10"], ["*", "0"]],
 		"p": ["", ".4", ".0", [".*", "10"]],
 		"v": ["0", "UINT_MAX"]
 	},
 	"x": {
 		"f": ["", "-", "0"],
-		"w": ["", "4", "0", "-3", ["*", "-10"]],
+		"w": ["", "4", ["*", "-10"], ["*", "0"]],
 		"p": ["", ".4", ".0", [".*", "10"]],
 		"v": ["0", "UINT_MAX"],
 	},
 	"%": {
 		"f": ["", "-", "0"],
-		"w": ["", "10", "0", ["*", "-10"]],
+		"w": ["", "10", ["*", "-10"], ["*", "0"]],
 		"p": ["", ".4", ".0", [".*", "10"]],
 		"v": [""]
 	}
@@ -125,13 +126,12 @@ for spec, t in tests.items():
 			tmp_vars.append(precision[1])
 			precision = precision[0]
 
-		tmp_vars.append(val)
-		tmp_fmt.append(''.join([flag, width, precision, spec]))
+		if (val):
+			tmp_vars.append(val)
+		tmp_fmt.append("/{}/".format(''.join(["%", flag, width, precision, spec])))
 		tmp_idx += 1
-		if isvaldebug:
-			print(tmp_fmt[-1], tmp_vars[-1])
 		if tmp_idx % specs_per == 0:
-			runwithvars('\\n'.join(['%' + c for c in tmp_fmt]), ', '.join(tmp_vars))
+			runwithvars('\\n'.join(tmp_fmt), ', '.join(tmp_vars))
 			tmp_idx = 0
 			tmp_fmt.clear()
 			tmp_vars.clear()

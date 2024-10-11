@@ -3,5 +3,9 @@ test/
 docs/
 libft.a
 *.a
+*.so
 test*
 .gitignore
+ft_bonus.c
+libftTester
+out

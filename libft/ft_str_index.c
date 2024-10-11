@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 19:25:07 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/07 16:23:34 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/11 13:02:11 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		return (NULL);
 	if (start >= ft_strlen(s))
 		return (ft_calloc(1, 1));
-	if (ft_strlen(s) < len)
-		len = ft_strlen(s);
+	if (ft_strlen(s + start) < len)
+		len = ft_strlen(s + start);
 	res = malloc(len + 1);
 	if (!res)
 		return (NULL);

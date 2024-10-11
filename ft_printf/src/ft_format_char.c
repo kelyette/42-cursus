@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_format_char.c                                            ) . . (      */
+/*   ft_format_char.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:42:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/08 19:01:32 by kcsajka                     /| | | |\    */
+/*   Updated: 2024/10/11 14:29:40 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ size_t	ft_fputstr(va_list *arg, const t_format_spec *spec)
 	len = ft_strlen(v);
 	if (spec->precision != -1)
 		len = spec->precision;
-	wlen = max(spec->width, len);
+	wlen = len - max(spec->width, len);
 	justify(spec, wlen - len);
 	ft_putstr_fd(ft_substr(v, 0, len), 1);
 	justify(spec, wlen - len);

@@ -6,12 +6,19 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 15:31:54 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/07 16:34:14 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/11 12:29:07 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <limits.h>
+
+static int	ft_abs(int x)
+{
+	if (x < 0)
+		return (-x);
+	return (x);
+}
 
 int	ft_atoi(const char *str)
 {
