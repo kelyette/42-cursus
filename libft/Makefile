@@ -14,7 +14,7 @@ SHAREDDIR = target_shared
 OBJDIR := $(STATICDIR)
 OBJSTATIC := $(addprefix $(STATICDIR)/,$(SRC:.c=.o))
 OBJSHARED = $(addprefix $(SHAREDDIR)/,$(SRC:.c=.o) $(BONUSSRC:.c=.o))
-BONUSOBJ = $(addprefix $(OBJDIR)_static/,$(BONUSSRC:.c=.o))
+BONUSOBJ = $(addprefix $(STATICDIR)/,$(BONUSSRC:.c=.o))
 
 LIB = libft
 
@@ -45,8 +45,8 @@ $(STATICDIR)/%.o $(SHAREDDIR)/%.o: %.c
 	@mkdir -p $(OBJDIR)
 	$(CC) $(CCWFLAGS) $(OBJCCFLAGS) -c $< -o $@
 
-bonus: $(LIB).a
-	$(AR) $(ARFLAGS) $(LIB).a $(OBJ)
+bonus: $(LIB).a $(BONUSOBJ)
+	$(AR) $(ARFLAGS) $< $(BONUSOBJ)
 
 clean:
 	rm -rf $(STATICDIR) $(SHAREDDIR)

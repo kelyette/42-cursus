@@ -6,13 +6,14 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 03:12:25 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/05 12:20:19 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/14 18:26:25 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
 #include "libft.h"
 #include "ft_formats.h"
+#include "ft_printf.h"
 
 static const char	g_spec_str_table[] = {
 	'c',
@@ -52,7 +53,7 @@ static int	expect_flags(const char **fmtstr, t_format_spec *spec)
 		flagbit = 1 << (ft_strchr(ftable, **fmtstr) - 1 - ftable);
 		if (flagbit < 1)
 		{
-			printf("error: unknown flag '%c'\n", **fmtstr);
+			ft_printf("error: unknown flag '%c'\n", **fmtstr);
 			return (0);
 		}
 		flags |= flagbit;
@@ -95,7 +96,11 @@ static int
 	if (*str++ != '.')
 		return (1);
 	if (*str == '*')
-		precision = va_arg(*arg, int);
+	{
+		spec->precision = va_arg(*arg, int);
+		*fmtstr = ++str;
+		return (1);
+	}
 	while (ft_isdigit(*str))
 		precision = precision * 10 + (*str++ - '0');
 	spec->precision = precision;

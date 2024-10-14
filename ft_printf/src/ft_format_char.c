@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:42:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/11 14:29:40 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/10/14 17:29:35 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,12 @@ size_t	ft_fputstr(va_list *arg, const t_format_spec *spec)
 	const char	nullstr[] = "(null)";
 	const char	*v = strornull(arg, nullstr);
 	size_t		len;
-	size_t		wlen;
 
 	len = ft_strlen(v);
 	if (spec->precision != -1)
 		len = spec->precision;
-	wlen = len - max(spec->width, len);
-	justify(spec, wlen - len);
+	justify(spec, len);
 	ft_putstr_fd(ft_substr(v, 0, len), 1);
-	justify(spec, wlen - len);
+	justify(spec, len);
 	return (1);
 }

@@ -1,4 +1,5 @@
-CC = cc
+CC = clang
+PY3 = python3
 
 PRJTDIR = ..
 TRGTDIR = target
@@ -15,6 +16,10 @@ EXEC ?= $(TRGTDIR)/test
 
 SYSRES = $(EXEC)_sys.txt
 USRRES = $(EXEC)_usr.txt
+
+VENVPACKAGE = venv
+VENVDIR = venv
+VENVCMD = $(PY3) -m $(VENVPACKAGE) $(VENVDIR)
 
 LOGFILE = result.txt
 
@@ -52,11 +57,12 @@ build: $(LIB) $(TESTOBJ)
 	$(BUILDCMD) -D'FORMAT="$(VFORMAT)"' $(VVARSPARAM)
 
 r: fclean
-	venv/bin/python test.py
+	$(VENVDIR)/bin/python test.py
 
-venv:
-	python3 -m venv venv
-	venv/bin/pip install tqdm
+$(VENVDIR):
+	rm -rf $@
+	$(VENVCMD)
+	$(VENVDIR)/bin/pip install tqdm
 
 clean:
 	rm -rf $(TRGTDIR)
@@ -66,4 +72,4 @@ oclean:
 
 fclean: clean oclean
 
-.PHONY: all checkoutput runexec build r clean oclean fclean
+.PHONY: all checkoutput runexec build r tvenv clean oclean fclean
