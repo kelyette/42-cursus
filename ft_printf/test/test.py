@@ -1,48 +1,41 @@
-import os
 import itertools
 import subprocess
+from pathlib import Path
+from tqdm import tqdm
 
 # Reset
-RESET='\033[0m'		  # Text Reset
-
-# Regular Colors
-BLACK='\033[0;30m'		  # Black
-RED='\033[0;31m'		  # Red
-GREEN='\033[0;32m'		  # Green
-YELLOW='\033[0;33m'		  # Yellow
-BLUE='\033[0;34m'		  # Blue
-PURPLE='\033[0;35m'		  # Purple
-CYAN='\033[0;36m'		  # Cyan
-WHITE='\033[0;37m'		  # White
+RESET = '\033[0m'
+BLACK = '\033[0;30m'
+RED = '\033[0;31m'
+GREEN = '\033[0;32m'
+YELLOW = '\033[0;33m'
+BLUE = '\033[0;34m'
+PURPLE = '\033[0;35m'
+CYAN = '\033[0;36m'
+WHITE = '\033[0;37m'
 
 specifiers = "cspdux%"
 projectdir = ".."
-libdir = "/home/kcsajka/libs"
-jobidx = 0;
-jobname = "test{:03}"
-buildlibcmd = f"cd {projectdir} && make"
-buildtestcmd = "ccw -o test.o {}.c -D'{}'"
-linkcmd = f"ccw -L{libdir}/ -I{libdir}/ -lft -I{projectdir}/include {projectdir}/printf.a test.o -o {{}}"
-runcmd = "leaks -atExit -- {}"
-
+libdir = Path.home() / "libs"
+jobidx = 0
 result = []
+
+debug = False
 
 basherrorcount = 0
 
-def runbash(cmd):
-	print(cmd)
-	res = subprocess.check_output(cmd, shell=True, executable="/bin/bash")
-	print(res)
 
 def runwithvars(vformat: str, vvars: str):
 	global jobidx
-	jobname = f"target/test{jobidx:03}";
+	jobname = f"target/test{jobidx:03}"
 	vvarsarg = f"VVARS=\"{vvars}\"" if vvars else ""
 	cmd = f"make all EXEC={jobname} {vvarsarg} VFORMAT=\"{vformat}\" ; exit $?"
 	try:
-		print(f"$ {cmd}\n");
+		if debug:
+			print(f"$ {cmd}\n")
 		res = subprocess.check_output(cmd, shell=True, executable="/bin/zsh")
-		print(f"{CYAN}{res.decode('utf-8')}");
+		if (debug):
+			print(f"{CYAN}{res.decode('utf-8')}")
 		
 		jobidx += 1
 		return jobname
@@ -54,9 +47,6 @@ def runwithvars(vformat: str, vvars: str):
 		print(f"{RESET}{RED}make error {cperr.returncode}{RESET}\nformat: \"{vformat}\"\nvars: \"{vvars}\"");
 		exit(1)
 
-def runjob(jobpath):
-	res = subprocess.check_output(cmd);
-	print(f"{CYAN}{res.decode('utf-8')}{RESET}")
 
 tests = {
 	"c": {
@@ -113,10 +103,28 @@ tmp_vars = []
 tmp_idx = 0
 specs_per = 2
 isvaldebug = False
-for spec, t in tests.items():
+outeridx = -1
+inneridx = -1
+outerrefreshrate = 4
+
+
+def gtotal(*args):
+	tot = 1
+	for arg in args:
+		tot *= len(arg)
+	return tot
+
+
+for spec, t in (pbar := tqdm(tests.items(), position=1)):
+	outeridx += 1
+	inneridx = 0
 	isvaldebug = False
-	for p in itertools.product(*t.values()):
-		flag, width, precision, val = p;
+	for p in (pbar2 := tqdm(itertools.product(*t.values()), total=(total := gtotal(*t.values())), leave=False, position=0)):
+		inneridx += 1
+		if inneridx % outerrefreshrate == 0:
+			pbar.n = round(outeridx + (inneridx + 1) / total, 1)
+			pbar.refresh()
+		flag, width, precision, val = p
 		if isinstance(width, list):
 			isvaldebug = True
 			tmp_vars.append(width[1])

@@ -2,7 +2,7 @@ CC = cc
 
 PRJTDIR = ..
 TRGTDIR = target
-LIBFTDIR = /home/kcsajka/libs
+LIBFTDIR ?= $(HOME)/libs
 
 LIB = $(PRJTDIR)/libftprintf.a
 
@@ -51,6 +51,13 @@ build: $(LIB) $(TESTOBJ)
 	@echo 
 	$(BUILDCMD) -D'FORMAT="$(VFORMAT)"' $(VVARSPARAM)
 
+r: fclean
+	venv/bin/python test.py
+
+venv:
+	python3 -m venv venv
+	venv/bin/pip install tqdm
+
 clean:
 	rm -rf $(TRGTDIR)
 
@@ -58,3 +65,5 @@ oclean:
 	rm -f $(LOGFILE)
 
 fclean: clean oclean
+
+.PHONY: all checkoutput runexec build r clean oclean fclean
