@@ -1,7 +1,7 @@
 CC = cc
 AR = ar
 
-CCWFLAGS = -Wall -Wextra -Werror
+CCWFLAGS = -Wall -Wextra -Werror -g
 ARFLAGS = rcs
 
 INCL = libft.h
@@ -16,13 +16,14 @@ OBJSTATIC := $(addprefix $(STATICDIR)/,$(SRC:.c=.o))
 OBJSHARED = $(addprefix $(SHAREDDIR)/,$(SRC:.c=.o) $(BONUSSRC:.c=.o))
 BONUSOBJ = $(addprefix $(STATICDIR)/,$(BONUSSRC:.c=.o))
 
-LIB = libft
+NAME := libft.a
+NAME = libft
 
 INSTALLDIR = ~/libs
 
 TESTSRC = test.c
 TESTEXE = test
-DEVFLAGS = -g -O0 -fsanitize=address
+DEVFLAGS = -O0 -fsanitize=address
 
 UNAME := $(shell uname)
 
@@ -30,36 +31,36 @@ ifeq ($(UNAME),Linux)
 	CC = clang
 endif
 
-all: $(LIB).a
-so: $(LIB).so
+all: $(NAME).a
+so: $(NAME).so
 
-$(LIB).a: $(OBJSTATIC)
+$(NAME).a: $(OBJSTATIC)
 	$(AR) $(ARFLAGS) $@ $^
 
-$(LIB).so: OBJCCFLAGS = -fPIC
-$(LIB).so: OBJDIR := $(SHAREDDIR)
-$(LIB).so: $(OBJSHARED)
-	$(CC) $(CCWFLAGS) -shared -o $(LIB).so $^
+$(NAME).so: OBJCCFLAGS = -fPIC
+$(NAME).so: OBJDIR := $(SHAREDDIR)
+$(NAME).so: $(OBJSHARED)
+	$(CC) $(CCWFLAGS) -shared -o $(NAME).so $^
 
 $(STATICDIR)/%.o $(SHAREDDIR)/%.o: %.c
 	@mkdir -p $(OBJDIR)
 	$(CC) $(CCWFLAGS) $(OBJCCFLAGS) -c $< -o $@
 
-bonus: $(LIB).a $(BONUSOBJ)
+bonus: $(NAME).a $(BONUSOBJ)
 	$(AR) $(ARFLAGS) $< $(BONUSOBJ)
 
 clean:
 	rm -rf $(STATICDIR) $(SHAREDDIR)
 
 fclean: clean
-	rm -f $(LIB).a $(LIB).so
+	rm -f $(NAME).a $(LIB).so
 
 re: fclean all
 
-test: $(LIB) $(TESTSRC)
-	$(CC) $(CCFLAGS) $(DEVFLAGS) -o $(TESTEXE) $(TESTSRC) $(LIB)
+test: $(NAME) $(TESTSRC)
+	$(CC) $(CCFLAGS) $(DEVFLAGS) -o $(TESTEXE) $(TESTSRC) $(NAME)
 
-install: $(LIB)
+install: $(NAME).a
 	@echo "installing to" $(INSTALLDIR)
 	@mkdir -p $(INSTALLDIR)
 	cp $< $(INSTALLDIR)/$<

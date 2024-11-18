@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:22:33 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/02 14:33:17 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/11/04 14:01:14 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*get_next_line(int fd)
 {
 	static t_pbuf	pbuf;
 	char			buf[BUFFER_SIZE];
-	char			*line;
 	char			*nl_ptr;
 	size_t			read_size;
 
@@ -55,7 +54,7 @@ char	*get_next_line(int fd)
 		read_size = read(fd, buf, BUFFER_SIZE);
 		if (read_size == 0)
 		{
-			line = apply_buffer(&pbuf, pbuf.buf + pbuf.end - 1);
+			apply_buffer(&pbuf, pbuf.buf + pbuf.end - 1);
 			if (pbuf.buf)
 			{
 				free(pbuf.buf);

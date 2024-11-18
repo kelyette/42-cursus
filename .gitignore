@@ -1,7 +1,10 @@
-..git
+..git/
 out
-*.dSYM
+*.dSYM/
 *.o
 *.a
+*.so
 venv/
-*.txt
+**/libft/
+!/libft/
+target/
