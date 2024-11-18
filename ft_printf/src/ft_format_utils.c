@@ -5,41 +5,40 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/28 17:59:37 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/29 14:07:45 by kcsajka          ###   ########.fr       */
+/*   Created: 2024/10/29 19:48:26 by kcsajka           #+#    #+#             */
+/*   Updated: 2024/11/07 13:26:41 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_formats.h"
-#include "ft_utils.h"
+#include "ft_printf.h"
+#include "ft_format.h"
+#include <unistd.h>
 
-int	g_justified = 1;
-
-void	justify_output(char c, size_t size)
+void	fputchar(char c)
 {
-	if (size < 1)
+	g_char_count++;
+	write(1, &c, 1);
+}
+
+void	fjustify(int after, const t_fspec *spec, int len)
+{
+	if (spec->width == -1 || spec->zpad || (spec->ljust != after))
 		return ;
-	while (size-- > 0)
-		ft_putchar_fd(c, 1);
+	while (len++ < spec->width)
+		fputchar(' ');
 }
 
-void	justify(const t_format_spec *spec, int len)
+void	get_zpad_int(const t_fspec *spec, int *zpad, int *absolute)
 {
-	const size_t	width_diff = \
-						max(0, spec->width - max(spec->precision, len));
-	const char		pad_char = ' ' + (ZPADOFFSET * spec->zpad);
-
-	if (g_justified ^ spec->ljust)
-		justify_output(pad_char, width_diff);
-	g_justified ^= 1;
-	fflush(stdout);
-}
-
-void	pad_zero(const t_format_spec *spec, size_t len)
-{
-	size_t	precise_diff;
-
-	precise_diff = max(0, spec->precision - len);
-	justify_output('0', precise_diff);
+	if (absolute)
+		*absolute = 0;
+	*zpad = 0;
+	if (spec->width != -1 && spec->zpad)
+	{
+		if (absolute)
+			*absolute = 1;
+		*zpad = spec->width;
+	}
+	if (spec->precision != -1)
+		*zpad = spec->precision;
 }

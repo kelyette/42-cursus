@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+cmd = $1
+
+case cmd in
+	run)
+		run
+		;;
+
+run() {
+	make r
+}
+
+find() {
+	common_filename = "target/test" $2
+	echo $common_filename
+}

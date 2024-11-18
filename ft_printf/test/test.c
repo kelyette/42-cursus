@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                                      ) . . (      */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:53:34 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/14 00:13:46 by kcsajka                     /| | | |\    */
+/*   Updated: 2024/11/06 17:19:35 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,23 @@
 #include <string.h>
 #include <stdio.h>
 #include "ft_printf.h"
-#include "ft_utils.h"
-#include "ft_formats.h"
 #include <string.h>
 #include <limits.h>
 
 #ifdef TEST
+#define FMT "/%*.4d/\n", -10, -42
 int	main(void)
 {
-	printf("string: \"%.4s\"", (char *)0);
+	ft_printf(FMT);
+	printf(FMT);
 }
+/*int	main(void)
+{
+	int i = ft_printf(FMT);
+	printf("(%d)\n", i);
+	i = printf(FMT);
+	printf("(%d)\n", i);
+}*/
 #elif !defined(FORMAT)
 int	main(void)
 {
@@ -32,14 +39,16 @@ int	main(void)
 	fflush(stdout);
 }
 #else
+#ifdef VARS
+# define ARGS FORMAT, VARS
+#else
+# define ARGS FORMAT
+#endif
 int main(void)
 {
-#ifdef VARS
-	ft_printf(FORMAT, VARS);
-	printf("\n---\n"FORMAT, VARS);
-#else
-	ft_printf(FORMAT);
-	printf("\n---\n"FORMAT);
-#endif
+	int u = ft_printf(ARGS);
+	printf("\n| length     | %d\n---\n", u);
+	int s = printf(ARGS);
+	printf("\n| length     | %d\n", s);
 }
 #endif

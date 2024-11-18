@@ -1,50 +1,49 @@
-CC := cc
-CCFLAGS := -Wall -Wextra -Werror
-LBDIR := $(HOME)/libs
-LBFLAGS := -L$(LBDIR) -lft
+CC         := cc
+CCFLAGS    := -Wall -Wextra -Werror -g
 
-AR := ar
-ARFLAGS := rcs
+AR         := ar
+ARFLAGS    := rcs
 
-SRCDIR := src
-OBJDIR := target
-SRC := ft_printf.c ft_parser.c ft_utils.c ft_format_utils.c ft_format_char.c ft_format_hex.c ft_format_int.c
-OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
-SRC := $(SRC:%=$(SRCDIR)/%)
+LFTDIR     := libft
 
-INCLDIR = include
+SRCDIR     := src
+SHAREDDIR  := target_shared
+STATICDIR  := target_static
+OBJDIR     := $(STATICDIR)
+INCLDIR     = include
 
-LIB = libftprintf.a
+SRC        := ft_printf.c ft_parsers.c ft_format_utils.c ft_format_int.c ft_format_uint.c ft_format_float.c ft_format_char.c ft_format_str.c ft_format_counter.c
+STATICOBJ  := $(SRC:%.c=$(STATICDIR)/%.o)
+SHAREDOBJ  := $(SRC:%.c=$(SHAREDDIR)/%.o)
+SRC        := $(SRC:%=$(SRCDIR)/%)
 
-TESTDIR = test
-TESTSRC = $(TESTDIR)/test.c
-TESTEXEC = $(TESTDIR)/test
-DEVFLAGS = -g -O0 -fsanitize=address
+NAME        = libftprintf
 
-all: $(LIB)
+all: $(NAME).a
 
-dev: OBJFLAGS = -g -O0
-dev: $(TESTEXEC)
+so: $(NAME).so
 
-$(TESTEXEC): $(SRC) $(TESTSRC)
-	$(CC) $(CCFLAGS) $(DEVFLAGS) -L$(LBDIR) -I$(LBDIR) -lft -I$(INCLDIR) -o $(TESTEXEC) $(TESTSRC) $(SRC)
+$(NAME).a: $(STATICOBJ)
+	$(AR) $(ARFLAGS) $@ $^
 
-$(LIB): $(OBJ)
-	$(AR) $(ARFLAGS) $(LIB) $(OBJ)
+$(NAME).so: OBJFLAGS += -fPIC
+$(NAME).so: OBJDIR := $(SHAREDDIR)
+$(NAME).so: $(SHAREDOBJ)
+	$(CC) $(CCFLAGS) -shared -L$(LFTDIR) -lft -I$(LFTDIR) -I$(INCLDIR) -o $@ $^
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@mkdir -p $(OBJDIR)
-	$(CC) $(CCFLAGS) $(OBJFLAGS) -I$(LBDIR) -I$(INCLDIR) -o $@ -c $<
+$(STATICDIR)/%.o $(SHAREDDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CCFLAGS) $(OBJFLAGS) -I$(LFTDIR) -I$(INCLDIR) -o $@ -c $<
+
+test: $(NAME).so
+	$(CC) $(CCFLAGS) -L. -lftprintf -I$(INCLDIR) test.c -o out
 
 clean:
-	rm -rf $(OBJDIR)
+	rm -rf $(SHAREDDIR) $(STATICDIR)
 
 fclean: clean
-	rm -f $(LIB)
-
-dclean: clean
-	rm -f $(TESTEXEC)
+	rm -f $(NAME).a $(NAME).so
 
 re: fclean all
 
-.PHONY: all clean fclean re dev
+.PHONY: all so clean fclean re test

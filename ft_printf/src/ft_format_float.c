@@ -1,31 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_fmterr.h                                        :+:      :+:    :+:   */
+/*   ft_format_float.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/29 16:02:19 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/09/29 17:05:44 by kcsajka          ###   ########.fr       */
+/*   Created: 2024/11/03 15:32:44 by kcsajka           #+#    #+#             */
+/*   Updated: 2024/11/03 15:33:24 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_FMTERR_H
-# define FT_FMTERR_H
+#include "ft_format.h"
 
-enum e_fmterr
+void	ft_ffloat(va_list *arg, t_fspec *spec)
 {
-	FE_UFLAG,
-	FE_INCFLAG,
-	FE_USPEC,
-	FE_BADNUM,
-};
-
-enum e_fmterr	g_fmterrno;
-
-void	fmterr(enum e_fmterr errno, const char *s, size_t len)
-{
-	ft_putstr_fd("ft_printf");
+	(void)arg;
+	(void)spec;
 }
-
-#endif

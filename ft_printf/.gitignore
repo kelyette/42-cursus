@@ -1,3 +1,5 @@
-docs/
-test/target
-test/result.txt
+libft/
+venv/
+target/
+.tmplog
+.varfile
