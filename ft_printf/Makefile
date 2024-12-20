@@ -5,6 +5,7 @@ AR         := ar
 ARFLAGS    := rcs
 
 LFTDIR     := libft
+LIBFTA     := $(LFTDIR)/libft.a
 
 SRCDIR     := src
 SHAREDDIR  := target_shared
@@ -17,14 +18,20 @@ STATICOBJ  := $(SRC:%.c=$(STATICDIR)/%.o)
 SHAREDOBJ  := $(SRC:%.c=$(SHAREDDIR)/%.o)
 SRC        := $(SRC:%=$(SRCDIR)/%)
 
+NAME        = libftprintf.a
 NAME        = libftprintf
+
+ifdef ULIMIT
+	CCFLAGS += -D'ULIMIT=$(ULIMIT)'
+endif
 
 all: $(NAME).a
 
 so: $(NAME).so
 
-$(NAME).a: $(STATICOBJ)
-	$(AR) $(ARFLAGS) $@ $^
+$(NAME).a: $(LIBFTA) $(STATICOBJ)
+	cp $< $@
+	$(AR) $(ARFLAGS) $@ $(STATICOBJ)
 
 $(NAME).so: OBJFLAGS += -fPIC
 $(NAME).so: OBJDIR := $(SHAREDDIR)
@@ -34,6 +41,9 @@ $(NAME).so: $(SHAREDOBJ)
 $(STATICDIR)/%.o $(SHAREDDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CCFLAGS) $(OBJFLAGS) -I$(LFTDIR) -I$(INCLDIR) -o $@ -c $<
+
+$(LIBFTA):
+	$(MAKE) -C $(dir $@)
 
 test: $(NAME).so
 	$(CC) $(CCFLAGS) -L. -lftprintf -I$(INCLDIR) test.c -o out

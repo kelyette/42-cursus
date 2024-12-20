@@ -6,15 +6,13 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 03:12:25 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/31 12:23:24 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/12/19 16:29:40 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_format.h"
 
-// - +   # 0
-// 1 0 0 0 0 | zpad
 int	expect_flags(const char **format, t_fspec *spec)
 {
 	const char	ftable[] = "\\-+ #0";
@@ -30,10 +28,10 @@ int	expect_flags(const char **format, t_fspec *spec)
 		flags |= flagbit;
 		++*format;
 	}
-	spec->ljust = flags & (1 << 0);
-	spec->psign = flags & (1 << 1);
+	spec->ljust = flags & (1 << 0) && 1;
+	spec->psign = flags & (1 << 1) && 1;
 	spec->fillsign = flags & (1 << 2) && !spec->psign;
-	spec->hexprefix = flags & (1 << 3);
+	spec->hexprefix = flags & (1 << 3) && 1;
 	spec->zpad = flags & (1 << 4) && !spec->ljust;
 	return (0);
 }
@@ -86,20 +84,6 @@ int	expect_precision(va_list *arg, const char **format, t_fspec *spec)
 	return (0);
 }
 
-int	expect_length(const char **format, t_fspec *spec)
-{
-	const char	*mods[] = {0, "l", "h", "ll", "hh"};
-	const int	vals[] = {SIZE_NONE, SIZE_L, SIZE_H, SIZE_LL, SIZE_HH};
-	int			i;
-
-	i = sizeof(mods) / sizeof(mods[0]);
-	while (--i > 0)
-		if (!ft_strncmp(mods[i], *format, ft_strlen(mods[i])))
-			break ;
-	spec->size = vals[i];
-	return (0);
-}
-
 int	expect_specifier(const char **format, t_fspec *spec)
 {
 	static const char		*spec_char[] = {"di", "uxX", "feg", "c%", "s", "n"};
@@ -121,3 +105,17 @@ int	expect_specifier(const char **format, t_fspec *spec)
 	}
 	return (1);
 }
+
+/*int	expect_length(const char **format, t_fspec *spec)
+{
+	const char	*mods[] = {0, "l", "h", "ll", "hh"};
+	const int	vals[] = {SIZE_NONE, SIZE_L, SIZE_H, SIZE_LL, SIZE_HH};
+	int			i;
+
+	i = sizeof(mods) / sizeof(mods[0]);
+	while (--i > 0)
+		if (!ft_strncmp(mods[i], *format, ft_strlen(mods[i])))
+			break ;
+	spec->size = vals[i];
+	return (0);
+}*/

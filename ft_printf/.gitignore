@@ -1,3 +1,7 @@
+target_*/
 venv/
+*.a
+test.c
+test/result.txt
 .tmplog
 .varfile

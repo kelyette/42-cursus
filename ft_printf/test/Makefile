@@ -6,11 +6,9 @@ CCFLAGS = -Werror -Wall -Wextra -O0 -g
 
 ROOTDIR = ..
 TRGTDIR = target
-LIBFTDIR ?= $(ROOTDIR)/libft
 
 LIB = $(ROOTDIR)/libftprintf.a
 
-LIBFTFLAGS = -L$(LIBFTDIR) -I$(LIBFTDIR) -lft
 LIBFLAGS = -I$(ROOTDIR)/include
 
 SRC = test.c $(LIB)
@@ -41,12 +39,12 @@ endif
 OS := $(shell uname -s)
 ifeq ($(OS),Darwin)
 	MACROERRFLAG =	 -fmacro-backtrace-limit=0
-	BUILDCMD = $(CC) $(CCFLAGS) -o $(EXEC) $(LIBFTFLAGS) $(LIBFLAGS) $(SRC)
+	BUILDCMD = $(CC) $(CCFLAGS) -o $(EXEC) $(LIBFLAGS) $(SRC)
 else ifeq ($(OS),Linux)
 	CC = clang
-	BUILDCMD = $(CC) $(CCFLAGS) -o $(EXEC) $(SRC) $(LIBFLAGS) $(LIBFTFLAGS)
+	BUILDCMD = $(CC) $(CCFLAGS) -o $(EXEC) $(SRC) $(LIBFLAGS)
 else
-	BUILDCMD = $(CC) -Werror -o $(EXEC) $(LIBFTFLAGS) $(LIBFLAGS) $(SRC)
+	BUILDCMD = $(CC) -Werror -o $(EXEC) $(LIBFLAGS) $(SRC)
 endif
 
 ifdef VVARS
@@ -56,7 +54,7 @@ endif
 all: build
 
 checkoutput: runexec $(LOGFILE)
-	@echo "--- Checking diff..."
+	@echo "- Checking diff..."
 	@cp .varfile $(EXEC)_var.txt
 	@echo -n "" > .varfile
 	sdiff -w 60 $(USRRES) $(SYSRES) | \
@@ -66,18 +64,20 @@ checkoutput: runexec $(LOGFILE)
 		tee -a $(LOGFILE)
 
 runexec: build
-	@echo "--- Running test job..."
+	@echo "- Running test job..."
 	touch $(USRRES) $(SYSRES)
 	$(TIMEOUTC) ./$(EXEC) | awk 'BEGIN {t = 0} /---/ {t++; next} {if (t) {print $0 >> "$(SYSRES)"} else {print $0 >> "$(USRRES)"}}'
 
 build: $(LIB) $(TESTOBJ)
-	@echo "--- Building libftprintf..."
-	$(MAKE) -C $(ROOTDIR) ULIMIT=9999 THROWERR=1
 	@mkdir -p $(TRGTDIR)
 	$(BUILDCMD) -D'FORMAT="$(VFORMAT)"' $(VVARSPARAM)
 
+$(LIB):
+	@echo "- Building libftprintf..."
+	$(MAKE) -C $(dir $(LIB)) all ULIMIT=9999
+
 stest:
-	$(MAKE) -C $(ROOTDIR) all ULIMIT=9999 THROWERR=1
+	$(MAKE) -C $(ROOTDIR) all ULIMIT=9999
 	@mkdir -p $(TRGTDIR)
 	$(BUILDCMD) -D'TEST'
 	$(TIMEOUTC) ./$(EXEC)

@@ -6,23 +6,23 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:34:25 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/11/07 15:23:25 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/11/26 17:28:30 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_format.h"
 
-static int	len_ullong(t_ullong n, int precision, int base)
+static int	len_ullong(t_fspec *spec, t_ullong n, int base)
 {
 	int	len;
 
-	if (!precision && !n)
+	if (!spec->precision && !n)
 		return (0);
-	len = !n;
+	len = !n + (spec->hexprefix && base == 16) * 2;
 	while (n && ++len)
 		n /= base;
-	if (len < precision)
-		return (precision);
+	if (len < spec->precision)
+		return (spec->precision);
 	return (len);
 }
 
@@ -85,8 +85,10 @@ void	ft_fuint(va_list *arg, t_fspec *spec)
 	else
 		v = va_arg(*arg, unsigned int);
 	spec_parse_u(spec, &zpad, &base, &ucase);
-	len = len_ullong(v, spec->precision, base);
+	len = len_ullong(spec, v, base);
 	fjustify(0, spec, len);
+	if (v && base == 16 && spec->hexprefix)
+		fputstr("0x");
 	if (v || spec->precision)
 		fput_ullong(v, zpad, base, ucase);
 	fjustify(1, spec, len);
