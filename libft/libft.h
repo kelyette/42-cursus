@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:39:56 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/11 12:29:31 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/12/10 15:06:32 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,15 @@ int		ft_tolower(int c);
 /*int		ft_abs(int n);
 size_t	ft_max_sizet(size_t a, size_t b);
 char	*ft_strndup(const char *s, size_t n);*/
+
+// get_next_line
+typedef struct s_pbuf
+{
+	char	*buf;
+	size_t	start;
+	size_t	end;
+}	t_pbuf;
+
+char	*get_next_line(int fd);
 
 #endif
