@@ -1,16 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 16:22:34 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/16 16:37:35 by kcsajka          ###   ########.fr       */
+/*   Created: 2024/12/16 16:17:05 by kcsajka           #+#    #+#             */
+/*   Updated: 2024/12/16 16:37:48 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+
+int	free_pbuf(t_pbuf *pbuf)
+{
+	if (!pbuf->buf)
+		return (1);
+	free(pbuf->buf);
+	pbuf->buf = NULL;
+	pbuf->start = 0;
+	pbuf->end = 0;
+	return (1);
+}
 
 int	ft_strlen(char *s)
 {

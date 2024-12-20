@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 16:22:33 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/16 16:09:53 by kcsajka          ###   ########.fr       */
+/*   Created: 2024/12/16 16:10:23 by kcsajka           #+#    #+#             */
+/*   Updated: 2024/12/20 16:59:35 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-int	free_pbuf(t_pbuf *pbuf)
+void	free_all(t_pbuf *pbufs)
 {
-	if (!pbuf->buf)
-		return (1);
-	free(pbuf->buf);
-	pbuf->buf = NULL;
-	pbuf->start = 0;
-	pbuf->end = 0;
-	return (1);
+	int	i;
+
+	i = -1;
+	while (++i < FILE_MAX)
+	{
+		free_pbuf(pbufs++);
+	}
 }
 
 char	*apply_buffer(t_pbuf *pbuf, char *end_ptr, int dofree)
@@ -75,26 +74,26 @@ static int	handle_read_size(int rs, t_pbuf *pbuf)
 
 char	*get_next_line(int fd)
 {
-	static t_pbuf	pbuf;
+	static t_pbuf	pbufs[FILE_MAX];
 	char			buf[BUFFER_SIZE];
 	char			*nl_ptr;
 	ssize_t			read_size;
 
-	if (fd == -1)
-		free_pbuf(&pbuf);
-	if (fd == -1)
+	if (fd == -1 || fd > FILE_MAX)
 		return (NULL);
 	while (1)
 	{
-		nl_ptr = ft_memchr(pbuf.buf + pbuf.start, '\n', pbuf.end - pbuf.start);
+		nl_ptr = ft_memchr(pbufs[fd].buf + pbufs[fd].start, '\n',
+				pbufs[fd].end - pbufs[fd].start);
 		if (nl_ptr)
-			return (apply_buffer(&pbuf, nl_ptr, 0));
+			return (apply_buffer(&pbufs[fd], nl_ptr, 0));
 		read_size = read(fd, buf, BUFFER_SIZE);
-		if (handle_read_size(read_size, &pbuf))
+		if (handle_read_size(read_size, &pbufs[fd]))
 			return (NULL);
 		if (read_size == 0)
-			return (apply_buffer(&pbuf, pbuf.buf + pbuf.end - 1, 1));
-		if (apply_new_data(&pbuf, buf, read_size))
+			return (apply_buffer(&pbufs[fd],
+					pbufs[fd].buf + pbufs[fd].end - 1, 1));
+		if (apply_new_data(&pbufs[fd], buf, read_size))
 			return (NULL);
 	}
 }
