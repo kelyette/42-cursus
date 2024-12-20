@@ -18,8 +18,16 @@ SRC         := $(addprefix $(SRCDIR)/,$(SRC))
 
 NAME        := fdf
 
-LIBFLAGS    := -L$(LIBMLXDIR) -lm -lmlx -framework OpenGL -framework AppKit
+LIBFLAGS    := -L$(LIBMLXDIR) -lm
 INCFLAGS    := -I$(LIBMLXDIR) -I$(LIBFTDIR) -I$(INCDIR)
+
+UNAME       := $(shell uname)
+
+ifeq ($(UNAME),Linux)
+	LIBFLAGS += -lmlx -lX11
+else ifeq ($(UNAME),Darwin)
+	LIBFLAGS += -lmlx -framework OpenGL -framework AppKit
+endif
 
 ifdef ASAN
 	CCFLAGS += -fsanitize=address

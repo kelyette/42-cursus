@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:17:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/20 17:08:56 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/12/20 17:21:58 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	init_drawers(t_env *env)
 
 	drawbuf = env->drawbuf;
 	drawbuf->img = mlx_new_image(env->mlx, 1270, 720);
-	drawbuf->
 	return (0);
 }
 
