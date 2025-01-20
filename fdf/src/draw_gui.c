@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_format_float.c                                  :+:      :+:    :+:   */
+/*   draw_gui.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/03 15:32:44 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/11/03 15:33:24 by kcsajka          ###   ########.fr       */
+/*   Created: 2024/12/27 15:31:20 by kcsajka           #+#    #+#             */
+/*   Updated: 2025/01/15 14:25:57 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_format.h"
+#include "drawers.h"
 
-void	ft_ffloat(va_list *arg, t_fspec *spec)
+int	draw_menu(t_env *env)
 {
-	(void)arg;
-	(void)spec;
+	(void)env;
+	return (0);
 }

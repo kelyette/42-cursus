@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   log.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/29 12:30:30 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/10 03:03:52 by kcsajka          ###   ########.fr       */
+/*   Created: 2025/01/06 15:15:17 by kcsajka           #+#    #+#             */
+/*   Updated: 2025/01/06 15:22:57 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
-# include <stdarg.h>
-# include "libft.h"
-# include "format.h"
+#ifndef LOG_H
+# define LOG_H
+# include "env.h"
 
-int	ft_printf(const char *format, ...);
+int	error(t_env *env, int fatal, const char *msg);
 
 #endif

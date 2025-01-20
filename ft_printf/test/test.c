@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:53:34 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/11/26 17:22:39 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/13 17:54:03 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <limits.h>
 
 #ifdef TEST
-#define FMT "%#x, %#x\n", 0xfa, 0x0
+#define FMT "'%010%'\n"
 int	main(void)
 {
 	ft_printf(FMT);

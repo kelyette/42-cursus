@@ -1,19 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_format_counter.c                                :+:      :+:    :+:   */
+/*   vec3_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/03 15:35:31 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/11/03 15:38:24 by kcsajka          ###   ########.fr       */
+/*   Created: 2024/12/28 19:57:39 by kcsajka           #+#    #+#             */
+/*   Updated: 2024/12/28 20:00:12 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_format.h"
+#include "geometry.h"
 
-void	ft_counter(va_list *arg, t_fspec *spec)
+t_vec3	vec3_mult(t_vec3 a, t_vec3 b)
 {
-	(void)arg;
-	(void)spec;
+	a.x *= b.x;
+	a.y *= b.y;
+	a.z *= b.z;
+	return (a);
+}
+
+t_vec3	vec3_add(t_vec3 a, t_vec3 b)
+{
+	a.x += b.x;
+	a.y += b.y;
+	a.z += b.z;
+	return (a);
+}
+
+t_vec3	vec3_subs(t_vec3 a, t_vec3 b)
+{
+	a.x -= b.x;
+	a.y -= b.y;
+	a.z -= b.z;
+	return (a);
+}
+
+t_vec3	vec3_mag(t_vec3 v, int f)
+{
+	v.x *= f;
+	v.y *= f;
+	v.z *= f;
+	return (v);
 }

@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 21:14:36 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/19 03:41:22 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/12/28 22:53:46 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	evf_key(int key, t_env *env)
 {
 	void	(**action)(t_env *, float, float, float);
 
-	printf("KEYPRESSED\n");
+	printf("KEYPRESSED %d\n", key);
 	action = &env->ls->action;
 	if (key == KEY_ESCAPE)
 	{
@@ -31,6 +31,7 @@ int	evf_key(int key, t_env *env)
 			*action = &scale;
 		else
 			*action = &rotate;
+		printf("action is now %s", *action == &scale ? "&scale" : "&rotate");
 	}
 	return (0);
 }
@@ -44,11 +45,7 @@ int	evf_keyloop(t_env *env)
 	if (!ls->anykey)
 		return (0);
 	//printf("%d | KEYHELD!!! %d\n", ls->i % 10, ls->anykey);
-	action = &rotate;
-	if (get_key(ls->keybinds, KEY_SHIFT))
-		action = &scale;
-	else if (get_key(ls->keybinds, KEY_COMMAND))
-		action = &move;
+	action = ls->action;
 	(*action)(env,
 		get_complkey(ls->keybinds, KEY_LEFT, KEY_RIGHT),
 		get_complkey(ls->keybinds, KEY_UP, KEY_DOWN),

@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 03:55:18 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/18 22:30:00 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/12/29 23:13:20 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <stdio.h>
 void	rotate(t_env *env, float x, float y, float z)
 {
-	env->hmap->rot.x += x * 0.05;
-	env->hmap->rot.y += y * 0.05;
-	env->hmap->rot.z += z * 0.05;
+	env->hmap->rot.x += -x * 0.05;
+	env->hmap->rot.y += z * 0.05;
+	env->hmap->rot.z += y * 0.05;
 	env->ls->redraw = 1;
 }
 

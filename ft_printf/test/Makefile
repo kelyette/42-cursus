@@ -9,11 +9,11 @@ TRGTDIR = target
 
 LIB = $(ROOTDIR)/libftprintf.a
 
-LIBFLAGS = -I$(ROOTDIR)/include
+LIBFLAGS = -I$(ROOTDIR)/include -I$(ROOTDIR)/libft
 
 SRC = test.c $(LIB)
 
-EXEC ?= $(TRGTDIR)/test000
+EXEC ?= out
 EXECN = $(lastword $(subst test, ,$(EXEC)))
 
 SYSRES = $(EXEC)_sys.txt
@@ -65,8 +65,9 @@ checkoutput: runexec $(LOGFILE)
 
 runexec: build
 	@echo "- Running test job..."
+	rm -f $(USRRES) $(SYSRES)
 	touch $(USRRES) $(SYSRES)
-	$(TIMEOUTC) ./$(EXEC) | awk 'BEGIN {t = 0} /---/ {t++; next} {if (t) {print $0 >> "$(SYSRES)"} else {print $0 >> "$(USRRES)"}}'
+	$(TIMEOUTC) ./$(EXEC) | iconv -c -f UTF-8 -t ASCII//TRANSLIT | awk 'BEGIN {t = 0} /---/ {t++; next} {if (t) {print $0 >> "$(SYSRES)"} else {print $0 >> "$(USRRES)"}}'
 
 build: $(LIB) $(TESTOBJ)
 	@mkdir -p $(TRGTDIR)
@@ -84,7 +85,11 @@ stest:
 
 r: clean
 	@echo "n       | format     | usr           | sys" > $(LOGFILE)
+	$(MAKE) -C $(dir $(LIB)) all ULIMIT=9999
 	$(VENVDIR)/bin/python test.py $(PYARGS)
+
+$(LOGFILE):
+	touch $@
 
 $(VENVDIR):
 	rm -rf $@

@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:56:38 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/19 03:40:12 by kcsajka          ###   ########.fr       */
+/*   Updated: 2024/12/28 19:05:29 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	evf_mouse(int btn, int x, int y, t_env *env)
 		lpos.y = y;
 		return (0);
 	}
-	draw_line(env, lpos, (t_vec2){x, y});
+	draw_line(env, lpos, (t_vec2){x, y}, env->prefs.clr_hi);
 	lpos.x = x;
 	lpos.y = y;
 	return (0);

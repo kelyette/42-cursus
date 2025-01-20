@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parsers.c                                       :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/23 03:12:25 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/19 16:29:40 by kcsajka          ###   ########.fr       */
+/*   Created: 2025/01/09 22:46:08 by kcsajka           #+#    #+#             */
+/*   Updated: 2025/01/13 19:09:58 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_format.h"
+#include "format.h"
 
 int	expect_flags(const char **format, t_fspec *spec)
 {
@@ -28,10 +27,10 @@ int	expect_flags(const char **format, t_fspec *spec)
 		flags |= flagbit;
 		++*format;
 	}
-	spec->ljust = flags & (1 << 0) && 1;
-	spec->psign = flags & (1 << 1) && 1;
+	spec->ljust = flags & (1 << 0);
+	spec->psign = flags & (1 << 1);
 	spec->fillsign = flags & (1 << 2) && !spec->psign;
-	spec->hexprefix = flags & (1 << 3) && 1;
+	spec->hexprefix = flags & (1 << 3);
 	spec->zpad = flags & (1 << 4) && !spec->ljust;
 	return (0);
 }
@@ -53,8 +52,11 @@ int	expect_width(va_list *arg, const char **format, t_fspec *spec)
 			else
 				width = -width;
 			spec->ljust = 1;
+			spec->zpad = 0;
 		}
 	}
+	else if (!ft_isdigit(*str))
+		return (0);
 	while (ft_isdigit(*str))
 		width = width * 10 + (*str++ - '0');
 	spec->width = width;
@@ -67,9 +69,9 @@ int	expect_precision(va_list *arg, const char **format, t_fspec *spec)
 	const char	*str = *format;
 	int			precision;
 
-	precision = 0;
 	if (*str++ != '.')
 		return (0);
+	precision = 0;
 	spec->precision = 0;
 	if (*str == '*')
 	{
@@ -86,9 +88,9 @@ int	expect_precision(va_list *arg, const char **format, t_fspec *spec)
 
 int	expect_specifier(const char **format, t_fspec *spec)
 {
-	static const char		*spec_char[] = {"di", "uxX", "feg", "c%", "s", "n"};
+	static const char		*spec_char[] = {"diuxX", "p", "c%", "s", "n"};
 	static const t_ffptr	spec_func[] = {
-		&ft_fint, &ft_fuint, &ft_ffloat, &ft_fchar, &ft_fstr, &ft_counter
+		&fmt_int, &fmt_ptr, &fmt_char, &fmt_str, &counter
 	};
 	int						i;
 
@@ -106,16 +108,23 @@ int	expect_specifier(const char **format, t_fspec *spec)
 	return (1);
 }
 
-/*int	expect_length(const char **format, t_fspec *spec)
+int	spec_parse(va_list *arg, const char **format, t_fspec *spec)
 {
-	const char	*mods[] = {0, "l", "h", "ll", "hh"};
-	const int	vals[] = {SIZE_NONE, SIZE_L, SIZE_H, SIZE_LL, SIZE_HH};
-	int			i;
-
-	i = sizeof(mods) / sizeof(mods[0]);
-	while (--i > 0)
-		if (!ft_strncmp(mods[i], *format, ft_strlen(mods[i])))
-			break ;
-	spec->size = vals[i];
+	if (expect_flags(format, spec))
+		return (1);
+	if (expect_width(arg, format, spec))
+		return (2);
+	if (expect_precision(arg, format, spec))
+		return (3);
+	if (expect_specifier(format, spec))
+		return (4);
+	if (!ULIMIT)
+		return (0);
+	if (spec->width > ULIMIT)
+		spec->width = ULIMIT;
+	if (spec->precision > ULIMIT)
+		spec->precision = ULIMIT;
+	if (spec->spec != '%' && spec->precision != -1 && spec->zpad)
+		spec->zpad = 0;
 	return (0);
-}*/
+}

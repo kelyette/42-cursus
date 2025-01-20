@@ -3,18 +3,17 @@ AR = ar
 
 CCWFLAGS = -Wall -Wextra -Werror -g
 ARFLAGS = rcs
-EXTRAFLAG = -D'EXTRA'
-
-INCL = libft.h
-SRC := chrop integer io ischr mem_copy mem_set mem_simple str_copy str_edit str_index str_simple str_comb
-SRC := $(foreach src,$(SRC),ft_$(src).c)
-BONUSSRC := lst_iter lst_manage lst_simple
-BONUSSRC := $(foreach src,$(BONUSSRC),ft_$(src).c)
-BONUSSRC += get_next_line.c
 
 STATICDIR = target_static
 SHAREDDIR = target_shared
 OBJDIR := $(STATICDIR)
+
+SRC := chrop integer io ischr mem_copy mem_set mem_simple str_copy str_edit str_index str_simple str_comb
+SRC := $(foreach src,$(SRC),ft_$(src).c)
+BONUSSRC := lst_iter lst_manage lst_simple
+BONUSSRC := $(foreach src,$(BONUSSRC),ft_$(src).c)
+BONUSSRC += get_next_line.c format_char.c format_int.c format_misc.c format_utils.c \
+			parser.c ft_printf.c
 
 OBJSTATIC := $(addprefix $(STATICDIR)/,$(SRC:.c=.o))
 OBJSHARED = $(addprefix $(SHAREDDIR)/,$(SRC:.c=.o) $(BONUSSRC:.c=.o))
@@ -65,9 +64,10 @@ fclean: clean
 
 re: fclean all
 
-test: $(NAME) $(TESTSRC)
-	$(CC) $(CCFLAGS) $(DEVFLAGS) -o $(TESTEXE) $(TESTSRC) $(NAME)
+test: $(NAME).a $(TESTSRC)
+	$(CC) $(CCFLAGS) $(DEVFLAGS) -o $(TESTEXE) $(TESTSRC) $(NAME).a
 
+install: install-a
 install-%: $(NAME).%
 	@echo "installing $< to" $(INSTALLDIR)
 	install -m 644 $< $(INSTALLDIR)

@@ -11,7 +11,9 @@ LIBFTDIR    := libft
 LIBMLXDIR   := minilibx
 
 SRC          = main.c events.c events_mouse.c events_key.c events_utils.c \
-			   hmap.c hmap_utils.c drawers.c rotation.c actions.c
+			   hmap.c hmap_utils.c hmap_parser.c \
+			   drawers.c draw_primitives.c draw_gui.c \
+			   rotation.c vec3_utils.c actions.c
 OBJ         := $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 OBJ         += $(LIBFTDIR)/libft.a
 SRC         := $(addprefix $(SRCDIR)/,$(SRC))
@@ -29,7 +31,9 @@ else ifeq ($(UNAME),Darwin)
 	LIBFLAGS += -lmlx -framework OpenGL -framework AppKit
 endif
 
-ifdef ASAN
+ASAN ?= 1
+
+ifneq ($(ASAN),0)
 	CCFLAGS += -fsanitize=address
 endif
 
@@ -52,8 +56,10 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
-	$(MAKE) -C $(LIBFTDIR) fclean
 
 re: fclean all
+
+as:
+	$(MAKE) ASAN=1
 
 .PHONY: all clean fclean re

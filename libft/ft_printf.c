@@ -6,11 +6,14 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 22:53:04 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/09 23:04:12 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/15 14:04:24 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "format.h"
+#include <stdarg.h>
+
+int	g_char_count;
 
 static int	handle_specifier(va_list *value, const char **format)
 {

@@ -1,7 +1,11 @@
-target_*/
-venv/
+target/
+test/
+docs/
+libft.a
 *.a
-test.c
-test/result.txt
-.tmplog
-.varfile
+*.so
+test*
+.gitignore
+ft_bonus.c
+libftTester
+out

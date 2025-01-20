@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:17:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/20 17:21:58 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/15 14:39:42 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,16 @@
 
 int	init_drawers(t_env *env)
 {
-	t_dbuf	*drawbuf;
+	static t_dbuf	dbuf;
+	t_encd			encoding;
 
-	drawbuf = env->drawbuf;
-	drawbuf->img = mlx_new_image(env->mlx, 1270, 720);
-	return (0);
-}
-
-int	draw_line(t_env *env, t_vec2 p1, t_vec2 p2)
-{
-	float	dx;
-	float	dy;
-	float	s;
-
-	dx = p2.x - p1.x;
-	dy = p2.y - p1.y;
-	if (fabsf(dx) >= fabsf(dy))
-		s = fabsf(dx);
-	else
-		s = fabsf(dy);
-	dx /= s;
-	dy /= s;
-	while (s-- > 0)
-	{
-		mlx_pixel_put(
-			env->mlx, env->win,
-			(int)round(p1.x), (int)round(p1.y),
-			env->prefs.clr_hi);
-		p1.x += dx;
-		p1.y += dy;
-	}
+	env->drawbuf = &dbuf;
+	dbuf.mlximg = mlx_new_image(env->mlx, env->wsize_x, env->wsize_y);
+	dbuf.data = (int *)mlx_get_data_addr(env->mlx,
+			&encoding.bitspp, &encoding.line_size, &encoding.endian);
+	dbuf.encoding = encoding;
+	if (encoding.bitspp != sizeof(int) * 8)
+		return (error(env, 1, "unsupported encoding in mlx"));
 	return (0);
 }
 
@@ -59,14 +39,14 @@ static void	draw_hmap_line(t_env *env, t_hmap *hmap, t_vec2 pos)
 		p2 = pos;
 		p2.x += 1;
 		ps2 = map2screen_iso(hmap, p2);
-		draw_line(env, ps1, ps2);
+		draw_line(env, ps1, ps2, env->prefs.clr_hi);
 	}
 	if (pos.y < hmap->size.y - 1 != 0)
 	{
 		p2 = pos;
 		p2.y += 1;
 		ps2 = map2screen_iso(hmap, p2);
-		draw_line(env, ps1, ps2);
+		draw_line(env, ps1, ps2, env->prefs.clr_hi);
 	}
 }
 

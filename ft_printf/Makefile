@@ -13,7 +13,8 @@ STATICDIR  := target_static
 OBJDIR     := $(STATICDIR)
 INCLDIR     = include
 
-SRC        := ft_printf.c ft_parsers.c ft_format_utils.c ft_format_int.c ft_format_uint.c ft_format_float.c ft_format_char.c ft_format_str.c ft_format_counter.c
+SRC        := ft_printf.c parser.c \
+			  format_int.c format_char.c format_misc.c format_utils.c
 STATICOBJ  := $(SRC:%.c=$(STATICDIR)/%.o)
 SHAREDOBJ  := $(SRC:%.c=$(SHAREDDIR)/%.o)
 SRC        := $(SRC:%=$(SRCDIR)/%)

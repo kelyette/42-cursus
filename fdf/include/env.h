@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:03:03 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/18 02:01:02 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/06 14:56:09 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ typedef struct s_env
 {
 	void	*mlx;
 	void	*win;
+	int		wsize_x;
+	int		wsize_y;
 	t_prefs	prefs;
 	t_hmap	*hmap;
 	t_ls	*ls;

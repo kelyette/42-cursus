@@ -7,4 +7,8 @@ out
 venv/
 **/libft/
 !/libft/
+extra/
 target/
+minitalk/
+sync_libft
+libft_clean/
