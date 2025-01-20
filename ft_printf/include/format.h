@@ -6,18 +6,17 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 03:09:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/10 16:00:47 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:48:35 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_FORMAT_H
-# define FT_FORMAT_H
+#ifndef FORMAT_H
+# define FORMAT_H
 # include "libft.h"
 # include <stdlib.h>
 # include <stdarg.h>
 # include <inttypes.h>
 # include <limits.h>
-#include<stdio.h>
 
 // limit for "width" and "precision" specifier values
 // 0 means no limit
@@ -28,7 +27,7 @@
 struct			s_fspec;
 typedef void	(*t_ffptr)(va_list *, struct s_fspec *);
 
-int				g_char_count;
+extern int		g_char_count;
 
 typedef struct s_fspec
 {
@@ -52,7 +51,6 @@ typedef struct s_number
 	int		tlen;
 	int		neg;
 }	t_num;
-
 
 // parser functions
 int		expect_flags(const char **format, t_fspec *spec);

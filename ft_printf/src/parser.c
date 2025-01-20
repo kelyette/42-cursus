@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 22:46:08 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/13 19:09:58 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:46:53 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ int	expect_flags(const char **format, t_fspec *spec)
 		flags |= flagbit;
 		++*format;
 	}
-	spec->ljust = flags & (1 << 0);
-	spec->psign = flags & (1 << 1);
-	spec->fillsign = flags & (1 << 2) && !spec->psign;
-	spec->hexprefix = flags & (1 << 3);
-	spec->zpad = flags & (1 << 4) && !spec->ljust;
+	spec->ljust = 1 && (flags & (1 << 0));
+	spec->psign = 1 && (flags & (1 << 1));
+	spec->fillsign = !spec->psign && (flags & (1 << 2));
+	spec->hexprefix = 1 && (flags & (1 << 3));
+	spec->zpad = !spec->ljust && (flags & (1 << 4));
 	return (0);
 }
 

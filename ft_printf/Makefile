@@ -8,53 +8,42 @@ LFTDIR     := libft
 LIBFTA     := $(LFTDIR)/libft.a
 
 SRCDIR     := src
-SHAREDDIR  := target_shared
-STATICDIR  := target_static
-OBJDIR     := $(STATICDIR)
+OBJDIR     := target
 INCLDIR     = include
 
 SRC        := ft_printf.c parser.c \
 			  format_int.c format_char.c format_misc.c format_utils.c
-STATICOBJ  := $(SRC:%.c=$(STATICDIR)/%.o)
-SHAREDOBJ  := $(SRC:%.c=$(SHAREDDIR)/%.o)
+OBJ        := $(SRC:%.c=$(OBJDIR)/%.o)
 SRC        := $(SRC:%=$(SRCDIR)/%)
 
 NAME        = libftprintf.a
-NAME        = libftprintf
 
 ifdef ULIMIT
 	CCFLAGS += -D'ULIMIT=$(ULIMIT)'
 endif
 
-all: $(NAME).a
+all: $(NAME)
 
-so: $(NAME).so
-
-$(NAME).a: $(LIBFTA) $(STATICOBJ)
+$(NAME): $(LIBFTA) $(OBJ)
 	cp $< $@
-	$(AR) $(ARFLAGS) $@ $(STATICOBJ)
+	$(AR) $(ARFLAGS) $@ $(OBJ)
 
-$(NAME).so: OBJFLAGS += -fPIC
-$(NAME).so: OBJDIR := $(SHAREDDIR)
-$(NAME).so: $(SHAREDOBJ)
-	$(CC) $(CCFLAGS) -shared -L$(LFTDIR) -lft -I$(LFTDIR) -I$(INCLDIR) -o $@ $^
-
-$(STATICDIR)/%.o $(SHAREDDIR)/%.o: $(SRCDIR)/%.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CCFLAGS) $(OBJFLAGS) -I$(LFTDIR) -I$(INCLDIR) -o $@ -c $<
+	$(CC) $(CCFLAGS) -I$(LFTDIR) -I$(INCLDIR) -o $@ -c $<
 
 $(LIBFTA):
 	$(MAKE) -C $(dir $@)
 
-test: $(NAME).so
-	$(CC) $(CCFLAGS) -L. -lftprintf -I$(INCLDIR) test.c -o out
-
 clean:
-	rm -rf $(SHAREDDIR) $(STATICDIR)
+	rm -rf $(OBJDIR)
 
 fclean: clean
-	rm -f $(NAME).a $(NAME).so
+	rm -f $(NAME)
 
 re: fclean all
+
+test: $(NAME) | test.c
+	$(CC) $(CCFLAGS) test.c $< -o out -g -I$(INCLDIR) -I$(LFTDIR)
 
 .PHONY: all so clean fclean re test
