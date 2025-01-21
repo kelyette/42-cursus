@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:46:48 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/20 18:16:09 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/21 14:54:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,15 @@ t_num	fputint_pre(t_fspec *spec, t_num num)
 
 	pre = 0;
 	fsign = 0;
-	if (num.base == 10 && spec->psign && !num.neg && ++num.tlen)
+	if (num.base == 10 && spec->psign && !num.neg)
 		fsign = '+';
-	else if (num.base == 10 && spec->fillsign && !num.neg && ++num.tlen)
+	else if (num.base == 10 && spec->fillsign && !num.neg)
 		fsign = ' ';
-	else if (num.base == 10 && num.neg && ++num.tlen)
+	else if (num.base == 10 && num.neg)
 		pre = '-';
 	if (num.base == 16 && spec->hexprefix && num.n)
-	{
 		pre = '#';
-		num.tlen += 2;
-	}
+	num.tlen += (fsign != 0) + (pre != 0) + (pre == '#');
 	if (!spec->ljust && spec->width != -1 && !spec->zpad)
 		fpad(spec->width, num.tlen, 0);
 	if (fsign)

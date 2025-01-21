@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 03:09:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/20 16:48:35 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:03:47 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	fmt_int(va_list *arg, t_fspec *spec);
 void	fmt_str(va_list *arg, t_fspec *spec);
 void	fmt_char(va_list *arg, t_fspec *spec);
 void	fmt_ptr(va_list *arg, t_fspec *spec);
-void	counter(va_list *arg, t_fspec *spec);
 
 // printer functions
 void	fputchar(char c);

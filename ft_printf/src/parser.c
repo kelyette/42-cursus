@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 22:46:08 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/20 16:46:53 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/21 14:54:04 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ int	expect_precision(va_list *arg, const char **format, t_fspec *spec)
 
 int	expect_specifier(const char **format, t_fspec *spec)
 {
-	static const char		*spec_char[] = {"diuxX", "p", "c%", "s", "n"};
+	static const char		*spec_char[] = {"diuxX", "p", "c%", "s"};
 	static const t_ffptr	spec_func[] = {
-		&fmt_int, &fmt_ptr, &fmt_char, &fmt_str, &counter
+		&fmt_int, &fmt_ptr, &fmt_char, &fmt_str
 	};
 	int						i;
 
@@ -118,13 +118,13 @@ int	spec_parse(va_list *arg, const char **format, t_fspec *spec)
 		return (3);
 	if (expect_specifier(format, spec))
 		return (4);
+	if (spec->spec != '%' && spec->precision != -1 && spec->zpad)
+		spec->zpad = 0;
 	if (!ULIMIT)
 		return (0);
 	if (spec->width > ULIMIT)
 		spec->width = ULIMIT;
 	if (spec->precision > ULIMIT)
 		spec->precision = ULIMIT;
-	if (spec->spec != '%' && spec->precision != -1 && spec->zpad)
-		spec->zpad = 0;
 	return (0);
 }

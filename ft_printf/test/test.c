@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:53:34 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/13 17:54:03 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/21 15:15:37 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 #include <string.h>
 #include <stdio.h>
 #include "ft_printf.h"
+#include <stdint.h>
 #include <string.h>
 #include <limits.h>
 
 #ifdef TEST
-#define FMT "'%010%'\n"
+#define FMT "'%*p'\n", -10, (void *)342
 int	main(void)
 {
 	ft_printf(FMT);
