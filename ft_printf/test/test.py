@@ -117,9 +117,8 @@ alltests = {
 	},
 	"s": {
 		"f": ["", "-"],
-		"w": ["", "4", "3", ["*", "-10"], ["*", "0"]],
-		"p": ["", ".4", ".0", [".*", "10"]],
-		#"v": ["(char *)0", r'\"alessia\"']
+		"w": ["", "7", "5", ["*", "-10"], ["*", "0"]],
+		"p": ["", ".3"],
 		"v": ["(char *)0", r'\"alessia\"']
 	},
 	"p": {
@@ -131,7 +130,7 @@ alltests = {
 	},
 	"d": {
 		"f": ["", "-", "0", " ", "+"],
-		"w": ["", "4", ["*", "-10"], ["*", "0"]],
+		"w": ["", "4", ["*", "-10"], ["*", "0"], ["*", "99999"]],
 		"p": ["", ".4", ".0", [".*", "10"]],
 		#"v": ["INT_MIN", "0", "INT_MAX", "-42"]
 		"v": ["0", "10", "INT_MAX", "INT_MIN", "-42"]
@@ -203,7 +202,7 @@ alltests1 = {
 	},
 }
 
-alltests = {
+alltest1s = {
 	"s": {
 		"f": ["", "-"],
 		"w": ["1", "10", "4", ["*", "-10"], ["*", "2"]],
@@ -280,7 +279,7 @@ for spec, t in tests.items():
 		varfile_data += f"{tmp_idx:03} | {fmt:<6} | {', '.join(readable_vars)}\n"
 
 		tmp_idx += 1
-		if tmp_idx % specs_per == 0:
+		if tmp_idx % specs_per == 0 or pbar.n == pbar.total:
 			with open(".varfile", "w") as varfile:
 				varfile.write(varfile_data)
 			varfile_data = ""

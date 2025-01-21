@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:04:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/21 16:04:17 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/21 18:34:58 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 #ifdef __linux__
 # define NOFLAGPSIGN 1
 # define NULLSTR "(null)"
+# define NWIDTHREQ 1
 #else
 # define NOFLAGPSIGN 0
 # define NULLSTR "(null)"
+# define NWIDTHREQ 0
 #endif
 
 void	fmt_char(va_list *arg, t_fspec *spec)
@@ -52,11 +54,18 @@ void	fmt_str(va_list *arg, t_fspec *spec)
 	const char	nullstr[] = NULLSTR;
 	char		*str;
 	int			len;
+	int			isnull;
 
 	str = va_arg(*arg, char *);
+	isnull = !str;
 	if (!str)
 		str = (char *)nullstr;
 	len = ft_strlen(str);
+	if (isnull && NWIDTHREQ && spec->precision != -1 && len > spec->precision)
+	{
+		str = "";
+		len = 0;
+	}
 	if (spec->precision != -1 && len > spec->precision)
 		len = spec->precision;
 	if (!spec->ljust && spec->width != -1)

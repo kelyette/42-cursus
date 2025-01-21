@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:53:34 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/21 17:12:34 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/21 18:25:43 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <limits.h>
 
 #ifdef TEST
-#define FMT "'%p'\n", (void *)UINTPTR_MAX
+#define FMT "'%.7s', '%.6s', '%.5s', '%.4s'\n", (char *)0, (char *)0, (char *)0, (char *)0
 int	main(void)
 {
 	ft_printf(FMT);
@@ -32,7 +32,6 @@ int	main(void)
 	i = printf(FMT);
 	printf("(%d)\n", i);
 }*/
-/(nul      /  | /          /
 #elif !defined(FORMAT)
 int	main(void)
 {

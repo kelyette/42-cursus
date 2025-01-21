@@ -62,10 +62,10 @@ checkoutput: runexec $(LOGFILE)
 	@cp .varfile $(EXEC)_var.txt
 	@echo -n "" > .varfile
 	sdiff -a -w 100 $(USRRES) $(SYSRES) | tee $(RESDIF)
-	sdiff -ad -w 60 $(USRRES) $(SYSRES) | \
-		cut -c1-31,45- | \
+	sdiff -ad -w 100 $(USRRES) $(SYSRES) | \
+		cut -c1-51,65- | \
 		awk 'BEGIN {v=0} substr($$0, 30, 1) == "|"{ printf("$(EXECN):%-3d %s\n", v, $$0) } {v++}' | \
-		cut -c1-37,40- | \
+		cut -c1-57,60- | \
 		tee -a $(LOGFILE)
 
 runexec: build
@@ -80,17 +80,17 @@ build: $(LIB) $(TESTOBJ)
 
 $(LIB):
 	@echo "- Building libftprintf..."
-	$(MAKE) -C $(dir $(LIB)) all ULIMIT=9999
+	$(MAKE) -C $(dir $(LIB)) all
 
 stest:
-	$(MAKE) -C $(ROOTDIR) all ULIMIT=9999
+	$(MAKE) -C $(ROOTDIR) all
 	@mkdir -p $(TRGTDIR)
 	$(BUILDCMD) -D'TEST'
 	$(TIMEOUTC) ./$(EXEC)
 
 r: clean
 	@echo "n       | format     | usr           | sys" > $(LOGFILE)
-	$(MAKE) -C $(dir $(LIB)) all ULIMIT=9999
+	$(MAKE) -C $(dir $(LIB)) all
 	$(VENVDIR)/bin/python test.py $(PYARGS)
 
 $(LOGFILE):
