@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:53:34 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/21 15:15:37 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/21 17:12:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <limits.h>
 
 #ifdef TEST
-#define FMT "'%*p'\n", -10, (void *)342
+#define FMT "'%p'\n", (void *)UINTPTR_MAX
 int	main(void)
 {
 	ft_printf(FMT);
@@ -32,6 +32,7 @@ int	main(void)
 	i = printf(FMT);
 	printf("(%d)\n", i);
 }*/
+/(nul      /  | /          /
 #elif !defined(FORMAT)
 int	main(void)
 {
@@ -45,11 +46,16 @@ int	main(void)
 #else
 # define ARGS FORMAT
 #endif
+#ifdef CONTROL
+# define CTRLUSR "\ncontrol                    "
+# define CTRLSYS "\nsyst control               "
+#else
+# define CTRLUSR ""
+# define CTRLSYS ""
+#endif
 int main(void)
 {
-	int u = ft_printf(ARGS);
-	printf("\n| length     | %d\n---\n", u);
-	int s = printf(ARGS);
-	printf("\n| length     | %d\n", s);
+	printf("\n| length     | %d"CTRLUSR"\n---\n", ft_printf(ARGS));
+	printf("\n| length     | %d"CTRLSYS"\n", printf(ARGS));
 }
 #endif

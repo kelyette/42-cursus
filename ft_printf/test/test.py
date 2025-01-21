@@ -29,6 +29,12 @@ parser.add_argument(
 	default=16
 )
 parser.add_argument(
+	'-r', '--control',
+	help="add a control character at the end of the testers",
+	action="store_true",
+	default=False
+)
+parser.add_argument(
 	'--ulimit',
 	help="compile ftprintf with ULIMIT macro",
 	type=int
@@ -43,6 +49,7 @@ args = parser.parse_args()
 debug = args.debug
 test_specs = args.tests
 specs_per = args.count_per
+control = args.control
 ulimit = args.ulimit
 throwerr = args.throwerr
 
@@ -67,6 +74,8 @@ if ulimit:
 	makeargs += f" ULIMIT={ulimit}"
 if throwerr:
 	makeargs += " THROWERR=1"
+if control:
+	makeargs += " CONTROL=1"
 
 
 def shtore(s):
@@ -103,37 +112,43 @@ alltests = {
 		"f": ["", "-"],
 		"w": ["", "4", ["*", "-10"], ["*", "0"], ["*", "3"]],
 		"p": [""],
-		"v": [r"'\'k\''", "(char)0"]
+		#"v": [r"'\'k\''", "(char)0"]
+		"v": [r"'\'k\''", r"'\'0\''", '(char)0']
 	},
 	"s": {
 		"f": ["", "-"],
 		"w": ["", "4", "3", ["*", "-10"], ["*", "0"]],
 		"p": ["", ".4", ".0", [".*", "10"]],
+		#"v": ["(char *)0", r'\"alessia\"']
 		"v": ["(char *)0", r'\"alessia\"']
 	},
 	"p": {
 		"f": ["", "-"],
 		"w": ["", "4", "-3", ["*", "-10"], ["*", "0"]],
 		"p": [""],
-		"v": ["(void *)0", "(void *)0xe5053f", "(void *)-42"]
+		#"v": ["(void *)0", "(void *)0xe5053f", "(void *)-42"]
+		"v": ["(void *)0x0", "(void *)-231", "(void *)0xfe", "(void *)UINTPTR_MAX"]
 	},
 	"d": {
 		"f": ["", "-", "0", " ", "+"],
 		"w": ["", "4", ["*", "-10"], ["*", "0"]],
 		"p": ["", ".4", ".0", [".*", "10"]],
-		"v": ["INT_MIN", "0", "INT_MAX", "-42"]
+		#"v": ["INT_MIN", "0", "INT_MAX", "-42"]
+		"v": ["0", "10", "INT_MAX", "INT_MIN", "-42"]
 	},
 	"u": {
 		"f": ["", "-", "0"],
 		"w": ["", "4", ["*", "-10"], ["*", "0"]],
 		"p": ["", ".4", ".0", [".*", "10"]],
-		"v": ["0", "UINT_MAX", "-42"]
+		#"v": ["0", "UINT_MAX", "-42"]
+		"v": ["0", "414", "UINT_MAX", "-42", "0xffff"]
 	},
 	"x": {
 		"f": ["", "-", "0", "#"],
 		"w": ["", "4", ["*", "-10"], ["*", "0"]],
 		"p": ["", ".4", ".0", [".*", "10"]],
-		"v": ["0", "UINT_MAX", "-42"],
+		#"v": ["0", "UINT_MAX", "-42"],
+		"v": ["0x034f", "UINT_MAX", "0"]
 	},
 	"%": {
 		"f": ["", "-", "0"],
@@ -143,7 +158,7 @@ alltests = {
 	}
 }
 
-alltests = {
+alltests1 = {
 	"c": {
 		"f": [""],
 		"w": [""],
@@ -151,10 +166,10 @@ alltests = {
 		"v": [r"'\'k\''", r"'\'0\''", '(char)0']
 	},
 	"s": {
-		"f": [""],
-		"w": [""],
-		"p": [""],
-		"v": [r'\"alessia\"', r'\"\"', "(char *)0"]
+		"f": ["", "-"],
+		"w": ["", ["*", "0"], ["*", "-10"], ["*", "-3"], "10"],
+		"p": ["", ".", ".0", ".3", ".10"],
+		"v": ["(char *)0", r'\"alessia\"']
 	},
 	"p": {
 		"f": [""],
@@ -186,6 +201,15 @@ alltests = {
 		"p": [""],
 		"v": [""]
 	},
+}
+
+alltests = {
+	"s": {
+		"f": ["", "-"],
+		"w": ["1", "10", "4", ["*", "-10"], ["*", "2"]],
+		"p": ["", ".", ".10", ".4", [".*", "0"], [".*", "2"], [".*", "20"]],
+		"v": ["(char *)0"],
+	}
 }
 
 aliases = {"i": "d", "X": "x"}

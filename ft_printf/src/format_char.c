@@ -6,11 +6,18 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:04:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/13 15:48:27 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/21 16:04:17 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "format.h"
+#ifdef __linux__
+# define NOFLAGPSIGN 1
+# define NULLSTR "(null)"
+#else
+# define NOFLAGPSIGN 0
+# define NULLSTR "(null)"
+#endif
 
 void	fmt_char(va_list *arg, t_fspec *spec)
 {
@@ -20,6 +27,11 @@ void	fmt_char(va_list *arg, t_fspec *spec)
 		c = '%';
 	else
 		c = va_arg(*arg, int);
+	if (spec->spec == '%' && NOFLAGPSIGN)
+	{
+		fputchar('%');
+		return ;
+	}
 	if (spec->width != -1 && spec->spec == '%' && spec->zpad)
 		fpad(spec->width, 1, 1);
 	else if (!spec->ljust && spec->width != -1)
@@ -37,7 +49,7 @@ static void	fputstrn(const char *str, int n)
 
 void	fmt_str(va_list *arg, t_fspec *spec)
 {
-	const char	nullstr[] = "(null)";
+	const char	nullstr[] = NULLSTR;
 	char		*str;
 	int			len;
 

@@ -18,6 +18,7 @@ EXECN = $(lastword $(subst test, ,$(EXEC)))
 
 SYSRES = $(EXEC)_sys.txt
 USRRES = $(EXEC)_usr.txt
+RESDIF = $(EXEC)_diff.txt
 
 VENVPACKAGE = venv
 VENVDIR = venv
@@ -51,13 +52,17 @@ ifdef VVARS
 	VVARSPARAM = -D'VARS=$(VVARS)'
 endif
 
+ifdef CONTROL
+	CONTROLFLAG = -D'CONTROL'
+endif
 all: build
 
 checkoutput: runexec $(LOGFILE)
 	@echo "- Checking diff..."
 	@cp .varfile $(EXEC)_var.txt
 	@echo -n "" > .varfile
-	sdiff -w 60 $(USRRES) $(SYSRES) | \
+	sdiff -a -w 100 $(USRRES) $(SYSRES) | tee $(RESDIF)
+	sdiff -ad -w 60 $(USRRES) $(SYSRES) | \
 		cut -c1-31,45- | \
 		awk 'BEGIN {v=0} substr($$0, 30, 1) == "|"{ printf("$(EXECN):%-3d %s\n", v, $$0) } {v++}' | \
 		cut -c1-37,40- | \
@@ -71,7 +76,7 @@ runexec: build
 
 build: $(LIB) $(TESTOBJ)
 	@mkdir -p $(TRGTDIR)
-	$(BUILDCMD) -D'FORMAT="$(VFORMAT)"' $(VVARSPARAM)
+	$(BUILDCMD) $(CONTROLFLAG) -D'FORMAT="$(VFORMAT)"' $(VVARSPARAM)
 
 $(LIB):
 	@echo "- Building libftprintf..."
