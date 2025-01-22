@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:02:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/22 17:18:25 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 18:19:21 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*append_data(char *buffer, char *data)
 
 int	read_next(int fd, char **bufptr)
 {
-	char	rbuffer[BUFFER_SIZE];
+	char	rbuffer[BUFFER_SIZE + 1];
 	char	*buffer;
 	int		read_size;
 
@@ -43,7 +43,7 @@ int	read_next(int fd, char **bufptr)
 	read_size = -1;
 	while (!ft_strchr(buffer, '\n') && read_size)
 	{
-		read_size = read(fd, rbuffer, BUFFER_SIZE - 1);
+		read_size = read(fd, rbuffer, BUFFER_SIZE);
 		if (read_size == -1)
 		{
 			free(buffer);
@@ -51,7 +51,7 @@ int	read_next(int fd, char **bufptr)
 		}
 		if (!read_size)
 			break ;
-		rbuffer[BUFFER_SIZE -1] = 0;
+		rbuffer[BUFFER_SIZE] = 0;
 		buffer = append_data(buffer, rbuffer);
 	}
 	*bufptr = buffer;
