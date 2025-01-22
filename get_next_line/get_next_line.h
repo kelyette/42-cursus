@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 22:10:29 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/22 00:31:28 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 15:21:11 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 # include <stdlib.h>
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1000
+#  define BUFFER_SIZE 1024
 # endif
 
 char	*get_next_line(int fd);
@@ -22,6 +22,7 @@ char	*get_next_line(int fd);
 int		ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
 void	*ft_memcpy(void *d, const void *s, size_t n);
+void	ft_bzero(void *d, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 
 #endif

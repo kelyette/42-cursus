@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:43:44 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/22 01:15:03 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 15:20:03 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,15 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	return (dst);
 }
 
+void	ft_bzero(void *d, size_t n)
+{
+	while (n--)
+		*(char *)d++ = 0;
+}
+
 void	*ft_calloc(size_t count, size_t size)
 {
 	void		*res;
-	int			i;
 
 	if (size && count > SIZE_MAX / size)
 		return (NULL);
@@ -59,8 +64,6 @@ void	*ft_calloc(size_t count, size_t size)
 	res = malloc(size * count);
 	if (!res)
 		return (NULL);
-	i = -1;
-	while (++i < size * count)
-		((char *)res)[i] = 0;
+	ft_bzero(res, size * count);
 	return (res);
 }

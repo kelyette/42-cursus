@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:07:40 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/02 14:19:37 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 16:13:58 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,11 @@ int	main(int argc, char **argv)
 	li = 1;
 	while (li <= MAXLINES && (line = get_next_line(fd)))
 	{
-		printf("line %d: ", li++);
+		printf("line %d: ", li);
 		printliteral(line);
 		puts("");
 		free(line);
+		li++;
 	}
 	if (li == MAXLINES && line)
 		printf("...\nends after line %d\n", MAXLINES);
