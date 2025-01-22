@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:23:22 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/21 15:52:51 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 13:42:04 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,21 @@
 # define WIDTHPTR 1
 #endif
 
-static void	fputptr(uintptr_t p)
+static int	fputptr(uintptr_t p)
 {
 	if (p < 16)
 	{
-		fputstr("0x");
-		fputchar(digitc((long)p, 0));
-		return ;
+		if (fputstr("0x"))
+			return (1);
+		if (fputchar(digitc((long)p, 0)))
+			return (1);
+		return (0);
 	}
-	fputptr(p / 16);
-	fputchar(digitc((long)(p % 16), 0));
+	if (fputptr(p / 16))
+		return (1);
+	if (fputchar(digitc((long)(p % 16), 0)))
+		return (1);
+	return (0);
 }
 
 static int	uintptr_len(uintptr_t p)
@@ -45,7 +50,7 @@ static int	uintptr_len(uintptr_t p)
 	return (len);
 }
 
-void	fmt_ptr(va_list *arg, t_fspec *spec)
+int	fmt_ptr(va_list *arg, t_fspec *spec)
 {
 	uintptr_t	ptr;
 	int			len;
@@ -56,12 +61,13 @@ void	fmt_ptr(va_list *arg, t_fspec *spec)
 		len = PTRNLEN;
 	if ((ptr || WIDTHPTR) && spec->width != -1)
 		spec->width -= 2;
-	if (spec->width != -1 && !spec->ljust)
-		fpad(spec->width, len, spec->zpad);
-	if (ptr)
-		fputptr(ptr);
-	else
-		fputstr(PTRNULL);
-	if (spec->width != -1 && spec->ljust)
-		fpad(spec->width, len, 0);
+	if (spec->width != -1 && !spec->ljust && fpad(spec->width, len, spec->zpad))
+		return (1);
+	if (ptr && fputptr(ptr))
+		return (1);
+	if (!ptr && fputstr(PTRNULL))
+		return (1);
+	if (spec->width != -1 && spec->ljust && fpad(spec->width, len, 0))
+		return (1);
+	return (0);
 }

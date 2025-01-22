@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:04:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/21 18:34:58 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 13:47:07 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define NWIDTHREQ 0
 #endif
 
-void	fmt_char(va_list *arg, t_fspec *spec)
+int	fmt_char(va_list *arg, t_fspec *spec)
 {
 	char	c;
 
@@ -31,25 +31,33 @@ void	fmt_char(va_list *arg, t_fspec *spec)
 		c = va_arg(*arg, int);
 	if (spec->spec == '%' && NOFLAGPSIGN)
 	{
-		fputchar('%');
-		return ;
+		if (fputchar('%'))
+			return (1);
+		return (0);
 	}
-	if (spec->width != -1 && spec->spec == '%' && spec->zpad)
-		fpad(spec->width, 1, 1);
-	else if (!spec->ljust && spec->width != -1)
-		fpad(spec->width, 1, 0);
-	fputchar(c);
-	if (spec->ljust && spec->width != -1 && !spec->zpad)
-		fpad(spec->width, 1, 0);
+	if (spec->width != -1 && spec->spec == '%' && spec->zpad
+		&& fpad(spec->width, 1, 1))
+		return (1);
+	else if (!spec->ljust && spec->width != -1
+		&& fpad(spec->width, 1, 0))
+		return (1);
+	if (fputchar(c))
+		return (1);
+	if (spec->ljust && spec->width != -1 && !spec->zpad
+		&& fpad(spec->width, 1, 0))
+		return (1);
+	return (0);
 }
 
-static void	fputstrn(const char *str, int n)
+static int	fputstrn(const char *str, int n)
 {
 	while (n-- > 0)
-		fputchar(*str++);
+		if (fputchar(*str++))
+			return (1);
+	return (0);
 }
 
-void	fmt_str(va_list *arg, t_fspec *spec)
+int	fmt_str(va_list *arg, t_fspec *spec)
 {
 	const char	nullstr[] = NULLSTR;
 	char		*str;
@@ -68,9 +76,11 @@ void	fmt_str(va_list *arg, t_fspec *spec)
 	}
 	if (spec->precision != -1 && len > spec->precision)
 		len = spec->precision;
-	if (!spec->ljust && spec->width != -1)
-		fpad(spec->width, len, 0);
-	fputstrn(str, len);
-	if (spec->ljust && spec->width != -1)
-		fpad(spec->width, len, 0);
+	if (!spec->ljust && spec->width != -1 && fpad(spec->width, len, 0))
+		return (1);
+	if (fputstrn(str, len))
+		return (1);
+	if (spec->ljust && spec->width != -1 && fpad(spec->width, len, 0))
+		return (1);
+	return (0);
 }

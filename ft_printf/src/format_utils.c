@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:49:50 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/13 13:55:25 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 13:27:36 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,30 @@
 #define UCASEOFFSET -32
 #define ZEROOFFSET   16
 
-void	fputchar(char c)
+int	fputchar(char c)
 {
+	if (write(1, &c, 1) == -1)
+		return (1);
 	g_char_count++;
-	write(1, &c, 1);
+	return (0);
 }
 
-void	fputstr(const char *str)
+int	fputstr(const char *str)
 {
 	while (*str)
-		fputchar(*str++);
+		if (fputchar(*str++))
+			return (1);
+	return (0);
 }
 
-void	fpad(int width, int len, int zpad)
+int	fpad(int width, int len, int zpad)
 {
 	const char	ch = ' ' + (ZEROOFFSET * zpad);
 
 	while (len++ < width)
-		fputchar(ch);
+		if (fputchar(ch))
+			return (1);
+	return (0);
 }
 
 char	digitc(long n, int ucase)

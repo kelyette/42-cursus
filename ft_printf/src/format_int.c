@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:46:48 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/21 14:54:34 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 14:29:25 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,48 +31,46 @@ t_num	init_num(t_fspec *spec, long n)
 	return (num);
 }
 
-t_num	fputint_pre(t_fspec *spec, t_num num)
+int	fputint_pre(t_fspec *spec, t_num *num)
 {
-	char	pre;
-	char	fsign;
-
-	pre = 0;
-	fsign = 0;
-	if (num.base == 10 && spec->psign && !num.neg)
-		fsign = '+';
-	else if (num.base == 10 && spec->fillsign && !num.neg)
-		fsign = ' ';
-	else if (num.base == 10 && num.neg)
-		pre = '-';
-	if (num.base == 16 && spec->hexprefix && num.n)
-		pre = '#';
-	num.tlen += (fsign != 0) + (pre != 0) + (pre == '#');
-	if (!spec->ljust && spec->width != -1 && !spec->zpad)
-		fpad(spec->width, num.tlen, 0);
-	if (fsign)
-		fputchar(fsign);
-	if (!(spec->precision || num.n))
-		return (num);
-	if (pre == '-')
-		fputchar('-');
-	else if (pre == '#')
-		fputstr("0x");
-	return (num);
+	if (num->base == 10 && spec->psign && !num->neg)
+		num->fsign = '+';
+	else if (num->base == 10 && spec->fillsign && !num->neg)
+		num->fsign = ' ';
+	else if (num->base == 10 && num->neg)
+		num->pre[0] = '-';
+	if (num->base == 16 && spec->hexprefix && num->n)
+	{
+		num->pre[0] = '0';
+		num->pre[1] = 'x' - (spec->spec == 'X') * 32;
+	}
+	num->tlen += (num->fsign != 0) + (num->pre[0] != 0) + (num->pre[0] == '0');
+	if (!spec->ljust && spec->width != -1 && !spec->zpad
+		&& fpad(spec->width, num->tlen, 0))
+		return (1);
+	if ((spec->precision || num->n ) && num->fsign && fputchar(num->fsign))
+		return (1);
+	if (num->pre[0] != 0 && fputstr(num->pre))
+		return (1);
+	return (0);
 }
 
-void	fputint_base(t_fspec *spec, t_num num)
+int	fputint_base(t_fspec *spec, t_num num)
 {
-	if (spec->precision != -1)
-		fpad(spec->precision, num.len, 1);
-	else if (spec->width != -1 && spec->zpad)
-		fpad(spec->width, num.tlen, 1);
+	if (spec->precision != -1 && fpad(spec->precision, num.len, 1))
+		return (1);
+	else if (spec->width != -1 && spec->zpad && fpad(spec->width, num.tlen, 1))
+		return (1);
 	if (spec->precision || num.n)
-		fputstr(num.str);
-	if (spec->ljust && spec->width != -1 && !spec->zpad)
-		fpad(spec->width, num.tlen, 0);
+		if (fputstr(num.str))
+			return (1);
+	if (spec->ljust && spec->width != -1 && !spec->zpad
+		&& fpad(spec->width, num.tlen, 0))
+		return (1);
+	return (0);
 }
 
-void	fmt_int(va_list *arg, t_fspec *spec)
+int	fmt_int(va_list *arg, t_fspec *spec)
 {
 	long	n;
 	t_num	num;
@@ -82,6 +80,7 @@ void	fmt_int(va_list *arg, t_fspec *spec)
 	else
 		n = (long)va_arg(*arg, unsigned int);
 	num = init_num(spec, n);
-	num = fputint_pre(spec, num);
-	fputint_base(spec, num);
+	if (fputint_pre(spec, &num) || fputint_base(spec, num))
+		return (1);
+	return (0);
 }

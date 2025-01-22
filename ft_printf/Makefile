@@ -23,6 +23,7 @@ ifdef ULIMIT
 endif
 
 all: $(NAME)
+bonus: $(NAME)
 
 $(NAME): $(LIBFTA) $(OBJ)
 	cp $< $@

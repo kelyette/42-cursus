@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 22:53:04 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/20 16:48:52 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 14:01:49 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static int	handle_specifier(va_list *value, const char **format)
 	parse_rval = spec_parse(value, format, &spec);
 	if (parse_rval)
 		return (parse_rval);
-	(*spec.func)(value, &spec);
+	if ((*spec.func)(value, &spec))
+		return (1);
 	return (0);
 }
 
@@ -41,10 +42,12 @@ int	ft_printf(const char *format, ...)
 		if (*format == '%')
 		{
 			format++;
-			handle_specifier(&args, &format);
+			if (handle_specifier(&args, &format))
+				return (-1);
 			continue ;
 		}
-		fputchar(*format++);
+		if (fputchar(*format++))
+			return (-1);
 	}
 	va_end(args);
 	tmp_length = g_char_count;

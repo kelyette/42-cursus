@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 03:09:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/20 19:03:47 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 14:18:14 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # endif
 
 struct			s_fspec;
-typedef void	(*t_ffptr)(va_list *, struct s_fspec *);
+typedef int	(*t_ffptr)(va_list *, struct s_fspec *);
 
 extern int		g_char_count;
 
@@ -45,6 +45,8 @@ typedef struct s_fspec
 typedef struct s_number
 {
 	long	n;
+	char	fsign;
+	char	pre[3];
 	char	str[20];
 	int		base;
 	int		len;
@@ -60,17 +62,17 @@ int		expect_specifier(const char **format, t_fspec *spec);
 int		spec_parse(va_list *arg, const char **format, t_fspec *spec);
 
 // handler functions
-void	fmt_int(va_list *arg, t_fspec *spec);
-void	fmt_str(va_list *arg, t_fspec *spec);
-void	fmt_char(va_list *arg, t_fspec *spec);
-void	fmt_ptr(va_list *arg, t_fspec *spec);
+int		fmt_int(va_list *arg, t_fspec *spec);
+int		fmt_str(va_list *arg, t_fspec *spec);
+int		fmt_char(va_list *arg, t_fspec *spec);
+int		fmt_ptr(va_list *arg, t_fspec *spec);
 
 // printer functions
-void	fputchar(char c);
-void	fputstr(const char *str);
+int		fputchar(char c);
+int		fputstr(const char *str);
 
 // utility functions
 int		ltoa_raw(char *dest, long n, int base, int ucase);
 char	digitc(long n, int ucase);
-void	fpad(int width, int len, int zpad);
+int		fpad(int width, int len, int zpad);
 #endif
