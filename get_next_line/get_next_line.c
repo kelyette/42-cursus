@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:02:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/22 18:19:21 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/22 19:22:29 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	read_next(int fd, char **bufptr)
 	buffer = *bufptr;
 	if (!buffer)
 		buffer = ft_calloc(1, 1);
-	read_size = -1;
 	while (!ft_strchr(buffer, '\n') && read_size)
 	{
 		read_size = read(fd, rbuffer, BUFFER_SIZE);
