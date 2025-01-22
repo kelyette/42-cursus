@@ -5,96 +5,89 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 16:22:33 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/16 16:09:53 by kcsajka          ###   ########.fr       */
+/*   Created: 2025/01/21 21:02:59 by kcsajka           #+#    #+#             */
+/*   Updated: 2025/01/22 01:10:38 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "get_next_line.h"
+#include <unistd.h>
 
-int	free_pbuf(t_pbuf *pbuf)
+char	*append_data(char *buffer, char *data)
 {
-	if (!pbuf->buf)
-		return (1);
-	free(pbuf->buf);
-	pbuf->buf = NULL;
-	pbuf->start = 0;
-	pbuf->end = 0;
-	return (1);
+	char	*new;
+	int		len;
+	int		dlen;
+
+	if (!*data)
+		return (0);
+	dlen = ft_strlen(data);
+	len = ft_strlen(buffer);
+	new = ft_calloc(len + dlen + 1, 1);
+	ft_memcpy(new, buffer, len);
+	ft_memcpy(new + len, data, dlen);
+	new[len + dlen] = 0;
+	return (new);
 }
 
-char	*apply_buffer(t_pbuf *pbuf, char *end_ptr, int dofree)
+int	read_next(int fd, char *buffer)
 {
-	size_t	size;
-	char	*line;
+	char	rbuffer[BUFFER_SIZE];
+	int		read_size;
 
-	size = end_ptr - (pbuf->buf + pbuf->start) + 1;
-	if (size < 1 && dofree)
-		free_pbuf(pbuf);
-	if (size < 1)
-		return (NULL);
-	line = malloc(size + 1);
-	if (!line && free_pbuf(pbuf))
-		return (NULL);
-	ft_memcpy(line, pbuf->buf + pbuf->start, size);
-	line[size] = 0;
-	pbuf->start += size;
-	if (dofree)
-		free_pbuf(pbuf);
-	return (line);
-}
-
-int	apply_new_data(t_pbuf *pbuf, const char *data, size_t size)
-{
-	char		*tmp;
-	const int	pbufsize = pbuf->end - pbuf->start;
-
-	tmp = malloc(pbufsize + size);
-	if (!tmp && free_pbuf(pbuf))
-		return (1);
-	if (pbufsize > 0)
-		ft_memcpy(tmp, pbuf->buf + pbuf->start, pbuf->end - pbuf->start);
-	ft_memcpy(tmp + pbufsize, data, size);
-	free(pbuf->buf);
-	pbuf->buf = tmp;
-	pbuf->start = 0;
-	pbuf->end = pbufsize + size;
+	read_size = -1;
+	while (!ft_strchr(rbuffer, '\n') || read_size)
+	{
+		read_size = read(fd, rbuffer, BUFFER_SIZE);
+		if (read_size == -1)
+		{
+			free(buffer);
+			return (1);
+		}
+		buffer = append_data(buffer, rbuffer);
+	}
 	return (0);
 }
 
-static int	handle_read_size(int rs, t_pbuf *pbuf)
+char	*get_line(char *buffer)
 {
-	if (rs == 0 && !pbuf->buf)
-		return (1);
-	if (rs != -1)
-		return (0);
-	free_pbuf(pbuf);
-	return (1);
+	char	*res;
+	int		size;
+
+	size = 0;
+	while (buffer[size] && buffer[size] != '\n')
+		size++;
+	if (!buffer[size])
+		return (buffer);
+	res = ft_calloc(size, 1);
+	ft_memcpy(res, buffer, size);
+	return (res);
+}
+
+char	*shift_buffer(char *buffer)
+{
+	char	*nl_ptr;
+	char	*new;
+	int		newsize;
+
+	nl_ptr = ft_strchr(buffer, '\n');
+	if (!nl_ptr)
+	{
+		free(buffer);
+		return (NULL);
+	}
+	if (nl_ptr == buffer)
+		return (buffer);
+	newsize = nl_ptr - buffer;
+	new = ft_calloc(newsize, 1);
+	ft_memcpy(new, buffer, ft_strlen(buffer) - newsize);
+	return (new);
 }
 
 char	*get_next_line(int fd)
 {
-	static t_pbuf	pbuf;
-	char			buf[BUFFER_SIZE];
-	char			*nl_ptr;
-	ssize_t			read_size;
+	static char	*buffer;
+	char		*res;
 
-	if (fd == -1)
-		free_pbuf(&pbuf);
-	if (fd == -1)
-		return (NULL);
-	while (1)
-	{
-		nl_ptr = ft_memchr(pbuf.buf + pbuf.start, '\n', pbuf.end - pbuf.start);
-		if (nl_ptr)
-			return (apply_buffer(&pbuf, nl_ptr, 0));
-		read_size = read(fd, buf, BUFFER_SIZE);
-		if (handle_read_size(read_size, &pbuf))
-			return (NULL);
-		if (read_size == 0)
-			return (apply_buffer(&pbuf, pbuf.buf + pbuf.end - 1, 1));
-		if (apply_new_data(&pbuf, buf, read_size))
-			return (NULL);
-	}
+	read_apply()
 }

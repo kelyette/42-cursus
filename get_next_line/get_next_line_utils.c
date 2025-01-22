@@ -5,69 +5,62 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 16:22:34 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/16 16:37:35 by kcsajka          ###   ########.fr       */
+/*   Created: 2025/01/21 21:43:44 by kcsajka           #+#    #+#             */
+/*   Updated: 2025/01/22 01:15:03 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_strlen(char *s)
+int	ft_strlen(const char *str)
 {
-	int	size;
+	int	s;
 
-	if (!s)
-		return (0);
-	size = 0;
-	while (*s++)
-		size++;
-	return (size);
+	s = 0;
+	while (str[s])
+		s++;
+	return (s);
 }
 
-void	*ft_memchr(const void *s, int c, size_t size)
+char	*ft_strchr(const char *s, int c)
 {
-	const char	*cs = (char *)s;
-	size_t		i;
-
-	i = -1;
-	while (++i < size)
-		if (cs[i] == c)
-			return ((void *)&s[i]);
+	while (*s)
+		if (*s++ == (char)c)
+			return ((char *)--s);
+	if ((char)c == 0)
+		return ((char *)s);
 	return (NULL);
 }
 
-void	*ft_memcpy(void *dst, const void *src, size_t size)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	char	*cdst;
-	char	*csrc;
-	size_t	si;
-
-	cdst = (char *)dst;
-	csrc = (char *)src;
-	si = -1;
-	while (++si < size)
-		cdst[si] = csrc[si];
-	return (dst);
-}
-
-void	*ft_memmove(void *dst, const void *src, size_t len)
-{
-	char	*cdst;
-	char	*csrc;
+	size_t	i;
 
 	if (!dst && !src)
 		return (NULL);
-	cdst = (char *)dst;
-	csrc = (char *)src;
-	if (dst <= src)
-		while (len--)
-			*cdst++ = *csrc++;
-	else
-	{
-		cdst += len -1;
-		csrc += len -1;
-		while (len--)
-			*cdst-- = *csrc--;
-	}
+	i = -1;
+	while (++i < n)
+		((char *)dst)[i] = ((char *)src)[i];
 	return (dst);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void		*res;
+	int			i;
+
+	if (size && count > SIZE_MAX / size)
+		return (NULL);
+	if (!count || !size)
+	{
+		count = 1;
+		size = 1;
+	}
+	res = malloc(size * count);
+	if (!res)
+		return (NULL);
+	i = -1;
+	while (++i < size * count)
+		((char *)res)[i] = 0;
+	return (res);
 }
