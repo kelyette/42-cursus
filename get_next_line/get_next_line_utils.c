@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:43:44 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/22 15:20:03 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/23 12:23:32 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	ft_strlen(const char *str)
 
 char	*ft_strchr(const char *s, int c)
 {
+	if (!s)
+		return (NULL);
 	while (*s)
 		if (*s++ == (char)c)
 			return ((char *)--s);

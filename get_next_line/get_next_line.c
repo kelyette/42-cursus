@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:02:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/22 19:22:29 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/23 12:36:15 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,18 @@ char	*append_data(char *buffer, char *data)
 	int		len;
 	int		dlen;
 
-	if (!*data)
-		return (0);
+	if (!*data || !buffer)
+		return (NULL);
 	dlen = ft_strlen(data);
 	len = ft_strlen(buffer);
 	new = ft_calloc(len + dlen + 1, 1);
+	if (!new)
+		return (NULL);
 	if (len)
 		ft_memcpy(new, buffer, len);
 	ft_memcpy(new + len, data, dlen);
 	new[len + dlen] = 0;
+	free(buffer);
 	return (new);
 }
 
@@ -36,11 +39,13 @@ int	read_next(int fd, char **bufptr)
 	char	rbuffer[BUFFER_SIZE + 1];
 	char	*buffer;
 	int		read_size;
+	char	*nlptr;
 
 	buffer = *bufptr;
 	if (!buffer)
 		buffer = ft_calloc(1, 1);
-	while (!ft_strchr(buffer, '\n') && read_size)
+	read_size = -1;
+	while (read_size)
 	{
 		read_size = read(fd, rbuffer, BUFFER_SIZE);
 		if (read_size == -1)
@@ -48,10 +53,11 @@ int	read_next(int fd, char **bufptr)
 			free(buffer);
 			return (1);
 		}
-		if (!read_size)
-			break ;
-		rbuffer[BUFFER_SIZE] = 0;
+		rbuffer[read_size] = 0;
 		buffer = append_data(buffer, rbuffer);
+		nlptr = ft_strchr(buffer, '\n');
+		if (!(read_size && nlptr && ft_strlen(nlptr) > 1))
+			break ;
 	}
 	*bufptr = buffer;
 	return (0);
@@ -89,6 +95,8 @@ char	*shift_buffer(char *buffer)
 	nl_ptr++;
 	newsize = ft_strlen(nl_ptr);
 	new = ft_calloc(newsize + 1, 1);
+	if (!new)
+		return (NULL);
 	ft_memcpy(new, nl_ptr, newsize);
 	new[newsize] = 0;
 	return (new);
