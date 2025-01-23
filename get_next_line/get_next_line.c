@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:02:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/23 12:36:15 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/01/23 16:39:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*append_data(char *buffer, char *data)
 	int		len;
 	int		dlen;
 
-	if (!*data || !buffer)
+	if (!data || !*data || !buffer)
 		return (NULL);
 	dlen = ft_strlen(data);
 	len = ft_strlen(buffer);
