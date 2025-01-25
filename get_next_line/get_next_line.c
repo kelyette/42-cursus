@@ -6,7 +6,11 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:02:59 by kcsajka           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/01/23 16:39:34 by kcsajka          ###   ########.fr       */
+=======
+/*   Updated: 2025/01/23 03:05:47 by kcsajka          ###   ########.fr       */
+>>>>>>> 948a23b (udopate)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +40,23 @@ char	*append_data(char *buffer, char *data)
 
 int	read_next(int fd, char **bufptr)
 {
-	char	rbuffer[BUFFER_SIZE + 1];
+	char	rbuffer[BUFFER_SIZE + 2];
 	char	*buffer;
 	int		read_size;
 	char	*nlptr;
 
 	buffer = *bufptr;
-	if (!buffer)
+	if (!*bufptr)
 		buffer = ft_calloc(1, 1);
+<<<<<<< HEAD
 	read_size = -1;
 	while (read_size)
+=======
+	if (!buffer)
+		return (0);
+	read_size = -1;
+	while (!ft_strchr(buffer, '\n') && read_size)
+>>>>>>> 948a23b (udopate)
 	{
 		read_size = read(fd, rbuffer, BUFFER_SIZE);
 		if (read_size == -1)
@@ -53,6 +64,11 @@ int	read_next(int fd, char **bufptr)
 			free(buffer);
 			return (1);
 		}
+<<<<<<< HEAD
+=======
+		if (!read_size)
+			break ;
+>>>>>>> 948a23b (udopate)
 		rbuffer[read_size] = 0;
 		buffer = append_data(buffer, rbuffer);
 		nlptr = ft_strchr(buffer, '\n');
@@ -74,6 +90,8 @@ char	*get_res(char *buffer)
 	while (buffer[size] && buffer[size] != '\n')
 		size++;
 	res = ft_calloc(size + !!buffer[size] + 1, 1);
+	if (!res)
+		return (NULL);
 	ft_memcpy(res, buffer, size);
 	if (buffer[size])
 		res[size] = '\n';
