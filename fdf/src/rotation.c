@@ -6,12 +6,11 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 03:31:15 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/17 17:54:29 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/03 15:14:18 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "geometry.h"
-
 
 t_vec3	vec3_rotate(t_vec3 p, t_vec3 rot)
 {

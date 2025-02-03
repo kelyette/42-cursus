@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:10:39 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/19 03:26:32 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/03 13:29:07 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		evf_keydown(int key, t_env *env);
 int		evf_keyup(int key, t_env *env);
 
 // actions
-int		fdfclose(t_env *env);
+int		fdfclose(t_env *env, int code);
 void	move(t_env *env, float x, float y, float z);
 void	scale(t_env *env, float x, float y, float z);
 void	rotate(t_env *env, float x, float y, float z);

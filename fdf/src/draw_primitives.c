@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 01:21:29 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/26 20:26:24 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/03 20:24:28 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,19 @@ int	draw_pixel(t_env *env, int buffered, t_vec2 p, int color)
 		return (0);
 	}
 	dbuf = env->drawbuf;
-	dbuf->img->data[(int)(p.x + p.y * dbuf->rect.size.x)] = color;
+	if ((int)p.x < dbuf->sizex && (int)p.y < dbuf->sizey)
+	{
+		dbuf->data[(int)p.x + (int)p.y * dbuf->sizex] = color;
+	}
 	return (0);
 }
 
-int	draw_line(t_env *env, t_vec2 p1, t_vec2 p2, int color)
+int	draw_line(t_env *env, t_vec2 p1, t_vec2 p2, t_grad grad)
 {
 	float	dx;
 	float	dy;
 	float	s;
+	float	ms;
 
 	dx = p2.x - p1.x;
 	dy = p2.y - p1.y;
@@ -40,25 +44,27 @@ int	draw_line(t_env *env, t_vec2 p1, t_vec2 p2, int color)
 		s = fabsf(dy);
 	dx /= s;
 	dy /= s;
-	while (s-- > 0)
+	ms = s;
+	while (s > 0)
 	{
-		mlx_pixel_put(
-			env->mlx, env->win,
-			(int)round(p1.x), (int)round(p1.y),
-			color);
+		if (ms == s || s == 1)
+			draw_pixel(env, 1, p1, 0xffffff);
+		else
+			draw_pixel(env, 1, p1, grad_lerp(grad, 1 - s / ms).val);
 		p1.x += dx;
 		p1.y += dy;
+		s--;
 	}
 	return (0);
 }
 
-int	draw_rect(t_env *env, t_rect rect, int color)
+int	draw_rect(t_env *env, int buffered, t_rect rect, int color)
 {
 	t_vec2	cur;
 
-	ft_bzero(&cur, sizeof(t_vec2));
+	cur = (t_vec2){0};
 	while (cur.x < rect.size.x)
 		while (cur.y < rect.size.y)
-			draw_pixel(env, 0, cur, color);
+			draw_pixel(env, buffered, cur, color);
 	return (0);
 }

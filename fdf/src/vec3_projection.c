@@ -1,40 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   vec3_projection.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/12 19:03:03 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 16:46:43 by kcsajka          ###   ########.fr       */
+/*   Created: 2025/02/03 15:14:44 by kcsajka           #+#    #+#             */
+/*   Updated: 2025/02/03 15:20:19 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
-# include "geometry.h"
+#include "geometry.h"
 
-typedef struct s_loopstate	t_ls;
-typedef struct s_heightmap	t_hmap;
-typedef struct s_drawbuffer	t_dbuf;
-
-typedef struct s_colorscheme
+t_vec2	project_iso(t_vec3 v3, t_vec3 rot, t_vec2 offset)
 {
-	t_clr	bg;
-	t_clr	fg;
-	t_clr	hi;
-}	t_csch;
+	t_vec2			v2;
 
-typedef struct s_env
-{
-	void	*mlx;
-	void	*win;
-	int		wsize_x;
-	int		wsize_y;
-	t_csch	colors;
-	t_hmap	*hmap;
-	t_ls	*ls;
-	t_dbuf	*drawbuf;
-}	t_env;
+	v3 = vec3_rotate(v3, rot);
+	v2.x = (-cos(0.5) * v3.x + cos(0.5) * v3.y) + offset.x;
+	v2.y = (-cos(1) * v3.x + -cos(1) * v3.y + v3.z) + offset.y;
+	return (v2);
+}
 
-#endif
+// TODO
+// t_vec2 project_perspective(t_vec3 v3, t_vec3 rot, t_vec2 offset)

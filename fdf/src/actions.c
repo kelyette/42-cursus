@@ -6,13 +6,12 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 03:55:18 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/29 23:13:20 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/03 13:30:22 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "events.h"
 
-#include <stdio.h>
 void	rotate(t_env *env, float x, float y, float z)
 {
 	env->hmap->rot.x += -x * 0.05;

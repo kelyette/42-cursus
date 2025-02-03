@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:24:47 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/19 03:02:43 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/03 20:22:44 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	init_hooks(t_env *env)
 	mlx_hook(env->win, ON_MOUSEUP, 0, &evf_mouseup, env);
 	mlx_hook(env->win, ON_MOUSEMOVE, 0, &evf_mousemove, env);
 	mlx_hook(env->win, ON_DESTROY, 0, &fdfclose, env);
-	//mlx_mouse_hook(env->win, &evf_mouse, env);
 	mlx_loop_hook(env->mlx, &evf_loop, env);
 	return (0);
 }
@@ -71,6 +70,9 @@ int	evf_loop(t_env *env)
 		ls->redraw = 0;
 		mlx_clear_window(env->mlx, env->win);
 		draw_hmap(env);
+		mlx_put_image_to_window(env->mlx, env->win, env->drawbuf->mlximg, 0, 0);
+		ft_bzero(env->drawbuf->data,
+			sizeof(int) * env->drawbuf->sizex * env->drawbuf->sizey);
 	}
 	if (0 && !ls->redraw)
 		rotate(env, 0.0942, 0.212, 0.164);
@@ -81,9 +83,12 @@ int	evf_loop(t_env *env)
 	return (0);
 }
 
-int	fdfclose(t_env *env)
+int	fdfclose(t_env *env, int code)
 {
-	mlx_destroy_window(env->mlx, env->win);
-	exit(0);
+	if (env && env->mlx && env->win)
+		mlx_destroy_window(env->mlx, env->win);
+	if (env && env->hmap->map)
+		free(env->hmap->map);
+	exit(code);
 	return (0);
 }

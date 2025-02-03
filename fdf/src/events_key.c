@@ -6,24 +6,22 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 21:14:36 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/28 22:53:46 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/03 13:32:14 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "events.h"
 #include "hmap.h"
-#include<stdio.h>
 
 int	evf_key(int key, t_env *env)
 {
 	void	(**action)(t_env *, float, float, float);
 
-	printf("KEYPRESSED %d\n", key);
+	ft_printf("KEYPRESSED %d\n", key);
 	action = &env->ls->action;
 	if (key == KEY_ESCAPE)
 	{
-		mlx_destroy_window(env->mlx, env->win);
-		exit(0);
+		fdfclose(env, 0);
 	}
 	if (key == KEY_TAB)
 	{
@@ -31,7 +29,7 @@ int	evf_key(int key, t_env *env)
 			*action = &scale;
 		else
 			*action = &rotate;
-		printf("action is now %s", *action == &scale ? "&scale" : "&rotate");
+		ft_printf("action is now %s", *action == &scale ? "&scale" : "&rotate");
 	}
 	return (0);
 }
@@ -44,7 +42,6 @@ int	evf_keyloop(t_env *env)
 	ls = env->ls;
 	if (!ls->anykey)
 		return (0);
-	//printf("%d | KEYHELD!!! %d\n", ls->i % 10, ls->anykey);
 	action = ls->action;
 	(*action)(env,
 		get_complkey(ls->keybinds, KEY_LEFT, KEY_RIGHT),
@@ -78,6 +75,5 @@ int	evf_keyup(int key, t_env *env)
 	if (keybind->type == KBOnce)
 		evf_key(key, env);
 	keybind->state = 0;
-	printf("KEYUP!!! %d\n", env->ls->anykey);
 	return (0);
 }

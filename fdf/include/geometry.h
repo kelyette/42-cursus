@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:07:03 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/15 23:57:06 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/03 19:37:36 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,20 @@ typedef struct s_rect
 	t_vec2	origin;
 }	t_rect;
 
+typedef struct s_color
+{
+	int	r;
+	int	g;
+	int	b;
+	int	val;
+}	t_clr;
+
+typedef struct s_gradient
+{
+	t_clr	a;
+	t_clr	b;
+}	t_grad;
+
 // operations
 t_vec3	vec3_mult(t_vec3 a, t_vec3 b);
 t_vec3	vec3_add(t_vec3 a, t_vec3 b);
@@ -48,5 +62,9 @@ t_vec3	vec3_rotatez(t_vec3 p, float gamma);
 
 // projection
 t_vec2	project_iso(t_vec3 v3, t_vec3 rot, t_vec2 offset);
+
+int		clr2int(t_clr clr);
+t_clr	int2clr(int clr);
+t_clr	grad_lerp(t_grad grad, float t);
 
 #endif

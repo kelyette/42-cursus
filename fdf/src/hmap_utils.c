@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 18:22:07 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/15 23:50:05 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/03 18:00:04 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,36 @@
 #include <fcntl.h>
 #include "hmap.h"
 
-t_vec3	hmap_getpt(t_hmap *hmap, t_vec2 pos)
+int	free_split(char **split)
 {
-	t_vec3			r;
+	while (*split)
+		free(*split++);
+	return (1);
+}
 
-	//printf("getpt: %d, %d\nsize: %.1f, %.1f\n", (int)pos.x, (int)pos.y, hmap->size.x, hmap->size.y);
+t_hpt	hmap_getpt(t_hmap *hmap, t_vec2 pos)
+{
+	t_hpt	r;
+
 	if (!hmap->map)
-		return ((t_vec3){0});
+		return ((t_hpt){0});
 	if (pos.x > hmap->size.x || pos.y > hmap->size.y)
-		return ((t_vec3){0});
-	r.x = pos.x;
-	r.y = pos.y;
-	r.z = hmap->map[(int)(pos.y * hmap->size.x + pos.x)];
-	r = vec3_subs(r, vec3_mult(hmap->size, hmap->origin));
-	r = vec3_mult(r, hmap->scale);
-	r = vec3_add(r, hmap->pos);
+		return ((t_hpt){0});
+	r = hmap->map[(int)(pos.y * hmap->size.x + pos.x)];
+	r.pos = vec3_subs(r.pos, hmap->origin_offset);
+	r.pos = vec3_mult(r.pos, hmap->scale);
+	r.pos = vec3_add(r.pos, hmap->pos);
 	return (r);
 }
 
-t_vec2	map2screen_iso(t_hmap *hmap, t_vec2 pos)
+t_vec2	point2screen_iso(t_hmap *hmap, t_vec3 p)
 {
-	t_vec3	world_pt;
-	t_vec2	screen_pt;
+	t_vec2	sp;
 
-	world_pt = hmap_getpt(hmap, pos);
-	screen_pt = vec3to2_iso(world_pt, hmap->rot, hmap->offset);
-	screen_pt.x += hmap->pos.x;
-	screen_pt.y += hmap->pos.y;
-	return (screen_pt);
+	sp = project_iso(p, hmap->rot, hmap->offset);
+	sp.x += hmap->pos.x;
+	sp.y += hmap->pos.y;
+	return (sp);
 }
 
 int	safe_open(int *fd, const char *path, int oflag)
@@ -53,7 +55,7 @@ int	safe_open(int *fd, const char *path, int oflag)
 	return (1);
 }
 
-void	print_hmap(t_pt *map, t_vec2 size)
+void	print_hmap(t_hpt *map, t_vec2 size)
 {
 	int			x;
 	int			y;
@@ -65,7 +67,7 @@ void	print_hmap(t_pt *map, t_vec2 size)
 	{
 		x = -1;
 		while (++x < sizex)
-			ft_printf("%-3d", map[x + y * sizex]);
+			ft_printf("%-3d", (int)map[x + y * sizex].pos.z);
 		ft_printf("\n");
 	}
 	ft_printf("size: %d, %d\n", sizex, sizey);

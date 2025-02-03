@@ -6,30 +6,11 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:56:38 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/28 19:05:29 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/03 14:28:54 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "events.h"
-#include<stdio.h>
-
-int	evf_mouse(int btn, int x, int y, t_env *env)
-{
-	static t_vec2	lpos = {-1, -1};
-
-	if (btn || 1)
-		return (0);
-	if (lpos.x == -1)
-	{
-		lpos.x = x;
-		lpos.y = y;
-		return (0);
-	}
-	draw_line(env, lpos, (t_vec2){x, y}, env->prefs.clr_hi);
-	lpos.x = x;
-	lpos.y = y;
-	return (0);
-}
 
 int	evf_mousemove(int x, int y, t_env *env)
 {
@@ -37,7 +18,7 @@ int	evf_mousemove(int x, int y, t_env *env)
 	const t_vec2	delta = {lpos.x - x, lpos.y - y};
 
 	if (env->ls->mouse == 1)
-		rotate(env, delta.y * 0.1, 0, delta.x * 0.1);
+		rotate(env, delta.y * 0.1, 0, delta.x * 0.1); // TODO use hook
 	lpos = (t_vec2){x, y};
 	return (0);
 }
