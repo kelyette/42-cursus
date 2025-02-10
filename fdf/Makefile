@@ -26,7 +26,7 @@ INCFLAGS     := -I$(LIBMLXDIR) -I$(LIBFTDIR) -I$(INCDIR)
 UNAME        := $(shell uname)
 
 ifeq ($(UNAME),Linux)
-	LIBFLAGS += -lmlx -lX11
+	LIBFLAGS := -lm -lmlx -lX11 -lXext -L$(LIBMLXDIR) -L/usr/lib/X11
 else ifeq ($(UNAME),Darwin)
 	LIBFLAGS += -lmlx -framework OpenGL -framework AppKit
 endif
@@ -40,10 +40,10 @@ endif
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CCFLAGS) $(LIBFLAGS) -o $@ $^
+	$(CC) $(CCFLAGS) -o $@ $^ $(LIBFLAGS) 
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) $(CCFLAGS) $(INCFLAGS) -o $@ -c $<
+	$(CC) $(CCFLAGS) -o $@ -c $< $(INCFLAGS)
 
 $(OBJDIR):
 	mkdir -p $@
@@ -62,4 +62,4 @@ re: fclean all
 as:
 	$(MAKE) ASAN=1
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re as
