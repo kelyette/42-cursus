@@ -6,11 +6,17 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 01:21:29 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 20:24:28 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/04 16:10:55 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "drawers.h"
+
+inline int	check_bounds(t_env *env, t_vec2 p)
+{
+	return (p.x > 0.f && p.y > 0.f
+		&& (int)p.x < env->drawbuf->sizex && (int)p.y < env->drawbuf->sizey);
+}
 
 int	draw_pixel(t_env *env, int buffered, t_vec2 p, int color)
 {
@@ -22,7 +28,7 @@ int	draw_pixel(t_env *env, int buffered, t_vec2 p, int color)
 		return (0);
 	}
 	dbuf = env->drawbuf;
-	if ((int)p.x < dbuf->sizex && (int)p.y < dbuf->sizey)
+	if (check_bounds(env, p))
 	{
 		dbuf->data[(int)p.x + (int)p.y * dbuf->sizex] = color;
 	}

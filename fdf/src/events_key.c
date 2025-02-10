@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 21:14:36 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 13:32:14 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/04 16:39:25 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,18 @@ int	evf_key(int key, t_env *env)
 {
 	void	(**action)(t_env *, float, float, float);
 
-	ft_printf("KEYPRESSED %d\n", key);
 	action = &env->ls->action;
 	if (key == KEY_ESCAPE)
-	{
 		fdfclose(env, 0);
-	}
-	if (key == KEY_TAB)
+	else if (key == KEY_TAB)
 	{
 		if (*action == &rotate)
 			*action = &scale;
 		else
 			*action = &rotate;
-		ft_printf("action is now %s", *action == &scale ? "&scale" : "&rotate");
 	}
+	else if (key == KEY_F)
+		env->ls->showaxes ^= 1;
 	return (0);
 }
 
@@ -47,6 +45,8 @@ int	evf_keyloop(t_env *env)
 		get_complkey(ls->keybinds, KEY_LEFT, KEY_RIGHT),
 		get_complkey(ls->keybinds, KEY_UP, KEY_DOWN),
 		get_complkey(ls->keybinds, KEY_I, KEY_O));
+	env->hmap->offset.y += get_complkey(ls->keybinds, KEY_W, KEY_S) * 5;
+	env->hmap->offset.x += get_complkey(ls->keybinds, KEY_A, KEY_D) * 5;
 	return (0);
 }
 

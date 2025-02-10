@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:40:39 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 19:32:56 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/04 15:47:26 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_clr	int2clr(int clr)
 
 t_clr	grad_lerp(t_grad grad, float t)
 {
-	if (t < 0)
+	if (t < 0 || grad.b.val == -1)
 		return (grad.a);
 	if (t > 1)
 		return (grad.b);

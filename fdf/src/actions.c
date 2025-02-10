@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 03:55:18 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 13:30:22 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/04 16:43:23 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	rotate(t_env *env, float x, float y, float z)
 
 void	scale(t_env *env, float x, float y, float z)
 {
-	env->hmap->scale.x += x;
-	env->hmap->scale.y += y;
-	env->hmap->scale.z += z;
+	env->hmap->scale.x += x * 0.2;
+	env->hmap->scale.y += y * 0.2;
+	env->hmap->scale.z += z * 0.2;
 	env->ls->redraw = 1;
 }
 

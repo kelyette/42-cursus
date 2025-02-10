@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:10:39 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 13:29:07 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/04 16:38:41 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@
 # define KEY_RIGHT      124
 # define KEY_DOWN       125
 # define KEY_UP         126
-# define KEY_COMMAND    55
-# define KEY_SHIFT      56
-# define KEY_ALT        58
 # define KEY_TAB        48
 # define KEY_ESCAPE     53
 
@@ -74,6 +71,7 @@ typedef struct s_loopstate
 	int		mouse;
 	t_kbind	keybinds[KEYBINDS_MAX];
 	void	(*action)(t_env *, float, float, float);
+	int		showaxes;
 }	t_ls;
 
 // initializers

@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:24:47 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 20:22:44 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/04 16:40:25 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,12 @@ void	init_keybinds(t_kbind *keybinds)
 	keybinds[i++] = (t_kbind){KEY_D, KBHold, 0};
 	keybinds[i++] = (t_kbind){KEY_I, KBHold, 0};
 	keybinds[i++] = (t_kbind){KEY_O, KBHold, 0};
-	keybinds[i++] = (t_kbind){KEY_F, KBHold, 0};
 	keybinds[i++] = (t_kbind){KEY_LEFT, KBHold, 0};
 	keybinds[i++] = (t_kbind){KEY_RIGHT, KBHold, 0};
 	keybinds[i++] = (t_kbind){KEY_DOWN, KBHold, 0};
 	keybinds[i++] = (t_kbind){KEY_UP, KBHold, 0};
+	keybinds[i++] = (t_kbind){KEY_F, KBOnce, 0};
 	keybinds[i++] = (t_kbind){KEY_TAB, KBOnce, 0};
-	keybinds[i++] = (t_kbind){KEY_ALT, KBHold, 0};
-	keybinds[i++] = (t_kbind){KEY_SHIFT, KBHold, 0};
-	keybinds[i++] = (t_kbind){KEY_COMMAND, KBHold, 0};
 	keybinds[i++] = (t_kbind){KEY_ESCAPE, KBOnce, 0};
 	keybinds[i] = (t_kbind){-1, -1, -1};
 }
@@ -70,12 +67,12 @@ int	evf_loop(t_env *env)
 		ls->redraw = 0;
 		mlx_clear_window(env->mlx, env->win);
 		draw_hmap(env);
+		if (ls->showaxes)
+			draw_axes(env);
 		mlx_put_image_to_window(env->mlx, env->win, env->drawbuf->mlximg, 0, 0);
 		ft_bzero(env->drawbuf->data,
 			sizeof(int) * env->drawbuf->sizex * env->drawbuf->sizey);
 	}
-	if (0 && !ls->redraw)
-		rotate(env, 0.0942, 0.212, 0.164);
 	evf_keyloop(env);
 	ls->i++;
 	if (ls->i >= INT_MAX)

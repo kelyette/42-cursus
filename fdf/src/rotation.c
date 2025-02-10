@@ -6,13 +6,13 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 03:31:15 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 15:14:18 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/04 14:08:38 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "geometry.h"
 
-t_vec3	vec3_rotate(t_vec3 p, t_vec3 rot)
+inline t_vec3	vec3_rotate(t_vec3 p, t_vec3 rot)
 {
 	p = vec3_rotatez(p, rot.z);
 	p = vec3_rotatey(p, rot.y);

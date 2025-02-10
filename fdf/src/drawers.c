@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:17:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 19:47:29 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/04 16:35:30 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,20 @@ static void	draw_hmap_line(t_env *env, t_hmap *hmap, t_vec2 pos)
 	sp1 = point2screen_iso(hmap, hp1.pos);
 	if (pos.x < hmap->size.x - 1 != 0)
 	{
-		pos.x += 1;
+		pos.x++;
 		hp2 = hmap_getpt(hmap, pos);
 		sp2 = point2screen_iso(hmap, hp2.pos);
-		draw_line(env, sp1, sp2, (t_grad){hp1.color, hp2.color});
-		pos.x -= 1;
+		if (check_bounds(env, sp1) || check_bounds(env, sp2))
+			draw_line(env, sp1, sp2, (t_grad){hp1.color, hp2.color});
+		pos.x--;
 	}
 	if (pos.y < hmap->size.y - 1 != 0)
 	{
-		pos.y += 1;
+		pos.y++;
 		hp2 = hmap_getpt(hmap, pos);
 		sp2 = point2screen_iso(hmap, hp2.pos);
-		draw_line(env, sp1, sp2, (t_grad){hp1.color, hp2.color});
+		if (check_bounds(env, sp1) || check_bounds(env, sp2))
+			draw_line(env, sp1, sp2, (t_grad){hp1.color, hp2.color});
 	}
 }
 
@@ -76,6 +78,15 @@ int	draw_hmap(t_env *env)
 
 int	draw_axes(t_env *env)
 {
-	(void)env;
+	t_vec2	origin;
+	t_vec2	dir;
+
+	origin = project_iso((t_vec3){0, 0, 0}, env->hmap->rot, env->hmap->offset);
+	dir = project_iso((t_vec3){1000, 0, 0}, env->hmap->rot, env->hmap->offset);
+	draw_line(env, origin, dir, (t_grad){int2clr(0xff0000), {.val = -1}});
+	dir = project_iso((t_vec3){0, 1000, 0}, env->hmap->rot, env->hmap->offset);
+	draw_line(env, origin, dir, (t_grad){int2clr(0x00ff00), {.val = -1}});
+	dir = project_iso((t_vec3){0, 0, 1000}, env->hmap->rot, env->hmap->offset);
+	draw_line(env, origin, dir, (t_grad){int2clr(0x0000ff), {.val = -1}});
 	return (0);
 }

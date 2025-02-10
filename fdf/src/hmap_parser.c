@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 22:47:00 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 20:03:39 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/04 16:47:06 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ int	parse_hpt(t_hpt *hpt, char *line)
 	char	*end;
 
 	parts = ft_split(line, ',');
+	if (!parts)
+		return (1);
 	hpt->pos.z = stroi(parts[0], &end);
 	if (line == end || (*end != ' ' && *end != '\n' && *end))
 		return (free_split(parts));
