@@ -6,12 +6,13 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:20:06 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/07 18:17:11 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/10 18:12:54 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "libft.h"
 
 void	send_byte(pid_t pid, char c)
@@ -21,7 +22,10 @@ void	send_byte(pid_t pid, char c)
 	i = 8;
 	while (i--)
 	{
-		kill(pid, SIGUSR1 + ((c >> i) & 1));
+		if ((c >> i) & 1)
+			kill(pid, SIGUSR2);
+		else
+			kill(pid, SIGUSR1);
 		usleep(30);
 	}
 }
@@ -36,7 +40,7 @@ int	send_msg(pid_t pid, char *msg)
 
 int	main(int argc, char **argv)
 {
-	pid_t		srv_pid;
+	pid_t	srv_pid;
 
 	if (argc < 3 && ft_printf("usage: %s <server pid> <message>\n", argv[0]))
 		return (1);
