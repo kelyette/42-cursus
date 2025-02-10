@@ -9,6 +9,5 @@ venv/
 !/libft/
 extra/
 target/
-minitalk/
 sync_libft
 libft_clean/
