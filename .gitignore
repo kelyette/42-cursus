@@ -1,13 +1,11 @@
 ..git/
+.DS_Store
 out
+test
 *.dSYM/
 *.o
 *.a
 *.so
 venv/
-**/libft/
-!/libft/
 extra/
 target/
-sync_libft
-libft_clean/
