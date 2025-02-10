@@ -1,7 +1,7 @@
 CC           := clang
 RM           := rm -rf
 
-CCFLAGS      := -Wall -Wextra -Werror -g
+CCFLAGS      := -Wall -Wextra -Werror -g 
 
 OBJDIR       := target
 LIBFTDIR     := libft
@@ -13,15 +13,21 @@ LIBFT        := $(LIBFTDIR)/libft.a
 SRV_OBJ      := $(addprefix $(OBJDIR)/,$(SRV_SRC:.c=.o))
 CLI_OBJ      := $(addprefix $(OBJDIR)/,$(CLI_SRC:.c=.o))
 
+ASAN         ?= 0
+
 SNAME        := server
 CNAME        := client
 
+ifneq ($(ASAN),0)
+	CCFLAGS += -fsanitize=address
+endif
+
 all: $(SNAME) $(CNAME)
 
-$(SNAME): $(LIBFT) $(SRV_OBJ)
-	$(CC) $(CCFLAGS) -o $@ $^
+$(SNAME): $(SRV_OBJ) $(LIBFT)
+	$(CC) $(CCFLAGS) -D'_XOPEN_SOURCE=700' -o $@ $^
 
-$(CNAME): $(LIBFT) $(CLI_OBJ)
+$(CNAME): $(CLI_OBJ) $(LIBFT)
 	$(CC) $(CCFLAGS) -o $@ $^
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
