@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 22:47:00 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/04 16:47:06 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/11 14:43:17 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,17 @@ int	get_hmap_size(const char *path, int *xptr, int *yptr)
 {
 	int		fd;
 	char	*line;
+	char	**parts;
 
 	*xptr = 0;
 	*yptr = 0;
 	if (safe_open(&fd, path, O_RDONLY))
 		return (1);
 	line = get_next_line(fd);
-	while (*line)
-	{
-		if (ft_isdigit(*line) && ++*xptr)
-			while (ft_isdigit(*line))
-				line++;
-		else
-			line++;
-	}
+	parts = ft_split(line, ' ');
+	while (parts[*xptr])
+		(*xptr)++;
+	free_split(parts);
 	while (line && ++*yptr)
 		line = get_next_line(fd);
 	close(fd);
@@ -105,17 +102,17 @@ int	parse_hmap_line(t_hpt *map, const char *line, int xlen, int ypos)
 
 	parts = ft_split(line, ' ');
 	i = -1;
-	while (parts && ++i < xlen)
+	while (parts[++i] && i < xlen)
 	{
 		map->pos = (t_vec3){i, ypos, 0};
 		if (parse_hpt(map++, parts[i]))
 		{
-			free_split(parts);
 			ft_printf("fdf: error: parse error near \"%s\"\n", parts[i]);
+			free_split(parts);
 			exit(1);
 		}
 	}
-	if (i != xlen)
+	if (i != xlen || parts[i])
 	{
 		ft_printf("fdf: error: line length mismatch in map file"
 			" (near \"%.10s...\")\n", line);
