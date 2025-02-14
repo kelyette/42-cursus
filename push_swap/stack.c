@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 13:46:48 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/05 20:57:05 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:13:31 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,16 @@ t_stack	*get_tail(t_stack *stack)
 	while (stack && stack->next)
 		stack = stack->next;
 	return (stack);
+}
+
+int	get_size(t_stack *stack)
+{
+	int	size;
+
+	size = 0;
+	while (stack && ++size)
+		stack = stack->next;
+	return (size);
 }
 
 void	print_stacks(t_stack *a, t_stack *b)

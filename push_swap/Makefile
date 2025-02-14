@@ -6,7 +6,7 @@ CCFLAGS     := -Wall -Wextra -Werror -g
 LIBFTDIR    := libft
 OBJDIR      := target
 
-SRC         := push_swap.c operations.c stack.c utils.c
+SRC         := push_swap.c operations.c stack.c utils.c sorters.c sorting_utils.c
 OBJ         := $(SRC:.c=.o) $(FTPRINTF)
 OBJ         := $(addprefix $(OBJDIR)/,$(OBJ))
 LIBFT        = $(LIBFTDIR)/libft.a
