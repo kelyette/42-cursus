@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:47:24 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 19:41:03 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/11 16:25:56 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	init_prefs(t_env *env)
 static void	init_mlx(t_env *env)
 {
 	env->mlx = mlx_init();
-	env->win = mlx_new_window(env->mlx, 1270, 720, "FDF v0.0 - kcsajka");
+	env->win = mlx_new_window(env->mlx, 1270, 720, "FDF - kcsajka");
 	env->wsize_x = 1270;
 	env->wsize_y = 720;
 }

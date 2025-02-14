@@ -6,12 +6,31 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:59:13 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/04 16:02:45 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/14 12:24:30 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hmap.h"
 #include <fcntl.h>
+
+static int	hmap_get_zsize(t_hpt *map, int size)
+{
+	float	min;
+	float	max;
+	int		i;
+
+	min = 0;
+	max = 0;
+	i = -1;
+	while (++i < size)
+	{
+		if (map[i].pos.z < min)
+			min = map[i].pos.z;
+		if (map[i].pos.z > max)
+			max = map[i].pos.z;
+	}
+	return ((int)(max - min));
+}
 
 int	hmap_from_file(t_hmap *hmap, const char *path)
 {
@@ -47,10 +66,12 @@ int	init_hmap(t_env *env, const char *path)
 	env->hmap = &hmap;
 	if (hmap_from_file(&hmap, path))
 		return (1);
+	hmap.size.z = hmap_get_zsize(hmap.map, hmap.size.x * hmap.size.y);
 	hmap.pos = (t_vec3){0, 0, 0};
 	hmap.origin_offset = vec3_mult(hmap.size, (t_vec3){0.5, 0.5, 0});
+	hmap.origin_offset = vec3_subs(hmap.origin_offset, (t_vec3){0.5, 0.5, 0.5});
 	hmap.rot = (t_vec3){0, 3.14, 0};
-	hmap.scale = (t_vec3){40, 20, 5};
+	hmap.scale = (t_vec3){20, 20, 5};
 	hmap.offset = (t_vec2){635, 360};
 	return (0);
 }

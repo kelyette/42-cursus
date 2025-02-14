@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:07:03 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 19:37:36 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/12 19:10:19 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ t_vec3	vec3_rotatez(t_vec3 p, float gamma);
 
 // projection
 t_vec2	project_iso(t_vec3 v3, t_vec3 rot, t_vec2 offset);
+t_vec2	project_perspective(t_vec3 v3, t_vec3 rot, t_vec2 offset);
 
 int		clr2int(t_clr clr);
 t_clr	int2clr(int clr);

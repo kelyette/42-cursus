@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 01:21:29 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/04 16:10:55 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/11 18:35:18 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,12 @@ int	draw_pixel(t_env *env, int buffered, t_vec2 p, int color)
 
 	if (!buffered)
 	{
-		mlx_pixel_put(env->mlx, env->win, p.x, p.y, color);
+		mlx_pixel_put(env->mlx, env->win, (int)p.x, (int)p.y, color);
 		return (0);
 	}
 	dbuf = env->drawbuf;
 	if (check_bounds(env, p))
-	{
 		dbuf->data[(int)p.x + (int)p.y * dbuf->sizex] = color;
-	}
 	return (0);
 }
 

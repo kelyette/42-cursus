@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 22:47:00 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/11 14:43:17 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/12 18:51:07 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,11 @@ int	get_hmap_size(const char *path, int *xptr, int *yptr)
 	while (parts[*xptr])
 		(*xptr)++;
 	free_split(parts);
-	while (line && ++*yptr)
+	while (line && ++(*yptr))
+	{
+		free(line);
 		line = get_next_line(fd);
+	}
 	close(fd);
 	return (0);
 }

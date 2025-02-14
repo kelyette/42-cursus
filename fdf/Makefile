@@ -11,7 +11,7 @@ LIBFTDIR     := libft
 LIBMLXDIR    := minilibx
 
 SRC           = main.c events.c events_mouse.c events_key.c events_utils.c \
-				hmap.c hmap_utils.c hmap_parser.c \
+				str_utils.c info.c hmap.c hmap_utils.c hmap_parser.c \
 				drawers.c draw_primitives.c draw_gui.c clr_utils.c \
 				rotation.c vec3_utils.c vec3_projection.c actions.c
 OBJ          := $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
@@ -27,8 +27,10 @@ UNAME        := $(shell uname)
 
 ifeq ($(UNAME),Linux)
 	LIBFLAGS := -lm -lmlx -lX11 -lXext -L$(LIBMLXDIR) -L/usr/lib/X11
+	CCFLAGS += -D'XK_Latin'
 else ifeq ($(UNAME),Darwin)
 	LIBFLAGS += -lmlx -framework OpenGL -framework AppKit
+	CCFLAGS += -D'COCOA'
 endif
 
 ASAN ?= 1 # TODO
