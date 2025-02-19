@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 21:11:03 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/19 13:58:40 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/19 19:41:08 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 void	sort_3u(t_stack **a)
 {
-	t_stack	*max;
 	int		size;
+	t_stack	*max;
 
 	size = get_size(*a);
+	if (size == 1)
+		return ;
 	max = get_nth(*a, -1);
 	if (size == 3 && (max == (*a) || max == (*a)->next))
 		rotate(a, NULL, max == (*a)->next, 'a');
@@ -27,11 +29,15 @@ void	sort_3u(t_stack **a)
 
 void	sort_5u(t_stack **a, t_stack **b)
 {
-	(void)a;
+	int		size;
+	t_stack	*min;
+
+	size = get_size(*a);
+	min = get_min(*a, 0);
 	(void)b;
 }
 
-void	sort_a(t_stacks *s, int idx, int len)
+static void	sort_a(t_stacks *s, int idx, int len)
 {
 	while (s->a && len-- > 0)
 	{
@@ -45,7 +51,7 @@ void	sort_a(t_stacks *s, int idx, int len)
 	}
 }
 
-void	sort_b(t_stacks *s, int idx, int len)
+static void	sort_b(t_stacks *s, int idx, int len)
 {
 	if (is_sorted(s->b, 1))
 		return ;
@@ -71,10 +77,11 @@ void	radixlsd_sort(t_stacks *s)
 	msdi = get_msdi(s->a);
 	len = get_size(s->a);
 	rem = 0;
-	while (idx <= msdi)
+	while (idx < msdi)
 	{
 		sort_a(s, idx++, len - rem);
-		if (is_sorted(s->a, 0) && is_sorted(s->b, 1))
+		if (is_sorted(s->a, 0) && is_sorted(s->b, 1)
+			&& s->a->val - 1 == s->b->val)
 			while (s->b)
 				push(&s->a, &s->b, 'a');
 		else

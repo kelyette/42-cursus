@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 12:40:11 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/11 12:50:31 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/19 17:33:30 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,16 @@ char	**ft_split(const char *s, char c)
 	}
 	*res = NULL;
 	return (res - scount);
+}
+
+void	ft_free_split(char **split)
+{
+	char	**s;
+
+	if (!split)
+		return ;
+	s = split;
+	while (*split)
+		free(*split++);
+	free(s);
 }

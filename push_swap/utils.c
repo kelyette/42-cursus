@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 15:27:55 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/19 14:02:54 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/19 19:38:25 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	atoi_check(char *str, int *ptr)
 		if (!ft_isdigit(*str) && *str != ' '
 			&& ft_printf("Error\n"))
 			return (1);
-		if (res == INT_MAX / 10 && *str > ('7' + *ptr == -1)
+		if (res == INT_MAX / 10 && *str > ('7' + (*ptr == -1))
 			&& ft_printf("Error\n"))
 			return (1);
 		res = res * 10 + (*str++ - '0');
@@ -81,4 +81,13 @@ int	is_duplicate(t_stack *s, int val)
 		s = s->next;
 	}
 	return (0);
+}
+
+int	error_free(t_stack *s, char **split, int returnVal)
+{
+	if (s)
+		free_stack(s);
+	if (split)
+		ft_free_split(split);
+	return (returnVal);
 }

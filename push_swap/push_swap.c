@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 21:04:04 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/19 13:21:14 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/19 19:45:00 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ int	main(int argc, char **argv)
 	s.a = a;
 	s.b = b;
 	if (len <= 3)
-		sort_3u(&a);
-	else if (len <= 5)
-		sort_5u(&a, &b);
+		sort_3u(&s.a);
 	else
 		radixlsd_sort(&s);
-	//print_stacks(s.a, s.b);
+	if (s.a)
+		free_stack(s.a);
+	if (s.b)
+		free_stack(s.b);
 }

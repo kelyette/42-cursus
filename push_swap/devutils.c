@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:32:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/18 16:33:14 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/19 18:56:28 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	print_stacks_bin(t_stack *a, t_stack *b)
 			a = a->next;
 		}
 		else
-			ft_printf("%*s", max);
+			ft_printf("%*s", max, "");
 		ft_printf(" ");
 		if (b)
 		{
