@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 22:46:08 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/13 19:09:58 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/18 14:57:12 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	expect_precision(va_list *arg, const char **format, t_fspec *spec)
 
 int	expect_specifier(const char **format, t_fspec *spec)
 {
-	static const char		*spec_char[] = {"diuxX", "p", "c%", "s", "n"};
+	static const char		*spec_char[] = {"diuxXb", "p", "c%", "s", "n"};
 	static const t_ffptr	spec_func[] = {
 		&fmt_int, &fmt_ptr, &fmt_char, &fmt_str, &counter
 	};

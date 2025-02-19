@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 13:46:48 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/14 18:13:31 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/19 16:51:24 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,47 @@
 t_stack	*init_stack(char **nums, int count)
 {
 	t_stack	*stack;
-	t_stack	*head;
+	int		i;
+	int		do_free;
 
-	stack = new_node(0);
-	head = stack;
-	if (atoi_check(*nums++, &stack->val))
-		return (NULL);
-	while (--count)
+	do_free = count == 1;
+	if (count == 1)
 	{
-		stack->next = new_node(0);
-		stack = stack->next;
-		if (atoi_check(*nums++, &stack->val))
-			return (NULL);
+		count = 0;
+		nums = ft_split(nums[0], ' ');
+		while (nums[count])
+			count++;
 	}
-	return (head);
+	stack = NULL;
+	i = 0;
+	while (i < count)
+		if (add_node(&stack, nums[i++]))
+			return (NULL);
+	if (do_free)
+		while (*nums)
+			free(*nums++);
+	compress_stack(stack);
+	return (stack);
 }
 
-t_stack	*new_node(int val)
+int	add_node(t_stack **s, char *val)
 {
+	t_stack	*tail;
 	t_stack	*node;
+	int		ival;
 
-	if (!val)
-		return (ft_calloc(sizeof(t_stack), 1));
-	node = ft_calloc(sizeof(t_stack), 1);
-	node->val = val;
-	return (node);
+	tail = get_tail(*s);
+	if (atoi_check(val, &ival) || is_duplicate(*s, ival))
+		return (1);
+	node = ft_calloc(1, sizeof(t_stack));
+	if (!node)
+		return (1);
+	node->baseval = ival;
+	if (tail)
+		tail->next = node;
+	else
+		*s = node;
+	return (0);
 }
 
 t_stack	*get_tail(t_stack *stack)
@@ -59,24 +75,11 @@ int	get_size(t_stack *stack)
 	return (size);
 }
 
-void	print_stacks(t_stack *a, t_stack *b)
+void	free_stack(t_stack *s)
 {
-	while (a || b)
-	{
-		if (a)
-		{
-			ft_printf("%-2d", a->val);
-			a = a->next;
-		}
-		else
-			ft_printf("  ");
-		ft_printf(" ");
-		if (b)
-		{
-			ft_printf("%-2d", b->val);
-			b = b->next;
-		}
-		ft_printf("\n");
-	}
-	ft_printf("--- ---\n a   b\n-------\n");
+	t_stack *next;
+
+	(void)s;
+	(void)next;
 }
+

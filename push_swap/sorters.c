@@ -6,90 +6,83 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 21:11:03 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/14 18:39:03 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:58:40 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	sort_u3(t_stack **a, t_stack **b)
+void	sort_3u(t_stack **a)
 {
-	t_stack	*a1;
-	t_stack	*a2;
-	t_stack	*a3;
+	t_stack	*max;
+	int		size;
 
-	a1 = *a;
-	a2 = NULL;
-	a3 = NULL;
-	if (a1 && a1->next)
-		a2 = a1->next;
-	if (a2 && a2->next)
-		a3 = a2->next;
-	if (!a1 || !a2)
-		return ;
-	if (!a3)
-	{
-		if (a1->val > a2->val)
-			swap(a, b, 'a');
-	}
-	else if (a1->val < a2->val && a2->val < a3->val)
-		return ;
-	else if (a1->val > a2->val && a1->val < a3->val)
-		swap(a, b, 'a');
-	else if (a1->val > a2->val && a2->val > a3->val)
-	{
-		swap(a, b, 'a');
-		rotate(a, b, 0, 'a');
-	}
+	size = get_size(*a);
+	max = get_nth(*a, -1);
+	if (size == 3 && (max == (*a) || max == (*a)->next))
+		rotate(a, NULL, max == (*a)->next, 'a');
+	if ((*a)->val > (*a)->next->val)
+		swap(a, NULL, 'a');
 }
 
-void	sort_u5(t_stack **a, t_stack **b)
+void	sort_5u(t_stack **a, t_stack **b)
 {
 	(void)a;
 	(void)b;
 }
 
-int	get_msdi(t_stack *s)
+void	sort_a(t_stacks *s, int idx, int len)
 {
-	int	max;
-	int	msdi;
-
-	while (s)
+	while (s->a && len-- > 0)
 	{
-		if (s->val > max)
-			max = s->val;
-		s = s->next;
+		if (s->a->val & (1 << idx))
+			rotate(&s->a, &s->b, 0, 'a');
+		else
+			push(&s->a, &s->b, 'b');
+		if (is_sorted(s->a, 0) && is_sorted(s->b, 1)
+			&& s->b->val == s->a->val - 1)
+			return ;
 	}
-	msdi = 0;
-	while (max >= (1 << msdi))
-		msdi++;
-	return (msdi);
 }
 
-void	radixlsd_sort(t_stack **a, t_stack **b)
+void	sort_b(t_stacks *s, int idx, int len)
+{
+	if (is_sorted(s->b, 1))
+		return ;
+	while (s->b && len-- > 0)
+	{
+		if (s->b->val & (1 << idx))
+			push(&s->a, &s->b, 'a');
+		else
+			rotate(&s->a, &s->b, 0, 'b');
+	}
+}
+
+void	radixlsd_sort(t_stacks *s)
 {
 	int		idx;
 	int		msdi;
 	int		len;
 	int		rem;
 
-	if (!*a || !(*a)->next)
+	if (!s->a || !s->a->next)
 		return ;
 	idx = 0;
-	msdi = get_msdi(*a);
-	len = get_size(*a);
+	msdi = get_msdi(s->a);
+	len = get_size(s->a);
+	rem = 0;
 	while (idx <= msdi)
 	{
-		rem = len;
-		while (rem--)
+		sort_a(s, idx++, len - rem);
+		if (is_sorted(s->a, 0) && is_sorted(s->b, 1))
+			while (s->b)
+				push(&s->a, &s->b, 'a');
+		else
 		{
-			if ((*a)->val & (1 << idx))
-				rotate(a, b, 0, 'a');
-			else
-				push(a, b, 'b');
+			sort_b(s, idx, get_size(s->b));
+			rem = get_size(s->b);
 		}
-		while (*b)
-			push(a, b, 'a');
-		idx++;
+		if (!s->b && s->a && is_sorted(s->a, 0))
+			return ;
 	}
 }

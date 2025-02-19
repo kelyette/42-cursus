@@ -1,21 +1,22 @@
-CC          := clang
-RM          := rm -rf
+CC           := clang
+RM           := rm -rf
 
-CCFLAGS     := -Wall -Wextra -Werror -g
+CCFLAGS      := -Wall -Wextra -Werror -g
 
-LIBFTDIR    := libft
-OBJDIR      := target
+LIBFTDIR     := libft
+OBJDIR       := target
 
-SRC         := push_swap.c operations.c stack.c utils.c sorters.c sorting_utils.c
-OBJ         := $(SRC:.c=.o) $(FTPRINTF)
-OBJ         := $(addprefix $(OBJDIR)/,$(OBJ))
-LIBFT        = $(LIBFTDIR)/libft.a
+SRC          := push_swap.c operations.c stack.c utils.c \
+				sorters.c sorting_utils.c devutils.c # TODO remove
+OBJ          := $(SRC:.c=.o) $(FTPRINTF)
+OBJ          := $(addprefix $(OBJDIR)/,$(OBJ))
+LIBFT         = $(LIBFTDIR)/libft.a
 
-INCL        := -I$(LIBFTDIR)
+INCL         := -I$(LIBFTDIR)
 
-ASAN        ?= 1
+ASAN         ?= 1
 
-NAME        := push_swap
+NAME         := push_swap
 
 ifneq ($(ASAN),0)
 	CCFLAGS += -fsanitize=address
