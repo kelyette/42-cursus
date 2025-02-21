@@ -27,7 +27,6 @@ UNAME        := $(shell uname)
 
 ifeq ($(UNAME),Linux)
 	LIBFLAGS := -lm -lmlx -lX11 -lXext -L$(LIBMLXDIR) -L/usr/lib/X11
-	CCFLAGS += -D'XK_Latin'
 else ifeq ($(UNAME),Darwin)
 	LIBFLAGS += -lmlx -framework OpenGL -framework AppKit
 	CCFLAGS += -D'COCOA'
