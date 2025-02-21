@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 21:04:00 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/19 19:34:01 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/21 00:06:01 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ int		is_duplicate(t_stack *s, int val);
 int		error_free(t_stack *s, char **split, int returnVal);
 
 // sorters (sorters.c)
-void	sort_3u(t_stack **a);
-void	sort_5u(t_stack **a, t_stack **b);
+void	sort_3u(t_stack **a, int size);
+void	sort_5u(t_stack **a, t_stack **b, int size);
 void	radixlsd_sort(t_stacks *s);
 
 // sorting utils (sorting_utils.c)
 int		is_sorted(t_stack *stack, int rev);
 int		get_msdi(t_stack *s);
-t_stack	*get_nth(t_stack *s, int n);
+int		get_min_dist(t_stack *a, t_stack *min[2], int dist[2]);
+int		get_dist(t_stack *s, t_stack *trgt, int abs);
 
 #endif

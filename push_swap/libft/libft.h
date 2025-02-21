@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:39:56 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/19 17:34:09 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/20 17:56:36 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 // integers
 int		ft_atoi(const char *str);
 char	*ft_itoa(int n);
+int		ft_abs(int n);
 
 // IO
 void	ft_putchar_fd(char c, int fd);

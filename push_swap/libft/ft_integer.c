@@ -6,14 +6,14 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 15:31:54 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/10/11 12:29:07 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/20 17:56:20 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <limits.h>
 
-static int	ft_abs(int x)
+int	ft_abs(int x)
 {
 	if (x < 0)
 		return (-x);

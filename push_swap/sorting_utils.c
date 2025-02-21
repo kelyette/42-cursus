@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 21:00:34 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/19 19:20:54 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/21 00:42:55 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,36 @@ int	get_msdi(t_stack *s)
 	return (msdi);
 }
 
-t_stack	*get_nth(t_stack *s, int n)
+int	get_min_dist(t_stack *a, t_stack *min[2], int dist[2])
 {
-	const int	size = get_size(s);
+	int	size;
 
-	if (n == -1 || n > size - 1)
-		n = size - 1;
-	while (s)
+	size = get_size(a);
+	min[0] = get_min(a, 0);
+	min[1] = NULL;
+	if (size == 5)
+		min[1] = get_min(a, min[0]);
+	dist[0] = get_dist(a, min[0], 1);
+	if (min[1])
+		dist[1] = get_dist(a, min[1], 1);
+	return (min[1] && ft_abs(dist[0]) > ft_abs(dist[1]));
+}
+
+int	get_dist(t_stack *a, t_stack *trgt, int abs)
+{
+	int	d;
+	int	size;
+
+	d = 0;
+	size = get_size(a);
+	while (a && trgt)
 	{
-		if (s->val == n)
-			return (s);
-		s = s->next;
+		if (a == trgt && abs && (float)d > (size / 2))
+			return (d - size);
+		else if (a == trgt)
+			return (d);
+		a = a->next;
+		d++;
 	}
-	return (NULL);
+	return (0);
 }

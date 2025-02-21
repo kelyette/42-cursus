@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 13:46:48 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/19 19:34:35 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/21 00:54:54 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ t_stack	*init_stack(char **nums, int count)
 	int		i;
 	int		do_free;
 
+	do_free = count == 1;
 	if (count == 1)
 	{
-		do_free = 1;
 		count = 0;
 		nums = ft_split(nums[0], ' ');
 		while (nums[count])
@@ -30,7 +30,9 @@ t_stack	*init_stack(char **nums, int count)
 	i = 0;
 	while (nums[i] && i < count)
 	{
-		if (add_node(&stack, nums[i++]) && error_free(stack, nums, 1))
+		if (add_node(&stack, nums[i++])
+			&& ((do_free && error_free(stack, nums, 1))
+				|| error_free(stack, NULL, 1)))
 			return (NULL);
 	}
 	if (do_free)
