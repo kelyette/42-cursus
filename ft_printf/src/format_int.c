@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:46:48 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/22 14:29:25 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/17 19:27:25 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ t_num	init_num(t_fspec *spec, long n)
 	num.neg = (n < 0);
 	if (spec->spec == 'x' || spec->spec == 'X')
 		num.base = 16;
+	else if (spec->spec == 'b')
+		num.base = 2;
 	num.len = ltoa_raw(num.str, n, num.base, spec->spec == 'X');
 	num.tlen = num.len;
 	if (!spec->precision && !num.n)
@@ -48,7 +50,7 @@ int	fputint_pre(t_fspec *spec, t_num *num)
 	if (!spec->ljust && spec->width != -1 && !spec->zpad
 		&& fpad(spec->width, num->tlen, 0))
 		return (1);
-	if ((spec->precision || num->n ) && num->fsign && fputchar(num->fsign))
+	if ((spec->precision || num->n) && num->fsign && fputchar(num->fsign))
 		return (1);
 	if (num->pre[0] != 0 && fputstr(num->pre))
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 03:09:59 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/01/22 14:18:14 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/18 13:49:04 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@
 #  define ULIMIT 0
 # endif
 
-struct			s_fspec;
+struct		s_fspec;
 typedef int	(*t_ffptr)(va_list *, struct s_fspec *);
 
-extern int		g_char_count;
+extern int	g_char_count;
 
 typedef struct s_fspec
 {
