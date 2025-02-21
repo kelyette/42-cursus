@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 21:11:03 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/21 00:59:06 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/21 15:06:35 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ void	radixlsd_sort(t_stacks *s)
 	msdi = get_msdi(s->a);
 	len = get_size(s->a);
 	rem = 0;
+	if (is_sorted(s->a, 0))
+		return ;
 	while (idx < msdi)
 	{
 		if (!sort_a(s, idx++, len - rem))
