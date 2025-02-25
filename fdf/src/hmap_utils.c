@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 18:22:07 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/14 12:15:14 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/24 14:59:29 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@
 
 int	free_split(char **split)
 {
+	char	**tmp;
+
+	tmp = split;
 	while (*split)
 		free(*split++);
+	free(tmp);
 	return (1);
 }
 
