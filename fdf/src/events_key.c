@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 21:14:36 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/14 13:04:29 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:24:47 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int	evf_key(int key, t_env *env)
 		env->ls->showaxes ^= 1;
 	else if (key == KEY_COMMA || key == KEY_DOT)
 		env->ls->delta += ((key == KEY_DOT) * 2 - 1) * 0.5;
-	else if (key == KEY_NUMPAD1)
-		env->hmap->rot = (t_vec3){-0.734, 0.931, 1};
 	if (env->ls->delta <= 0.2)
 		env->ls->delta = 0.2;
 	return (0);
@@ -62,7 +60,6 @@ int	evf_keydown(int key, t_env *env)
 {
 	t_kbind	*keybind;
 
-	ft_printf("%d\n", key);
 	keybind = get_key(env->ls->keybinds, key);
 	if (!keybind)
 		return (0);

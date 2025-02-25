@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:10:39 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/21 15:35:08 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:24:31 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,6 @@
 #  define KEY_UP         126
 #  define KEY_TAB        48
 #  define KEY_ESCAPE     53
-#  define KEY_NUMPAD0    82
-#  define KEY_NUMPAD1    83
-#  define KEY_NUMPAD2    84
-#  define KEY_NUMPAD3    85
-#  define KEY_NUMPAD4    86
-#  define KEY_NUMPAD5    87
-#  define KEY_NUMPAD6    88
-#  define KEY_NUMPAD7    89
-#  define KEY_NUMPAD8    91
-#  define KEY_NUMPAD9    92
 
 #  define ON_KEYDOWN     2
 #  define ON_KEYUP       3
@@ -79,16 +69,6 @@
 #  define KEY_UP         0xff52
 #  define KEY_TAB        0xff09
 #  define KEY_ESCAPE     0xff1b
-#  define KEY_NUMPAD0    0xffb0
-#  define KEY_NUMPAD1    0xffb1
-#  define KEY_NUMPAD2    0xffb2
-#  define KEY_NUMPAD3    0xffb3
-#  define KEY_NUMPAD4    0xffb4
-#  define KEY_NUMPAD5    0xffb5
-#  define KEY_NUMPAD6    0xffb6
-#  define KEY_NUMPAD7    0xffb7
-#  define KEY_NUMPAD8    0xffb8
-#  define KEY_NUMPAD9    0xffb9
 
 #  define ON_KEYDOWN     2
 #  define ON_KEYUP       3
@@ -98,8 +78,6 @@
 #  define ON_EXPOSE      12
 #  define ON_DESTROY     17
 # endif
-
-# define DEFAULTACTION  rotate
 
 enum e_keybind_t
 {

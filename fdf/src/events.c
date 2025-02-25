@@ -6,27 +6,13 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:24:47 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/14 12:36:52 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:24:58 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include "events.h"
 #include "drawers.h"
-
-static void	init_numpad(t_kbind *keybinds, int *i)
-{
-	keybinds[(*i)++] = (t_kbind){KEY_NUMPAD0, KBOnce, 0};
-	keybinds[(*i)++] = (t_kbind){KEY_NUMPAD1, KBOnce, 0};
-	keybinds[(*i)++] = (t_kbind){KEY_NUMPAD2, KBOnce, 0};
-	keybinds[(*i)++] = (t_kbind){KEY_NUMPAD3, KBOnce, 0};
-	keybinds[(*i)++] = (t_kbind){KEY_NUMPAD4, KBOnce, 0};
-	keybinds[(*i)++] = (t_kbind){KEY_NUMPAD5, KBOnce, 0};
-	keybinds[(*i)++] = (t_kbind){KEY_NUMPAD6, KBOnce, 0};
-	keybinds[(*i)++] = (t_kbind){KEY_NUMPAD7, KBOnce, 0};
-	keybinds[(*i)++] = (t_kbind){KEY_NUMPAD8, KBOnce, 0};
-	keybinds[(*i)++] = (t_kbind){KEY_NUMPAD9, KBOnce, 0};
-}
 
 void	init_keybinds(t_kbind *keybinds)
 {
@@ -50,7 +36,6 @@ void	init_keybinds(t_kbind *keybinds)
 	keybinds[i++] = (t_kbind){KEY_ESCAPE, KBOnce, 0};
 	keybinds[i++] = (t_kbind){KEY_COMMA, KBOnce, 0};
 	keybinds[i++] = (t_kbind){KEY_DOT, KBOnce, 0};
-	init_numpad(keybinds, &i);
 	keybinds[i] = (t_kbind){-1, -1, -1};
 }
 

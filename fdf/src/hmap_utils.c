@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 18:22:07 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/24 14:59:29 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:27:53 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_vec2	point2screen_iso(t_hmap *hmap, t_vec3 p)
 int	safe_open(int *fd, const char *path, int oflag)
 {
 	*fd = open(path, oflag);
-	if (*fd != -1)
+	if (*fd != -1 && read(*fd, 0, 0) != -1)
 		return (0);
 	ft_printf("fdf: cannot open file \"%s\" (error %d)\n", path, errno);
 	return (1);

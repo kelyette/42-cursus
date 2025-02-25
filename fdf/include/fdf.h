@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:56:09 by kcsajka           #+#    #+#             */
-/*   Updated: 2024/12/16 19:18:18 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:10:30 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,5 @@
 # include "env.h"
 # include "hmap.h"
 # include "events.h"
-#include <stdio.h>
 
 #endif
