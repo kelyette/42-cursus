@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:20:06 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/10 18:12:54 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:52:49 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	send_byte(pid_t pid, char c)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		usleep(30);
+		usleep(50);
 	}
 }
 
