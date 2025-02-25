@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 15:27:55 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/21 18:00:22 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/25 13:59:36 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	atoi_check(char *str, int *ptr)
 	if (*str == '-' || *str == '+')
 		if (*str++ == '-')
 			*ptr = -1;
-	while (*str && res <= INT_MAX && res >= INT_MIN)
+	while (*str && (res * *ptr) <= INT_MAX && (res * *ptr) >= INT_MIN)
 	{
 		if (!ft_isdigit(*str) && *str != ' '
 			&& ft_printf("Error\n"))
@@ -34,9 +34,10 @@ int	atoi_check(char *str, int *ptr)
 			return (1);
 		res = res * 10 + (*str++ - '0');
 	}
-	if (res > INT_MAX || (res * *ptr) < INT_MIN)
+	res *= *ptr;
+	if (res > INT_MAX || res < INT_MIN)
 		return (1 && ft_printf("Error\n"));
-	*ptr *= (int)res;
+	*ptr = (int)res;
 	return (0);
 }
 
