@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 01:21:29 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/11 18:35:18 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:57:52 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ int	draw_line(t_env *env, t_vec2 p1, t_vec2 p2, t_grad grad)
 	ms = s;
 	while (s > 0)
 	{
-		if (ms == s || s == 1)
-			draw_pixel(env, 1, p1, 0xffffff);
-		else
-			draw_pixel(env, 1, p1, grad_lerp(grad, 1 - s / ms).val);
+		draw_pixel(env, 1, p1, grad_lerp(grad, 1 - s / ms).val);
 		p1.x += dx;
 		p1.y += dy;
 		s--;

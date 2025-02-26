@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:18:19 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/04 16:09:03 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:30:07 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "libft.h"
 
 # include "env.h"
-# include "log.h"
 # include "hmap.h"
 # include "geometry.h"
 

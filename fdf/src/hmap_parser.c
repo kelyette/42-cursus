@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 22:47:00 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/12 18:51:07 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/26 18:06:19 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	get_hmap_size(const char *path, int *xptr, int *yptr)
 	if (safe_open(&fd, path, O_RDONLY))
 		return (1);
 	line = get_next_line(fd);
+	if (!line && ft_printf("error: file is empty\n"))
+		return (1);
 	parts = ft_split(line, ' ');
 	while (parts[*xptr])
 		(*xptr)++;
@@ -115,10 +117,10 @@ int	parse_hmap_line(t_hpt *map, const char *line, int xlen, int ypos)
 			exit(1);
 		}
 	}
-	if (i != xlen || parts[i])
+	if (i != xlen || (parts[i] && parts[i][0] != '\n'))
 	{
 		ft_printf("fdf: error: line length mismatch in map file"
-			" (near \"%.10s...\")\n", line);
+			" (%d:%d)\n", ypos + 1, xlen + 1);
 		free_split(parts);
 		exit(1);
 	}

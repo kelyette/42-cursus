@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:03:03 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/03 16:46:43 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:34:32 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ typedef struct s_env
 	t_ls	*ls;
 	t_dbuf	*drawbuf;
 }	t_env;
+
+int	fdfclose(t_env *env, int code);
 
 #endif

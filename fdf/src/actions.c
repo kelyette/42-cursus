@@ -6,23 +6,11 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 03:55:18 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/14 12:33:02 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:33:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "events.h"
-
-int	fdfclose(t_env *env, int code)
-{
-	if (env && env->mlx && env->win)
-		mlx_destroy_window(env->mlx, env->win);
-	if (env && env->hmap->map)
-		free(env->hmap->map);
-	if (env && env->ls->info)
-		free_info(env->ls->info, env->ls->info_count);
-	exit(code);
-	return (0);
-}
 
 void	rotate(t_env *env, float x, float y, float z)
 {
@@ -42,8 +30,8 @@ void	scale(t_env *env, float x, float y, float z)
 
 void	move(t_env *env, float x, float y, float z)
 {
-	env->hmap->pos.x += x * 0.1 / env->ls->delta;
-	env->hmap->pos.y += y * 0.1 / env->ls->delta;
-	env->hmap->pos.z += z * 0.1 / env->ls->delta;
+	(void)z;
+	env->hmap->offset.x += x * 1 / env->ls->delta;
+	env->hmap->offset.y += y * 1 / env->ls->delta;
 	env->ls->redraw = 1;
 }

@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:17:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/11 18:25:27 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:30:23 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ int	init_drawers(t_env *env)
 	dbuf.encoding = encoding;
 	dbuf.sizex = env->wsize_x;
 	dbuf.sizey = env->wsize_y;
-	if (encoding.bitspp != sizeof(int) * 8 || encoding.endian)
-		return (error(env, 1, "minilibx uses an unsupported encoding :("));
+	if ((encoding.bitspp != sizeof(int) * 8 || encoding.endian)
+		&& ft_printf("minilibx unses an unsupported encoding :(\n"))
+		fdfclose(env, 1);
 	return (0);
 }
 
@@ -38,7 +39,7 @@ static void	draw_hmap_line(t_env *env, t_hmap *hmap, t_vec2 pos)
 
 	hp1 = hmap_getpt(hmap, pos);
 	sp1 = point2screen_iso(hmap, hp1.pos);
-	if (pos.x < hmap->size.x - 1 != 0)
+	if (pos.x < hmap->size.x - 1)
 	{
 		pos.x++;
 		hp2 = hmap_getpt(hmap, pos);
@@ -47,7 +48,7 @@ static void	draw_hmap_line(t_env *env, t_hmap *hmap, t_vec2 pos)
 			draw_line(env, sp1, sp2, (t_grad){hp1.color, hp2.color});
 		pos.x--;
 	}
-	if (pos.y < hmap->size.y - 1 != 0)
+	if (pos.y < hmap->size.y - 1)
 	{
 		pos.y++;
 		hp2 = hmap_getpt(hmap, pos);

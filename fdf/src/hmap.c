@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:59:13 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/14 12:24:30 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:56:57 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	init_hmap(t_env *env, const char *path)
 	hmap.origin_offset = vec3_mult(hmap.size, (t_vec3){0.5, 0.5, 0});
 	hmap.origin_offset = vec3_subs(hmap.origin_offset, (t_vec3){0.5, 0.5, 0.5});
 	hmap.rot = (t_vec3){0, 3.14, 0};
-	hmap.scale = (t_vec3){20, 20, 5};
+	hmap.scale = (t_vec3){600 / hmap.size.x, 600 / hmap.size.x, 5};
 	hmap.offset = (t_vec2){635, 360};
 	return (0);
 }

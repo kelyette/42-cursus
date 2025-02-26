@@ -1,7 +1,7 @@
-CC = clang
+CC = cc
 AR = ar
 
-CCWFLAGS = -Wall -Wextra -Werror -g
+CCWFLAGS = -Wall -Wextra -Werror -g -fPIC
 ARFLAGS = rcs
 
 STATICDIR = target_static
@@ -41,7 +41,6 @@ so: $(NAME).so
 $(NAME).a: $(OBJSTATIC)
 	$(AR) $(ARFLAGS) $@ $^
 
-$(NAME).so: OBJCCFLAGS = -fPIC
 $(NAME).so: OBJDIR := $(SHAREDDIR)
 $(NAME).so: $(OBJSHARED)
 	$(CC) $(CCWFLAGS) -shared -o $(NAME).so $^
