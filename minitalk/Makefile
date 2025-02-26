@@ -1,7 +1,7 @@
-CC           := clang
+CC           := cc
 RM           := rm -rf
 
-CCFLAGS      := -Wall -Wextra -Werror -g 
+CCFLAGS      := -Wall -Wextra -Werror -g
 
 OBJDIR       := target
 LIBFTDIR     := libft
@@ -25,7 +25,7 @@ endif
 all: $(SNAME) $(CNAME)
 
 $(SNAME): $(SRV_OBJ) $(LIBFT)
-	$(CC) $(CCFLAGS) -D'_XOPEN_SOURCE=700' -o $@ $^
+	$(CC) $(CCFLAGS) -o $@ $^
 
 $(CNAME): $(CLI_OBJ) $(LIBFT)
 	$(CC) $(CCFLAGS) -o $@ $^

@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:21:40 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/23 19:48:45 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/26 12:21:14 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,13 @@ void	handle_message(int sig, siginfo_t *info, void *ctx)
 	if (i == 8)
 	{
 		if (v)
-			ft_printf("%c", v);
+			write(1, &v, 1);
 		else
-			ft_printf("\n");
+			write(1, "\n", 1);
 		i = 0;
 		v = 0;
 	}
+	kill(c_pid, SIGUSR1);
 }
 
 int	main(void)
@@ -49,14 +50,12 @@ int	main(void)
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = &handle_message;
 	ft_printf("server PID: %d\n", pid);
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
 	if (sigaction(SIGUSR1, &sa, NULL) || sigaction(SIGUSR2, &sa, NULL))
 	{
-		ft_printf("error: sigaction error");
-		exit(1);
+		ft_printf("error: sigaction error\n");
+		return (1);
 	}
 	while (1)
-		;
+		pause();
 	return (0);
 }
