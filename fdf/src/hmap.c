@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:59:13 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/26 14:56:57 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:11:53 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	hmap_from_file(t_hmap *hmap, const char *path)
 int	init_hmap(t_env *env, const char *path)
 {
 	static t_hmap	hmap;
+	int				sbig;
+	int				scale;
 
 	env->hmap = &hmap;
 	if (hmap_from_file(&hmap, path))
@@ -69,9 +71,13 @@ int	init_hmap(t_env *env, const char *path)
 	hmap.size.z = hmap_get_zsize(hmap.map, hmap.size.x * hmap.size.y);
 	hmap.pos = (t_vec3){0, 0, 0};
 	hmap.origin_offset = vec3_mult(hmap.size, (t_vec3){0.5, 0.5, 0});
-	hmap.origin_offset = vec3_subs(hmap.origin_offset, (t_vec3){0.5, 0.5, 0.5});
+	hmap.origin_offset = vec3_subs(hmap.origin_offset, (t_vec3){0.5, 0.5, 0});
 	hmap.rot = (t_vec3){0, 3.14, 0};
-	hmap.scale = (t_vec3){600 / hmap.size.x, 600 / hmap.size.x, 5};
-	hmap.offset = (t_vec2){635, 360};
+	sbig = hmap.size.x;
+	if (hmap.size.y > sbig)
+		sbig = hmap.size.y;
+	scale = (env->wsize_x / 2.1) / (sbig / 1.3);
+	hmap.scale = (t_vec3){scale, scale, 5};
+	hmap.offset = (t_vec2){env->wsize_x / 2, env->wsize_y / 2};
 	return (0);
 }

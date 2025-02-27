@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:10:39 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/25 17:24:31 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:46:13 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,17 @@
 # endif
 
 # define MOUSE1         1
-# define MOUSE2         2
-# define MOUSE3         3
+# define MOUSE2         3
+# define MOUSE3         2
+# define MOUSE_SUP      4
+# define MOUSE_SDOWN    5
+# define ON_KEYDOWN     2
+# define ON_KEYUP       3
+# define ON_MOUSEDOWN   4
+# define ON_MOUSEUP     5
+# define ON_MOUSEMOVE   6
+# define ON_EXPOSE      12
+# define ON_DESTROY     17
 
 # ifdef COCOA
 #  define KEY_W          13
@@ -43,14 +52,6 @@
 #  define KEY_UP         126
 #  define KEY_TAB        48
 #  define KEY_ESCAPE     53
-
-#  define ON_KEYDOWN     2
-#  define ON_KEYUP       3
-#  define ON_MOUSEDOWN   4
-#  define ON_MOUSEUP     5
-#  define ON_MOUSEMOVE   6
-#  define ON_EXPOSE      12
-#  define ON_DESTROY     17
 # else
 #  define KEY_W          119
 #  define KEY_A          97
@@ -69,14 +70,6 @@
 #  define KEY_UP         0xff52
 #  define KEY_TAB        0xff09
 #  define KEY_ESCAPE     0xff1b
-
-#  define ON_KEYDOWN     2
-#  define ON_KEYUP       3
-#  define ON_MOUSEDOWN   4
-#  define ON_MOUSEUP     5
-#  define ON_MOUSEMOVE   6
-#  define ON_EXPOSE      12
-#  define ON_DESTROY     17
 # endif
 
 enum e_keybind_t
@@ -124,6 +117,7 @@ int		init_info(t_env *env);
 
 // special events
 int		evf_loop(t_env *env);
+int		fdfclose(t_env *env, int code);
 
 // mouse events
 int		evf_mouse(int btn, int x, int y, t_env *env);
@@ -142,10 +136,10 @@ void	draw_info(t_env *env);
 void	free_info(t_info *info, int count);
 
 // actions
-int		fdfclose(t_env *env, int code);
 void	move(t_env *env, float x, float y, float z);
 void	scale(t_env *env, float x, float y, float z);
 void	rotate(t_env *env, float x, float y, float z);
+void	zoom(t_env *env, float m);
 
 // utils
 t_kbind	*get_key(t_kbind *keybinds, int key);

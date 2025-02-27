@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:18:19 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/26 17:30:07 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/27 13:13:15 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ typedef struct s_drawbuffer
 
 int		init_drawers(t_env *env);
 
-int		draw_pixel(t_env *env, int buffered, t_vec2 p, int color);
+int		draw_pixel(t_env *env, t_vec2 p, int color);
 int		draw_line(t_env *env, t_vec2 p1, t_vec2 p2, t_grad grad);
-int		draw_rect(t_env *env, int buffered, t_rect rect, int color);
 
 int		draw_axes(t_env *env);
 int		draw_hmap(t_env *env);

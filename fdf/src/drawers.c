@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:17:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/26 17:30:23 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:53:25 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	draw_hmap(t_env *env)
 	t_vec2			cur;
 
 	cur = (t_vec2){0, 0};
-	ft_bzero(env->drawbuf->data,
+	ft_memset(env->drawbuf->data, 16,
 		sizeof(int) * env->drawbuf->sizex * env->drawbuf->sizey);
 	while (cur.x < hmap->size.x && cur.y < hmap->size.y)
 	{

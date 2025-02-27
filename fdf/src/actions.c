@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 03:55:18 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/02/26 17:33:34 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:09:32 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,12 @@ void	move(t_env *env, float x, float y, float z)
 	(void)z;
 	env->hmap->offset.x += x * 1 / env->ls->delta;
 	env->hmap->offset.y += y * 1 / env->ls->delta;
+	env->ls->redraw = 1;
+}
+
+void	zoom(t_env *env, float m)
+{
+	m = 1 + m / 10;
+	env->hmap->scale = vec3_mult(env->hmap->scale, (t_vec3){m, m, m});
 	env->ls->redraw = 1;
 }
