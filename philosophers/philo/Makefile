@@ -8,7 +8,7 @@ SRCDIR       := src
 INCDIR       := include
 OBJDIR       := target
 
-SRC          := philosophers.c
+SRC          := main.c philosopher.c actions.c utils.c 
 OBJ          := $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
 NAME         := philo
@@ -23,7 +23,7 @@ $(NAME): $(OBJ)
 	$(CC) $(CCFLAGS) -o $@ $^
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) $(CCFLAGS) -I$(INCDIR) -o $@ $^
+	$(CC) $(CCFLAGS) -I$(INCDIR) -o $@ -c $<
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
@@ -34,6 +34,6 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 
-re: fclean re
+re: fclean all
 
 .PHONY: all clean fclean re
