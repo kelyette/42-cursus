@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:56:21 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/03/06 13:32:44 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/03/07 18:28:40 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,12 @@ void	precise_sleep(uint64_t t)
 void	msg(t_philo *philo, char *msg)
 {
 	static uint64_t	start_time;
-	uint64_t		time;
 
 	if (!start_time)
-	{
-		pthread_mutex_lock(&philo->table->lock);
 		start_time = philo->table->start_time;
-		pthread_mutex_unlock(&philo->table->lock);
-	}
-	time = get_time() - start_time;
 	pthread_mutex_lock(&philo->table->msg_lock);
-	printf("%lld %d %s\n", (long long)time, philo->id + 1, msg);
+	if (1 || msg[0] == 'd' || !philo->table->dead) // TODO
+		printf("%lld %d %s\n", (long)get_time() - start_time,
+			philo->id + 1, msg);
 	pthread_mutex_unlock(&philo->table->msg_lock);
 }

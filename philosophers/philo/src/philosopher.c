@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 17:59:30 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/03/06 13:51:09 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/03/12 13:00:16 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	*barbouille(void *phptr)
 
 	philo = (t_philo *)phptr;
 	ttdie = philo->table->ttdie;
-	while (!philo->table->dead)
+	while (!philo->table->dead && !philo->done)
 	{
 		pthread_mutex_lock(&philo->lock);
-		if (get_time() - philo->lastmeal >= ttdie)
+		if (!philo->eating && get_time() - philo->lastmeal >= ttdie)
 		{
 			pthread_mutex_lock(&philo->table->lock);
 			if (!philo->table->dead)
@@ -38,23 +38,33 @@ void	*barbouille(void *phptr)
 	return (NULL);
 }
 
+static inline int	check_meals(t_philo *philo)
+{
+	if (philo->mealcount != philo->table->nmeals)
+		return (0);
+	pthread_mutex_lock(&philo->lock);
+	philo->done = 1;
+	pthread_mutex_unlock(&philo->lock);
+	return (1);
+}
+
 void	*philosopher(void *phptr)
 {
 	t_philo		*philo;
 	pthread_t	tb;
-	uint64_t	tteat;
-	uint64_t	ttsleep;
 
 	philo = (t_philo *)phptr;
-	tteat = philo->table->tteat;
-	ttsleep = philo->table->ttsleep;
+	while (get_time() < philo->table->start_time || !philo->table->init)
+		usleep(100);
+	if (philo->id % 2 == 0)
+		usleep(10000);
 	pthread_create(&tb, NULL, barbouille, philo);
 	while (!philo->table->dead)
 	{
-		if (eat(philo, tteat))
+		if (eat(philo, philo->table->tteat) == 1 || check_meals(philo))
 			break ;
 		msg(philo, MSLEEP);
-		precise_sleep(ttsleep);
+		precise_sleep(philo->table->ttsleep);
 		if (philo->table->dead)
 			break ;
 		msg(philo, MTHINK);

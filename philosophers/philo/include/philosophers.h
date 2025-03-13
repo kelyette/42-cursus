@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:11:47 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/03/06 13:48:24 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/03/12 12:51:16 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # ifndef MAX_PHILOS
 #  define MAX_PHILOS 200
 # endif
-# define MFORK  "has taken a fork"
+# define MFORK  "has taken fork" // TODO
 # define MEAT   "is eating"
 # define MSLEEP "is sleeping"
 # define MTHINK "is thinking"
@@ -45,6 +45,7 @@ typedef struct s_philo
 	int				eating;
 	uint64_t		lastmeal;
 	int				mealcount;
+	int				done;
 	pthread_mutex_t	*fork_l;
 	pthread_mutex_t	*fork_r;
 	pthread_mutex_t	lock;
@@ -54,6 +55,7 @@ typedef struct s_table
 {
 	t_philo			philos[MAX_PHILOS];
 	pthread_mutex_t	forks[MAX_PHILOS];
+	int				init;
 	uint64_t		start_time;
 	int				dead;
 	int				pcount;

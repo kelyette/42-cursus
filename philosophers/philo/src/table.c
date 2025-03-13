@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   table.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 14:54:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/03/06 13:32:09 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/03/07 18:18:29 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	init_table(t_table *table, char **args, int argc)
 		pthread_mutex_init(&table->philos[i].lock, NULL);
 		pthread_mutex_init(&table->forks[i], NULL);
 	}
-	table->start_time = get_time();
+	table->start_time = get_time() + 50;
 	pthread_mutex_unlock(&table->lock);
 	i = -1;
 	while (++i < table->pcount)
@@ -61,8 +61,8 @@ int	init_table(t_table *table, char **args, int argc)
 		table->philos[i].lastmeal = table->start_time;
 		pthread_create(&table->philos[i].tid, NULL,
 			philosopher, &table->philos[i]);
-		usleep(100);
 	}
+	table->init = 1;
 	i = -1;
 	while (++i < table->pcount)
 		pthread_join(table->philos[i].tid, NULL);

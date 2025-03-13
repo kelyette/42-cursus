@@ -8,7 +8,7 @@ SRCDIR       := src
 INCDIR       := include
 OBJDIR       := target
 
-SRC          := main.c philosopher.c actions.c utils.c 
+SRC          := table.c philosopher.c actions.c utils.c 
 OBJ          := $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
 NAME         := philo
